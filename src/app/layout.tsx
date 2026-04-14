@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   description: "Cada conversa guarda tesouros. O Recall os revela",
 };
 
+const manrope = Manrope({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -14,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={manrope.className}>{children}</body>
     </html>
   );
 }
