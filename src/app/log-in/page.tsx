@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function LoginPage() {
     return (
         <main className="flex flex-row min-h-screen">
-            <section className="flex justify-center text-white items-center w-[45%] bg-[radial-gradient(ellipse_at_center,#1a56db_0%,#1e3a8a_50%,#1e2e6e_100%)]">
+            <section className="flex justify-center text-white items-center w-[45%] bg-radial-[at_50%_75%] from-[#193578] via-[#1c1f5f] to-[#16213c] to-90%">
                 <div className="w-[60%]">
                     <div className="bg-gray-200 w-12 h-[4px] mb-4 rounded-full opacity-50"></div>
                     <h1 className="leading-tight mb-4 aling-left text-white text-[38px] font-bold">Transforme suas soluções com IA </h1>
