@@ -18,18 +18,22 @@ export default function LoginPage() {
             </section>
 
             <section className='flex p-8 w-[50%]'>
-                <nav><Image src={Logo} alt="Logo Recall" width={80}></Image></nav>
-                <div className='flex flex-col justify-center items-left w-[60%]'>
+                <nav><Image src={Logo} alt="Logo Recall" width={120}></Image></nav>
+                <div className='flex flex-col justify-center items-left w-full mx-[13%]'>
                     <h1 className='text-3xl font-bold'>Bem vindo de volta</h1>
                     <p className='text-gray-500 font-semibold align-left mb-6'>Faça login para ultilizar o Recall.</p>
-                    <form className='flex flex-col'>
-                        <p className='text-xs font-bold mb-2 text-gray-400'>E-MAIL</p>
+                    <form className='flex flex-col inter'>
+                        <p className='text-xs font-semibold mb-2 text-gray-700'>E-MAIL</p>
                         <input 
-                            className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg placeholder:text-gray-400 focus:outline-none w-full py-[11px] px-3 text-sm'
+                            className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg placeholder:text-gray-400 shadow-lg shadow-gray-100 focus:outline-none w-full py-[11px] px-3 text-[13px]'
                             type='text' placeholder='nome@empresa.com.br'>
                         </input>
-                        <p className='text-xs font-bold mb-2 text-gray-400'>E-MAIL</p>
-                        <input className='border-[1.6px] border-[#C2C6D4]/30 rounded-lg focus:outline-none w-full py-[9.5px] px-2 text-sm' type='text'></input>
+                        <p className='text-xs font-semibold mb-2 text-gray-700'>SENHA</p>
+                        <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
+                            type='text' placeholder='Insira sua senha'>
+                        </input>
+
+                        <button type='submit' className='w-full text-white rounded-lg font-semibold p-3 text-sm align-middle cursor-pointer bg-[#004D99]'>Entrar</button>
                     </form>
 
                 </div>
