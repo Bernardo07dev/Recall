@@ -1,6 +1,7 @@
 import { Brain, Sparkle } from 'lucide-react';
 import Image from 'next/image';
 import Logo from "../../../public/RECALL-logo.svg";
+import Link from 'next/link';
 
 export default function LoginPage() {
     return (
@@ -19,8 +20,8 @@ export default function LoginPage() {
 
             <section className='flex p-8 w-[50%]'>
                 <nav><Image src={Logo} alt="Logo Recall" width={120}></Image></nav>
-                <div className='flex flex-col justify-center items-left w-full mx-[13%]'>
-                    <h1 className='text-3xl font-bold'>Bem vindo de volta</h1>
+                <div className='flex flex-col justify-center items-left w-full mx-[13%] mt-6'>
+                    <h1 className='text-[28px] font-black'>Bem vindo de volta</h1>
                     <p className='text-gray-500 font-semibold align-left mb-6'>Faça login para ultilizar o Recall.</p>
                     <form className='flex flex-col inter'>
                         <p className='text-xs font-semibold mb-2 text-gray-700'>E-MAIL</p>
@@ -33,9 +34,9 @@ export default function LoginPage() {
                             type='text' placeholder='Insira sua senha'>
                         </input>
 
-                        <button type='submit' className='w-full text-white rounded-lg font-semibold p-3 text-sm align-middle cursor-pointer bg-[#004D99]'>Entrar</button>
+                        <button type='submit' className='mb-4 w-full text-white rounded-lg font-semibold p-3 text-sm align-middle cursor-pointer bg-[#004D99]'>Entrar</button>
                     </form>
-
+                    <p className='text-[13px] text-gray-500 text-center inter'>Não tem uma conta? <Link href="/sign-in" className='font-semibold text-[#004D99]'>Clique aqui e cadastre-se agora</Link></p>
                 </div>
             </section>
         </main>
