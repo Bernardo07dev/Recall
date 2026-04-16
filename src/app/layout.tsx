@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Manrope } from "next/font/google";
+import { Manrope, Inter } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "Recall",
@@ -10,6 +10,11 @@ export const metadata: Metadata = {
 const manrope = Manrope({
   subsets: ['latin'],
   weight: ['200', '300', '400', '500', '600', '700', '800'],
+});
+
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 export default function RootLayout({
