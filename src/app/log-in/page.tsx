@@ -26,11 +26,12 @@ export default function LoginPage() {
                     <form className='flex flex-col inter'>
                         <p className='text-xs font-semibold mb-2 text-gray-700'>E-MAIL</p>
                         <input 
-                            className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg placeholder:text-gray-400 shadow-lg shadow-gray-100 focus:outline-none w-full py-[11px] px-3 text-[13px]'
-                            type='text' placeholder='nome@empresa.com.br'>
-                        </input>
+                        className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg placeholder:text-gray-400 shadow-lg shadow-gray-100 transition-all focus:outline-none focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] w-full py-[11px] px-3 text-[13px]'
+                        type='text' 
+                        placeholder='nome@empresa.com.br'
+                        />
                         <p className='text-xs font-semibold mb-2 text-gray-700'>SENHA</p>
-                        <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
+                        <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 transition-all focus:outline-none focus:border-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
                             type='text' placeholder='Insira sua senha'>
                         </input>
 
