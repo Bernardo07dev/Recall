@@ -2,6 +2,7 @@ import { Brain, Sparkle } from 'lucide-react';
 import Image from 'next/image';
 import Logo from "../../../public/RECALL-logo.svg";
 import Link from 'next/link';
+import { loginUser } from "../actions/user-actions";
 
 export default function LoginPage() {
     return (
@@ -23,16 +24,17 @@ export default function LoginPage() {
                 <div className='flex flex-col justify-center items-left w-full mx-[13%] mt-6'>
                     <h1 className='text-[28px] font-black'>Bem vindo de volta</h1>
                     <p className='text-gray-500 font-semibold align-left mb-6'>Faça login para ultilizar o Recall.</p>
-                    <form className='flex flex-col inter'>
+                    <form action={loginUser} className='flex flex-col inter'>
                         <p className='text-xs font-semibold mb-2 text-gray-700'>E-MAIL</p>
                         <input 
                         className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg placeholder:text-gray-400 shadow-lg shadow-gray-100 transition-all focus:outline-none focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] w-full py-[11px] px-3 text-[13px]'
-                        type='text' 
+                        type='text'
+                        name='email'
                         placeholder='nome@empresa.com.br'
                         />
                         <p className='text-xs font-semibold mb-2 text-gray-700'>SENHA</p>
                         <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 transition-all focus:outline-none focus:border-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
-                            type='text' placeholder='Insira sua senha'>
+                            type='text' placeholder='Insira sua senha' name='password'>
                         </input>
 
                         <button type='submit' className='mb-4 w-full text-white rounded-lg font-semibold p-3 text-sm align-middle cursor-pointer bg-[#004D99]'>Entrar</button>

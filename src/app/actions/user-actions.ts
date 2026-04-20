@@ -1,6 +1,7 @@
 "use server"
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -9,6 +10,11 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 export async function createUser(formData: any) {
+  const password = formData.get("password")
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   try {
     const newUser = await prisma.user.create({
       data: {
@@ -16,7 +22,7 @@ export async function createUser(formData: any) {
         email: formData.get("email"),
         area: formData.get("area"),
         cargo: formData.get("cargo"),
-        password: formData.get("password"),
+        password: hashedPassword,
       },
     })
 
@@ -25,4 +31,27 @@ export async function createUser(formData: any) {
     console.error("Erro ao criar usuário:", error)
     return { success: false, error: error.message }
   }
+
+}
+
+export async function loginUser(formData: FormData) {
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    const user = await prisma.user.findUnique({
+        where: { email }
+    });
+
+    if (!user) {
+        return console.log("User Null");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+        console.error("Deu Bunda")
+        return
+    }
+
+    console.log("Deu Peito")
 }

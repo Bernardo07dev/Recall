@@ -106,7 +106,7 @@ export default function FormSign() {
             </input>
             <p className='text-xs font-semibold mb-2 text-gray-700'>Email Corporativo</p>
             <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
-                type='text' placeholder='nome@totvs.com' name="email" value={formData.email} onChange={handleChange}>
+                type='email' placeholder='nome@totvs.com' name="email" value={formData.email} onChange={handleChange}>
             </input>
             <Select value={formData.cargo} onChange={handleChange} name="cargo"/>
             <p className='text-xs font-semibold mb-2 text-gray-700'>Área</p>
@@ -115,7 +115,7 @@ export default function FormSign() {
             </input>
             <p className='text-xs font-semibold mb-2 text-gray-700'>Crie sua Senha</p>
             <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
-                type='text'  name="password" value={formData.password} onChange={handleChange} placeholder='Digite sua senha' onFocus={() => setSelectPr(true)}>
+                type='text' name="password" value={formData.password || ''} onChange={handleChange} placeholder='Digite sua senha' onFocus={() => setSelectPr(true)}>
             </input>
 
             {selectPr && <PassParmetrs password={formData.password}/>}
