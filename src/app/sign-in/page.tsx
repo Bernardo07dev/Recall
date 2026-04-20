@@ -26,7 +26,7 @@ export default function SigIn(){
                         <div className="w-[500px] h-[500px] rounded-full bg-[#1E3A8A] opacity-20 blur-[120px]" />
                     </div>
 
-                    <div className="bg-white/4 shadow-lg shadow-black/20 flex flex-col text-white w-[80%] p-10 gap-2 border-[0.5px] border-white/8 rounded-2xl backdrop-blur-lg">
+                    <div className="fixed bg-white/4 shadow-lg shadow-black/20 flex flex-col text-white w-[35%] p-10 gap-2 border-[0.5px] border-white/8 rounded-2xl backdrop-blur-lg">
                         <Rocket size={42} className="text-blue-500 bg-[#004D99]/30 mb-2 p-2 rounded-2xl"></Rocket>
                         <h1 className="text-2xl font-bold leading-7.5">Escale sua produtividade com Recall</h1>
                         <p className="text-gray-400 font-medium text-sm">Capacite suas equipes com IA de nível empresarial integrada diretamente ao seu ecossistema TOTVS existente. Segura, escalável e
