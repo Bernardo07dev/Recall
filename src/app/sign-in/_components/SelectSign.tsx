@@ -17,7 +17,6 @@ export default function Select({value, onChange, name}: SelectProps) {
         <select
           required
           className="w-full py-[11px] px-3 shadow-lg shadow-gray-200 focus:outline-none appearance-none focus-none rounded-lg border-[1.6px] border-[#C2C6D4]/30 bg-white text-gray-700 invalid:text-slate-400"
-          defaultValue=""
           name={name}
           value={value}
           onChange={onChange}

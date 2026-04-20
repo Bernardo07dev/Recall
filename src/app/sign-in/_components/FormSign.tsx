@@ -2,6 +2,8 @@
 import Select from "./SelectSign";
 import { useState } from "react";
 import {Check, X} from "lucide-react";
+import { createUser } from "../../actions/user-actions";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   nome: string;
@@ -57,16 +59,20 @@ export default function FormSign() {
 
     const [selectPr, setSelectPr] = useState(false);
     const [selectConfirm, setSelectConfirm] = useState(false)
+    const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault(); 
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-        if (!isFormValid) {
-            alert("Ops! Verifique se todos os campos estão preenchidos corretamente.");
-            return;
+        const data = new FormData(e.currentTarget);
+        const result = await createUser(data)
+
+        if (result.success) {
+            alert("Sucesso! Usuário criado no Recall.")
+        } else {
+            alert("Erro ao salvar: " + result.error)
         }
 
-        console.log("Enviando para a API da TOTVS...", formData);
     };
 
     const [formData, setFormData] = useState<FormData>({
@@ -89,7 +95,7 @@ export default function FormSign() {
 
     const isPasswordStrong = formData.password.length >= 8 && /[A-Z]/.test(formData.password) && /[@#$%&*®©ñ_]/.test(formData.password);
     const passwordsMatch = formData.password === formData.confirmPassword && formData.password !== "";
-    const isFormValid = formData.nome.trim().length > 3 && formData.email.includes("@") && formData.cargo !== "" && isPasswordStrong && passwordsMatch;
+    const isFormValid = formData.nome.trim().length > 3 && formData.email.includes("@") && formData.cargo !== "" && formData.area !== "" && isPasswordStrong && passwordsMatch;
 
     return (
         <form onSubmit={handleSubmit} className='flex flex-col inter mt-8'>
