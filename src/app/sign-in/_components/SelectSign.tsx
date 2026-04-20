@@ -26,7 +26,7 @@ export default function Select({value, onChange, name}: SelectProps) {
           </option>
           <option value="analistas" className="text-gray-700">Analista</option>
           <option value="estagio" className="text-gray-700">Estagiário</option>
-          <option value="c" className="text-gray-700">C-Level</option>
+          <option value="c-level" className="text-gray-700">C-Level</option>
           <option value="suporte" className="text-gray-700">Suporte</option>
         </select>
 
