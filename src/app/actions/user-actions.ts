@@ -2,6 +2,7 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { error } from "console";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -9,7 +10,7 @@ const adapter = new PrismaPg({
 
 const prisma = new PrismaClient({ adapter });
 
-export async function createUser(formData: any) {
+export async function createUser(prevState: any, formData: any) {
   const password = formData.get("password")
 
   const salt = await bcrypt.genSalt(10);
@@ -34,7 +35,7 @@ export async function createUser(formData: any) {
 
 }
 
-export async function loginUser(formData: FormData) {
+export async function loginUser(prevState: any, formData: FormData) {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
@@ -43,15 +44,12 @@ export async function loginUser(formData: FormData) {
     });
 
     if (!user) {
-        return console.log("User Null");
+        return { success: false,  error: "E-mail ou senha inválidos"};
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-        console.error("Deu Bunda")
-        return
+        return { success: false,  error: "E-mail ou senha inválidos"};
     }
-
-    console.log("Deu Peito")
 }

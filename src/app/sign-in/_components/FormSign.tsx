@@ -65,7 +65,7 @@ export default function FormSign() {
         e.preventDefault();
 
         const data = new FormData(e.currentTarget);
-        const result = await createUser(data)
+        const result = await createUser(null, data)
 
         if (result.success) {
             alert("Sucesso! Usuário criado no Recall.")
@@ -101,27 +101,27 @@ export default function FormSign() {
         <form onSubmit={handleSubmit} className='flex flex-col inter mt-8'>
             <p className='text-xs font-semibold mb-2 text-gray-700'>Nome Completo</p>
             <input
-                className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg placeholder:text-gray-400 shadow-lg shadow-gray-100 focus:outline-none w-full py-[11px] px-3 text-[13px]'
+                className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg placeholder:text-gray-400 shadow-lg shadow-gray-100 focus:outline-none focus:border-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] w-full py-[11px] px-3 text-[13px]'
                 type='text' placeholder='Insira seu nome completo' name="nome" value={formData.nome} onChange={handleChange}>
             </input>
             <p className='text-xs font-semibold mb-2 text-gray-700'>Email Corporativo</p>
-            <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
-                type='email' placeholder='nome@totvs.com' name="email" value={formData.email} onChange={handleChange}>
+            <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 focus:border-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] w-full py-[11px] px-3 text-[13px]'
+                type='text' placeholder='nome@totvs.com' name="email" value={formData.email} onChange={handleChange}>
             </input>
             <Select value={formData.cargo} onChange={handleChange} name="cargo"/>
             <p className='text-xs font-semibold mb-2 text-gray-700'>Área</p>
-            <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
+            <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full focus:border-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] py-[11px] px-3 text-[13px]'
                 type='text' placeholder='Qual sua área de atuação' name="area" value={formData.area} onChange={handleChange}>
             </input>
             <p className='text-xs font-semibold mb-2 text-gray-700'>Crie sua Senha</p>
-            <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
+            <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full focus:border-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] py-[11px] px-3 text-[13px]'
                 type='text' name="password" value={formData.password || ''} onChange={handleChange} placeholder='Digite sua senha' onFocus={() => setSelectPr(true)}>
             </input>
 
             {selectPr && <PassParmetrs password={formData.password}/>}
             
             <p className='text-xs font-semibold mb-2 text-gray-700'>Confirme sua Senha</p>
-            <input className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px]'
+            <input className='mb-4 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 w-full focus:border-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] py-[11px] px-3 text-[13px]'
                 type='text' placeholder='Confirme sua Senha' name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} onFocus={() => setSelectConfirm(true)}>
             </input>
 
