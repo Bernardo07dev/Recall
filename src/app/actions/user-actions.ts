@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
 
 export async function createUser(prevState: any, formData: any) {
-  const password = formData.get("password")
+  const password = formData.get("password");
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -21,7 +21,16 @@ export async function createUser(prevState: any, formData: any) {
       },
     })
 
-    return { success: true, user: newUser }
+    const cookieStore = await cookies();
+
+    cookieStore.set("recall-session", newUser.id, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+    });
+
+    return { success: true, user: newUser}
   } catch (error: any) {
     console.error("Erro ao criar usuário:", error)
     return { success: false, error: error.message }

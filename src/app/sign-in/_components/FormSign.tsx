@@ -3,7 +3,7 @@ import Select from "./SelectSign";
 import { useState } from "react";
 import {Check, X} from "lucide-react";
 import { createUser } from "../../actions/user-actions";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 interface FormData {
   nome: string;
@@ -59,7 +59,7 @@ export default function FormSign() {
 
     const [selectPr, setSelectPr] = useState(false);
     const [selectConfirm, setSelectConfirm] = useState(false)
-    const router = useRouter();
+    const [errorMsg, setErrormsg] = useState(false)
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -68,9 +68,9 @@ export default function FormSign() {
         const result = await createUser(null, data)
 
         if (result.success) {
-            alert("Sucesso! Usuário criado no Recall.")
+            redirect("/dashboard")
         } else {
-            alert("Erro ao salvar: " + result.error)
+            setErrormsg(true);
         }
 
     };
@@ -105,7 +105,9 @@ export default function FormSign() {
                 type='text' placeholder='Insira seu nome completo' name="nome" value={formData.nome} onChange={handleChange}>
             </input>
             <p className='text-xs font-semibold mb-2 text-gray-700'>Email Corporativo</p>
-            <input className='mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 focus:outline-none placeholder:text-gray-400 focus:border-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)] w-full py-[11px] px-3 text-[13px]'
+            <input className={`mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg shadow-lg shadow-gray-200 transition-all  placeholder:text-gray-400 w-full py-[11px] px-3 text-[13px] ${errorMsg 
+                ? 'border-red-400 focus:outline-red-400 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.15)]' 
+                : 'border-[#C2C6D4]/30 focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]'}`}
                 type='text' placeholder='nome@totvs.com' name="email" value={formData.email} onChange={handleChange}>
             </input>
             <Select value={formData.cargo} onChange={handleChange} name="cargo"/>
@@ -128,13 +130,14 @@ export default function FormSign() {
             {selectConfirm && (<ConfirmPasswordCheck confirm={formData.confirmPassword} password={formData.password}/>)}
 
             <button type='submit' disabled={!isFormValid}
-            className={`mb-4 w-full text-white rounded-lg font-semibold p-3 text-sm transition-all duration-300
+            className={`mb-3 w-full text-white rounded-lg font-semibold p-3 text-sm transition-all duration-300
                 ${isFormValid 
                 ? 'bg-[#004D99] cursor-pointer hover:bg-[#003D7A] shadow-md' 
                 : 'bg-gray-300 cursor-not-allowed opacity-80'}`}
             >
             Criar Conta
             </button>
+            {errorMsg && <p className="text-red-500 pl-1 text-[13px] pb-4 font-semibold animate-fade-in">Não foi possível criar a conta. Verifique os dados e tente novamente</p>}
         </form>
     )
 }
