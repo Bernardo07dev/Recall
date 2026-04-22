@@ -1,14 +1,8 @@
 "use server"
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
-import { error } from "console";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-const prisma = new PrismaClient({ adapter });
+import bcrypt from 'bcryptjs';
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { prisma } from "@/src/lib/prisma";
 
 export async function createUser(prevState: any, formData: any) {
   const password = formData.get("password")
@@ -52,4 +46,15 @@ export async function loginUser(prevState: any, formData: FormData) {
     if (!isPasswordValid) {
         return { success: false,  error: "E-mail ou senha inválidos"};
     }
+
+    const cookieStore = await cookies();
+
+    cookieStore.set("recall-session", user.id, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+    });
+
+    redirect("/dashboard");
 }
