@@ -11,7 +11,7 @@ export default function PlatformLayout({
   return (
       <div className="flex flex-row">
         <SideBar />
-        <div className="">
+        <div className="w-full">
             <nav className="fixed bg-white w-full p-4 px-6 flex flex-row justify-between items-center shadow-sm">
               <Image src={Logo} alt="Logo Recall" width={75}></Image>
               <SupportButton />
