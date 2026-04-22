@@ -1,7 +1,8 @@
 <br/>
+<br/>
 
 <div align="center">
-  <img src="./public/RECALL-logo.svg" alt="Recall Logo" width="200" />
+  <img src="./public/RECALL-logo.svg" alt="Recall Logo" width="500" />
   <br/><br/>
   <a href="https://recall-ten-delta.vercel.app" target="_blank">
     <img src="https://img.shields.io/badge/Acessar%20Deploy-Vercel-000000?style=for-the-badge&logo=vercel" alt="Deploy na Vercel" />
