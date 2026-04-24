@@ -13,4 +13,11 @@
   }
 
   --animate-fade-in: fade-in 1s ease-out;
+
+  @keyframes fade-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-8px); }
+  }
+
+  --animate-fade-out: fade-out 1s ease-out;
 }

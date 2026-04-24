@@ -14,4 +14,14 @@ model User {
   area      String
   password  String
   createdAt DateTime @default(now())
+
+  conversations Conversations[]
+}
+
+model Conversations{
+  id        String  @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
