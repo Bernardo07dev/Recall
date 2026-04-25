@@ -2,19 +2,23 @@ import { cookies } from 'next/headers'
 import ChatDash from './ChatDash'
 import { prisma } from '@/src/lib/prisma';
 import { redirect } from "next/navigation";
-
+import { decrypt } from '@/src/lib/auth';
 
 export default async function ChatPage() {
   const cookieStore = await cookies()
-  const userId = cookieStore.get('recall-session')?.value
+  const token = cookieStore.get('recall-session')?.value
 
-  if (!userId){
-    redirect("/log-in")
+  if (!token) {
+    redirect("/log-in");
   }
 
-    const user = await prisma.user.findUnique({
-        where: { id: userId }
-    });
+  const session = await decrypt(token);
+  const userId = session.userId;
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+
+  if (!user) {
+    redirect("/log-in");
+  }
 
   return <ChatDash user={user} />
 }

@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
+import { encrypt } from "@/src/lib/auth";
 
 export async function createUser(prevState: any, formData: any) {
   const password = formData.get("password");
@@ -21,9 +22,11 @@ export async function createUser(prevState: any, formData: any) {
       },
     })
 
+    const sessionToken = await encrypt({ userId: newUser.id, nome: newUser.nome });
+
     const cookieStore = await cookies();
 
-    cookieStore.set("recall-session", newUser.id, {
+    cookieStore.set("recall-session", sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 24 * 7,
@@ -57,8 +60,9 @@ export async function loginUser(prevState: any, formData: FormData) {
     }
 
     const cookieStore = await cookies();
+    const sessionToken = await encrypt({ userId: user.id, nome: user.nome });
 
-    cookieStore.set("recall-session", user.id, {
+    cookieStore.set("recall-session", sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 24 * 7,

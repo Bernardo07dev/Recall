@@ -2,18 +2,34 @@ import Image from "next/image"
 import Logo from "../../../public/Logo-totvs.svg";
 import SideBar from "@/src/app/(platform)/_components/SideBar";
 import { SupportButton } from "../sign-in/_components/SuporteButton";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { decrypt } from "@/src/lib/auth";
 
-export default function PlatformLayout({
+export default async function PlatformLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("recall-session")?.value;
+
+  if (!token) {
+    redirect("/log-in");
+  }
+
+  try {
+    await decrypt(token);
+  } catch (error) {
+    redirect("/log-in");
+  }
+
   return (
       <div className="flex flex-row">
         <SideBar />
         <div className="w-full">
-            <nav className="fixed bg-white w-full p-4 px-6 flex flex-row justify-between items-center shadow-sm">
-              <Image src={Logo} alt="Logo Recall" width={75}></Image>
+            <nav className="fixed w-full p-4 px-6 flex flex-row justify-between items-center">
+              <Image src={Logo} alt="Logo Totvs" width={70}></Image>
               <SupportButton />
           </nav>
           {children}

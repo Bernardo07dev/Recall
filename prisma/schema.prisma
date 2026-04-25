@@ -25,3 +25,12 @@ model Conversations{
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model Empresas{
+  id        String  @id @default(uuid())
+  nome      String
+  content   String
+  json      Json
+  context   String?
+  relation  String?
+}

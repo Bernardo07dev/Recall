@@ -1,6 +1,6 @@
 'use client'
 import { ChartBar, NotebookText, Map } from 'lucide-react';
-import ChatDashboard from './ChatContainer'
+import ChatContainer from './ChatContainer'
 import { useState } from 'react';
 import { createConversation } from '@/src/app/actions/chat-action';
 
@@ -38,10 +38,15 @@ export default function Dashboard({ user }: Props) {
             setConversationId(user?.id || "0000")
             createConversation(user?.id || "0000")
         }
+
         setHiding(true)
         setTimeout(() => setFirstmsg(true), 500)
         setMessage(prev => [...prev, { msg, companyId, role }])
     }
+
+    const oportunidades = "Analise o contexto desta empresa e me mostre todas as oportunidades de upsell e cross-sell identificadas, com nível de prioridade e ação recomendada."
+    const retencao = "Existe algum sinal de insatisfação ou risco de churn nesta empresa? Me mostre os alertas encontrados e o que deve ser feito para reter esse cliente."
+    const map = "Quais produtos da TOTVS estão sendo mencionados nas conversas desta empresa? Faça um mapeamento total dos produtos"
 
     return (
         <main className={`py-8 px-[15%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen bg-[#fbfbff]`}>
@@ -50,44 +55,44 @@ export default function Dashboard({ user }: Props) {
                     <h1 className="text-3xl font-bold">Olá, {nome}!</h1>
                     <p className="text-gray-500 font-semibold text-[15px] mb-4 -mt-1">Como posso te ajudar hoje?</p>
                     <section className="flex flex-row gap-4">
-                        <div className="bg-white p-6 w-[33%] rounded-2xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
-                        <ChartBar size={36} className="bg-[#EFF6FF] text-[#2563EB] mb-2 p-2 rounded-xl " />
-                        <h1 className="text-md font-bold">Oportunidades</h1>
-                        <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall mapear todas as possíveis oportunidades da empresa escolhida</p>
-                    </div>
+                        <div onClick={() => recebeMensagem(oportunidades, "teste", "human")} className="bg-white p-6 w-[33%] rounded-2xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                            <ChartBar size={36} className="bg-[#EFF6FF] text-[#2563EB] mb-2 p-2 rounded-xl " />
+                            <h1 className="text-md font-bold">Oportunidades</h1>
+                            <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall mapear todas as possíveis oportunidades da empresa escolhida</p>
+                        </div>
 
-                    <div className="bg-white p-6 rounded-2xl w-[33%] flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
-                        <NotebookText size={36} className="bg-[#FFEEE6] text-[#813900] mb-2 p-2 rounded-xl " />
-                        <h1 className="text-md font-bold">Retenção</h1>
-                        <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall identificar insatisfação ou risco na contexto da empresa</p>
-                    </div>
+                        <div onClick={() => recebeMensagem(retencao, "teste", "human")} className="bg-white p-6 rounded-2xl w-[33%] flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                            <NotebookText size={36} className="bg-[#FFEEE6] text-[#813900] mb-2 p-2 rounded-xl " />
+                            <h1 className="text-md font-bold">Retenção</h1>
+                            <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall identificar insatisfação ou risco na contexto da empresa</p>
+                        </div>
 
-                    <div className="bg-white p-6 rounded-2xl flex w-[33%] flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
-                        <Map size={36} className="bg-[#D1FFE5] text-[#25751D] mb-2 p-2 rounded-xl " />
-                        <h1 className="text-md font-bold">Mapeamento</h1>
-                        <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall mapear os produtos que estão sendo comentados ou possíveis ofertas</p>
-                    </div>
-                </section>
+                        <div onClick={() => recebeMensagem(map, "teste", "human")} className="bg-white p-6 rounded-2xl flex w-[33%] flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                            <Map size={36} className="bg-[#D1FFE5] text-[#25751D] mb-2 p-2 rounded-xl " />
+                            <h1 className="text-md font-bold">Mapeamento</h1>
+                            <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall mapear os produtos que estão sendo comentados ou possíveis ofertas</p>
+                        </div>
+                    </section>
                 </div>)
             }
 
-            {firstmsg && <section className='my-4 w-[80%] inter'>
+            {firstmsg && <section className='mb-32 fade-in my-4 w-[80%] inter text-sm'>
                 {message?.map((message, index) => (
                     <div 
-                        key={index}
-                        className={`w-fit p-2 mt-2 rounded-lg text-sm ${
-                            message.role === "human" 
-                            ? "bg-[#F2F3FB] text-gray-600 self-end" 
-                            : "bg-white text-gray-800 self-start"
+                        key={index} className={`flex items-center mt-2 text-sm ${
+                        message.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"
                         }`}
                     >
-                        <p>{message.msg}</p>
+                        <div className={`w-fit p-3 rounded-xl ${message.role === "human" ? "bg-[#F2F3FB] text-gray-600" : " text-gray-800"}`}>
+                            <p>{message.msg}</p>
+                        </div>
                     </div>
                 ))}
             </section>}
 
-            <section className='w-[80%]'>
-                <ChatDashboard onEnviar={recebeMensagem} />
+            <section className='w-[48%] fixed bottom-0 z-10'>
+                <ChatContainer onEnviar={recebeMensagem} enableCompany={firstmsg} />
+                <div className='bg-[#FBFBFF]/5 backdrop-blur-sm w-full h-8 z-10 '></div>
             </section>
         </main>
     );
