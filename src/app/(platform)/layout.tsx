@@ -27,8 +27,8 @@ export default async function PlatformLayout({
   return (
       <div className="flex flex-row">
         <SideBar />
-        <div className="w-full">
-            <nav className="fixed w-full p-4 px-6 flex flex-row justify-between items-center">
+        <div className="w-full bg-[#fbfbff]">
+            <nav className="fixed bg-[#FBFBFF] w-full p-4 px-6 flex flex-row justify-between items-center">
               <Image src={Logo} alt="Logo Totvs" width={70}></Image>
               <SupportButton />
           </nav>
