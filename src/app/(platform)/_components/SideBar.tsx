@@ -31,7 +31,7 @@ export default function SideBar(){
                     <p>Chat</p>
                 </div>
 
-                <div className={`cursor-pointer flex flex-row text-[13px] gap-2 items-center p-[8px] rounded-xl ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}>
+                <div onClick={() => redirect('/empresas')} className={`cursor-pointer flex flex-row text-[13px] gap-2 items-center p-[8px] rounded-xl ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}>
                     <Building2 size={16}/>
                     <p>Empresas</p>
                 </div>

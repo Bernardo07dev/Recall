@@ -15,7 +15,8 @@ interface UserType {
 }
 
 interface Props {
-    user: UserType | null
+    user: UserType | null;
+    empresas: { id: string, nome: string }[];
 }
 
 interface Message {
@@ -24,7 +25,7 @@ interface Message {
     role: "human" | "AI"
 }
 
-export default function Dashboard({ user }: Props) {
+export default function Dashboard({ user, empresas }: Props) {
     const [firstmsg, setFirstmsg] = useState(false)
     const [hiding, setHiding] = useState(false)
     const [message, setMessage] = useState<Message[]>([])
@@ -91,7 +92,7 @@ export default function Dashboard({ user }: Props) {
             </section>}
 
             <section className='w-[48%] fixed bottom-0 z-10'>
-                <ChatContainer onEnviar={recebeMensagem} enableCompany={firstmsg} />
+                <ChatContainer onEnviar={recebeMensagem} enableCompany={firstmsg} empresas={empresas} />
                 <div className='bg-[#FBFBFF]/5 backdrop-blur-sm w-full h-8 z-10 '></div>
             </section>
         </main>

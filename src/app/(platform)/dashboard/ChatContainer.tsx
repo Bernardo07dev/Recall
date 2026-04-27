@@ -5,9 +5,10 @@ import { ChevronDown, SendHorizontal } from 'lucide-react';
 interface Props {
     onEnviar: (input: string, companyId: string | null, role: "human" | "AI") => void;
     enableCompany?: boolean;
+    empresas: { id: string, nome: string }[];
 }
 
-export default function ChatContainer({ onEnviar, enableCompany }: Props) {
+export default function ChatContainer({ onEnviar, enableCompany, empresas }: Props) {
     const [input, setInput] = useState("")
     const [companyId, setCompanyId] = useState<string | null>(null)
     const [unavailable, setUnavailable] = useState<boolean>(false)
@@ -39,8 +40,9 @@ export default function ChatContainer({ onEnviar, enableCompany }: Props) {
                     disabled={enableCompany}
                 >
                     <option value={undefined}>Sem contexto</option>
-                    <option value="acme">Acme Corp</option>
-                    <option value="acme">Biohealth solution</option>
+                    {empresas.map((empresa) => (
+                       <option key={empresa.id} value={empresa.id}>{empresa.nome}</option> 
+                    ))}
                 </select>
 
                 <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">

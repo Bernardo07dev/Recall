@@ -32,7 +32,10 @@ model Empresas{
   content   String
   json      Json?
   context   String?
+  resume    String?
   industry  String
   files     String[] @default([])
+  logo      String?
   relation  String?
+  createdAt DateTime @default(now())
 }

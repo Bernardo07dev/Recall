@@ -83,8 +83,34 @@ export async function createEmpresa(prevState: any, form: FormData) {
         }
       });
 
+    
       const files = form.getAll("arquivos") as File[]
+      const logo = form.get("logo") as File | null;
       const links: string[] = []
+      let logoUrl: string | null = null;
+
+      if (logo && logo.size > 0) {
+        const pathLogo = `logo/${newBusiness.id}/${logo.name}`
+        const bytes = await logo.arrayBuffer()
+        const buffer = Buffer.from(bytes)
+        try {
+            const { error } = await supabase.storage
+                .from("empresas")
+                .upload(pathLogo, buffer, {
+                    contentType: logo.type,
+                    upsert: true
+                });
+                
+            if (!error) {
+                const { data } = supabase.storage
+                    .from("empresas")
+                    .getPublicUrl(pathLogo);
+                logoUrl = data.publicUrl;
+            }
+        } catch (error) {
+            console.log(error)
+        }
+      }
 
       for (const file of files) {
         const bytes = await file.arrayBuffer()
@@ -110,7 +136,10 @@ export async function createEmpresa(prevState: any, form: FormData) {
 
       await prisma.empresas.update({
           where: { id: newBusiness.id },
-          data: { files: links }
+          data: { 
+              files: links,
+              logo: logoUrl
+          }
       })
       return { success: true, empresa: newBusiness };
   } catch (error: any) {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import SelectIndustry from "@/src/app/(platform)/context/_components/SelectIndustry";
 import UploadDocumentos from "@/src/app/(platform)/context/_components/UploadDocuments";
 import { SiJira } from '@icons-pack/react-simple-icons';
+import UploadLogo from "@/src/app/(platform)/context/_components/uploadLogo";
 import Toggle from "@/src/app/(platform)/context/_components/Toggle";
 import { useState } from "react";
 import { redirect } from "next/navigation";
@@ -27,6 +28,7 @@ export default function ContextPage(){
     const [contentEmpyty, setcontentEmpyty] = useState(false)
     const [industriaEmpyty, setindustriaEmpyty] = useState(false)
     const [arquivos, setArquivos] = useState<File[]>([])
+    const [logo, setLogo] = useState<File | null>(null)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> ) => {
         const { name, value } = e.target;    
@@ -66,11 +68,12 @@ export default function ContextPage(){
         data.append("content", form.content);
         data.append("industria", form.industria);
         arquivos.forEach(file => data.append("arquivos", file))
+        if (logo) data.append("logo", logo);
 
         const result = await createEmpresa(null, data);
 
         if (result && result.success) {
-            redirect("/dashboard")
+            redirect("/empresas")
         } else {
             invalidField()
         }
@@ -110,6 +113,11 @@ export default function ContextPage(){
                             <h1 className='text-xs font-semibold mb-2 text-gray-400'>INDUSTRIA</h1>
                             <SelectIndustry empytyState={industriaEmpyty} value={form.industria} name="industria" onChange={handleChange}/>
                             {industriaEmpyty && <p className="text-red-500 pb-4 text-[12px] -mt-5 pl-1 font-semibold animate-fade-in">Este campo precisa ser preenchido</p>}
+                        </div>
+
+                        <div className="w-full">
+                            <h1 className='text-xs font-semibold mb-2 text-gray-400'>LOGO DA EMPRESA (opicional)</h1>
+                            <UploadLogo logo={logo} setLogo={setLogo} />
                         </div>
                     </div>
                     <h1 className='text-xs font-semibold mb-2 text-gray-400'>DESCRIÇÃO</h1>

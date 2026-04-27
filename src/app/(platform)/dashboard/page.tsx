@@ -15,10 +15,11 @@ export default async function ChatPage() {
   const session = await decrypt(token);
   const userId = session.userId;
   const user = await prisma.user.findUnique({ where: { id: userId } });
+  const empresas = await prisma.empresas.findMany({ orderBy: { createdAt: 'desc' } });
 
   if (!user) {
     redirect("/log-in");
   }
 
-  return <ChatDash user={user} />
+  return <ChatDash user={user} empresas={empresas} />
 }
