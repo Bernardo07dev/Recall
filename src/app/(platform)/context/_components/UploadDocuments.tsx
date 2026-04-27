@@ -2,23 +2,30 @@
 import { useState, useRef } from 'react'
 import { Upload, FileText, X } from 'lucide-react'
 
-export default function UploadDocumentos() {
+interface Props {
+    onChange: (files: File[]) => void
+}
+
+export default function UploadDocumentos({ onChange }: Props) {
     const [files, setFiles] = useState<File[]>([])
     const [dragging, setDragging] = useState(false)
     const inputRef = useRef<HTMLInputElement>(null)
 
     function handleFiles(newFiles: FileList | null) {
         if (!newFiles) return
-        setFiles(prev => [...prev, ...Array.from(newFiles)])
+        const updated = [...files, ...Array.from(newFiles)]
+        setFiles(updated)
+        onChange(updated)
     }
 
     function removeFile(index: number) {
-        setFiles(prev => prev.filter((_, i) => i !== index))
+        const updated = files.filter((_, i) => i !== index)
+        setFiles(updated)
+        onChange(updated)
     }
 
     return (
-        <div className="flex flex-col gap-3">
-            {/* área de drop */}
+        <div className="flex flex-col gap-2">
             <div
                 onClick={() => inputRef.current?.click()}
                 onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
@@ -32,7 +39,7 @@ export default function UploadDocumentos() {
                     dragging ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-300'
                 }`}
             >
-                <Upload size={32} className="text-gray-400" />
+                <Upload size={28} className="text-gray-400" />
                 <div className="text-center">
                     <p className="font-semibold mb-1 text-gray-600">Enviar Arquivos</p>
                     <p className="text-xs font-medium text-gray-400">Arraste transcrições, PDFs ou arquivos de texto</p>

@@ -12,6 +12,7 @@
     "@icons-pack/react-simple-icons": "^13.11.1",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
+    "@supabase/supabase-js": "^2.104.1",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.2",
     "lucide-react": "^1.8.0",
@@ -19,6 +20,7 @@
     "pg": "^8.20.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "supabase": "^2.95.3",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {

@@ -17,7 +17,7 @@ export default function Toggle({ enabled = false, onChange }: Props) {
     return (
         <button
             onClick={handleToggle}
-            className={`w-11 h-6 rounded-full transition-colors duration-300 relative ${
+            className={`w-11 h-6 cursor-pointer rounded-full transition-colors duration-300 relative ${
                 active ? 'bg-blue-600' : 'bg-gray-200'
             }`}
         >

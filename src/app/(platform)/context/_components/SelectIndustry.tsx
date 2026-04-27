@@ -4,28 +4,28 @@ interface SelectProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   name: string;
+  empytyState?: boolean;
 }
 
-export default function SelectIndustry() {
+export default function SelectIndustry({value, onChange, name, empytyState}: SelectProps) {
   return (
     <div className="w-full flex flex-col mb-6">
 
       <div className="relative text-[13px]">
         <select
           required 
-          className="w-full py-[11px] px-3 shadow-gray-200 focus:outline-none appearance-none focus-none rounded-lg border-[1.6px] border-[#C2C6D4]/30 bg-white text-gray-700 invalid:text-slate-400"
-        
-          //   name={name}
-        //   value={value}
-        //   onChange={onChange}
+          className={`w-full py-[11px] px-3 shadow-gray-200 focus:outline-none appearance-none focus-none rounded-lg border-[1.6px] ${empytyState ? 'border-red-400 focus:outline-red-400 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.15)]' : "border-[#C2C6D4]/30 focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]'"} bg-white text-gray-700 invalid:text-slate-400`}
+          name={name}
+          value={value}
+          onChange={onChange}
         >
           <option value="" disabled className="text-slate-400">
             Qual o setor
           </option>
-          <option value="analistas" className="text-gray-700">Analista</option>
-          <option value="estagio" className="text-gray-700">Estagiário</option>
-          <option value="c-level" className="text-gray-700">C-Level</option>
-          <option value="suporte" className="text-gray-700">Suporte</option>
+          <option value="logística" className="text-gray-700">Logística</option>
+          <option value="manufatura" className="text-gray-700">Manufatura</option>
+          <option value="educação" className="text-gray-700">Educação</option>
+          <option value="financeiros" className="text-gray-700">Serviços Financeiros</option>
         </select>
 
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400">

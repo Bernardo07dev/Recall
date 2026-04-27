@@ -30,7 +30,9 @@ model Empresas{
   id        String  @id @default(uuid())
   nome      String
   content   String
-  json      Json
+  json      Json?
   context   String?
+  industry  String
+  files     String[] @default([])
   relation  String?
 }

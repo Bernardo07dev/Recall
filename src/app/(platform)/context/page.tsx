@@ -5,8 +5,76 @@ import SelectIndustry from "@/src/app/(platform)/context/_components/SelectIndus
 import UploadDocumentos from "@/src/app/(platform)/context/_components/UploadDocuments";
 import { SiJira } from '@icons-pack/react-simple-icons';
 import Toggle from "@/src/app/(platform)/context/_components/Toggle";
+import { useState } from "react";
+import { redirect } from "next/navigation";
+import { createEmpresa } from "@/src/app/actions/user-actions";
+
+interface EmpresaForm {
+  nome: string;
+  content: string;
+  industria: string;
+  arquivos: File[];
+}
 
 export default function ContextPage(){
+    const [form, setForm] = useState<EmpresaForm>({
+        nome: "",
+        content: "",
+        industria: "",
+        arquivos: [],
+    })
+    const [nomeEmpyty, setnomeEmpyty] = useState(false)
+    const [contentEmpyty, setcontentEmpyty] = useState(false)
+    const [industriaEmpyty, setindustriaEmpyty] = useState(false)
+    const [arquivos, setArquivos] = useState<File[]>([])
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> ) => {
+        const { name, value } = e.target;    
+        setForm((prevState) => ({...prevState, [name]: value,}));
+    };
+
+    const emptyFields = !form.nome || !form.content || !form.industria
+
+    const invalidField = () => {
+        if (!form.nome){
+            setnomeEmpyty(true)
+        } else(
+            setnomeEmpyty(false)
+        )
+
+        if (!form.content){
+            setcontentEmpyty(true)
+        }else{
+           setcontentEmpyty(false) 
+        }
+
+        if(!form.industria){
+            setindustriaEmpyty(true)
+        }else{
+            setindustriaEmpyty(false)
+        }
+    }
+
+    const handleSubmit = async () => {
+        if (emptyFields){
+            invalidField()
+            return
+        }
+
+        const data = new window.FormData();
+        data.append("nome", form.nome);
+        data.append("content", form.content);
+        data.append("industria", form.industria);
+        arquivos.forEach(file => data.append("arquivos", file))
+
+        const result = await createEmpresa(null, data);
+
+        if (result && result.success) {
+            redirect("/dashboard")
+        } else {
+            invalidField()
+        }
+    };
 
     return(
         <main className="pt-22 pb-12 px-[5%]">
@@ -30,27 +98,33 @@ export default function ContextPage(){
                         <div className="w-full">
                             <h1 className='text-xs font-semibold mb-2 text-gray-400'>NOME DA EMPRESA</h1>
                             <input className={`mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg transition-all placeholder:text-gray-400 font-medium w-full py-[11px] px-3 text-[13px] 
-                                                'border-[#C2C6D4]/30 focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]`}
-                                type='text' placeholder='ex: Totvs' name='password'>
+                                                ${nomeEmpyty 
+                ? 'border-red-400 focus:outline-red-400 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.15)]' 
+                : 'border-[#C2C6D4]/30 focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]'}`}
+                                type='text' placeholder='ex: Totvs' name='nome' onChange={handleChange} value={form.nome}>
                             </input>
+                            {nomeEmpyty && <p className="text-red-500 pb-4 text-[12px] -mt-5 pl-1 font-semibold animate-fade-in">Este campo precisa ser preenchido</p>}
                         </div>
                         
                         <div className="w-full">
-                            <h1 className='text-xs font-semibold mb-2 text-gray-400'>CARGO</h1>
-                            <SelectIndustry />
+                            <h1 className='text-xs font-semibold mb-2 text-gray-400'>INDUSTRIA</h1>
+                            <SelectIndustry empytyState={industriaEmpyty} value={form.industria} name="industria" onChange={handleChange}/>
+                            {industriaEmpyty && <p className="text-red-500 pb-4 text-[12px] -mt-5 pl-1 font-semibold animate-fade-in">Este campo precisa ser preenchido</p>}
                         </div>
                     </div>
                     <h1 className='text-xs font-semibold mb-2 text-gray-400'>DESCRIÇÃO</h1>
-                    <input className={`mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg transition-all placeholder:text-gray-400 font-medium w-full py-[11px] px-3 text-[13px] 
-                                            'border-[#C2C6D4]/30 focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]`}
-                        type='text' placeholder='Descreva o momento atual desse cliente, dores conhecidas, histórico relevante e o que o Recall precisa saber para gerar insights precisos.' name='password'>
-                    </input>
+                    <textarea className={`mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg transition-all placeholder:text-gray-400 font-medium w-full py-[11px] px-3 text-[13px] 
+                                        ${contentEmpyty ? 'border-red-400 focus:outline-red-400 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.15)]' 
+                                        : 'border-[#C2C6D4]/30 focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]'}`}
+                        rows={4} onChange={handleChange} value={form.content} placeholder='Descreva o momento atual desse cliente, dores conhecidas, histórico relevante e o que o Recall precisa saber...' name='content'>
+                    </textarea>
+                    {contentEmpyty && <p className="text-red-500 pb-4 text-[12px] -mt-5 pl-1 font-semibold animate-fade-in">Este campo precisa ser preenchido</p>}
                 </form>
 
-                <UploadDocumentos />
+                <UploadDocumentos onChange={(files) => setArquivos(files)}/>
             </section>
 
-            <section className="bg-white/90 p-8 rounded-xl shadow-sm shadow-gray-100 border border-gray-200">
+            <section className="bg-white/90  p-8 rounded-xl shadow-sm shadow-gray-100 border border-gray-200">
                 <div className="flex flex-row gap-4 items-center mb-8">
                     <Workflow size={42} className="bg-[#EFF6FF] text-[#1565C0] p-2 rounded-lg" />
                     <div>
@@ -62,8 +136,8 @@ export default function ContextPage(){
                     </div>
                 </div>
 
-                <div className="flex flex-row gap-8">
-                    <div className="bg-[#F2F3FB]/10 shadow-lg shadow-gray-100 w-[25%] flex flex-col items-baseline gap-2 p-6 rounded-lg hover:border-[#5A5EB9]/30 transition-all cursor-pointer">
+                <div className="flex flex-row gap-6">
+                    <div className="bg-[#F2F3FB]/50 shadow-sm shadow-gray-100 w-[25%] flex flex-col items-baseline gap-2 p-6 rounded-lg hover:border-[#5A5EB9]/30 transition-all cursor-pointer">
                         <div className="flex flex-row mb-2 justify-between w-full items-center">
                             <svg  xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#5A5EB9" viewBox="0 0 16 16">
                                 <path d="M9.186 4.797a2.42 2.42 0 1 0-2.86-2.448h1.178c.929 0 1.682.753 1.682 1.682zm-4.295 7.738h2.613c.929 0 1.682-.753 1.682-1.682V5.58h2.783a.7.7 0 0 1 .682.716v4.294a4.197 4.197 0 0 1-4.093 4.293c-1.618-.04-3-.99-3.667-2.35Zm10.737-9.372a1.674 1.674 0 1 1-3.349 0 1.674 1.674 0 0 1 3.349 0m-2.238 9.488-.12-.002a5.2 5.2 0 0 0 .381-2.07V6.306a1.7 1.7 0 0 0-.15-.725h1.792c.39 0 .707.317.707.707v3.765a2.6 2.6 0 0 1-2.598 2.598z"/>
@@ -75,7 +149,7 @@ export default function ContextPage(){
                         <p className="text-xs text-gray-500 font-medium">Acesse todas suas reuniões do teams</p>
                     </div>
 
-                    <div className="bg-[#F2F3FB]/10 w-[25%] shadow-lg shadow-gray-100 flex flex-col items-baseline gap-2 p-6 rounded-lg hover:border-[#5A5EB9]/30 transition-all cursor-pointer">
+                    <div className="bg-[#F2F3FB]/50  w-[25%] shadow-sm shadow-gray-100 flex flex-col items-baseline gap-2 p-6 rounded-lg hover:border-[#5A5EB9]/30 transition-all ">
                         <div className="flex flex-row mb-2 justify-between w-full items-center">
                             <SiJira color="#2D88FF"/>
                             <Toggle />
@@ -86,9 +160,10 @@ export default function ContextPage(){
                 </div>
             </section>
 
-            <div>
-                <button></button>
+            <div onClick={handleSubmit} className="w-full flex my-4">
+                <button className="text-white rounded-lg font-semibold p-3 px-4 text-sm align-middle cursor-pointer bg-[#1565C0]">Cria Contexto</button>
             </div>
+
         </main>
     )
 }

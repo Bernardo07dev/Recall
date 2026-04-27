@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
 import { encrypt } from "@/src/lib/auth";
+import { supabase } from "@/src/lib/supabase";
 
 export async function createUser(prevState: any, formData: any) {
   const password = formData.get("password");
@@ -70,4 +71,50 @@ export async function loginUser(prevState: any, formData: FormData) {
     });
 
     redirect("/dashboard");
+}
+
+export async function createEmpresa(prevState: any, form: FormData) {
+  try {
+      const newBusiness = await prisma.empresas.create({
+          data: {
+            nome: form.get("nome") as string,
+            content: form.get("content") as string,
+            industry: form.get("industria") as string,
+        }
+      });
+
+      const files = form.getAll("arquivos") as File[]
+      const links: string[] = []
+
+      for (const file of files) {
+        const bytes = await file.arrayBuffer()
+        const buffer = Buffer.from(bytes)
+
+        const path = `${newBusiness.id}/${file.name}`
+
+        const { error } = await supabase.storage
+            .from("empresas")
+            .upload(path, buffer, {
+                contentType: file.type,
+                upsert: true
+            })
+
+        if (error) throw error
+
+        const { data } = supabase.storage
+            .from("empresas")
+            .getPublicUrl(path)
+
+        links.push(data.publicUrl)
+      }
+
+      await prisma.empresas.update({
+          where: { id: newBusiness.id },
+          data: { files: links }
+      })
+      return { success: true, empresa: newBusiness };
+  } catch (error: any) {
+        console.error("Erro ao criar empresa:", error);
+        return { success: false, error: error.message };
+  }
 }
