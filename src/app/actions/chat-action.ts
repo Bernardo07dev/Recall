@@ -5,19 +5,48 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
 import { error } from 'node:console';
 
-export async function createConversation(userId: string){
+export async function createConversation(userId: string, companyId: string | null){
+    const validCompanyId = (!companyId || companyId === "undefined" || companyId === "teste") ? null : companyId;
+
     try{
-        await prisma.conversations.create({
+        const conversation = await prisma.conversations.create({
             data: {
                 userId: userId,
-                title: "Teste",
+                title: "Nova Conversa",
+                companyId: validCompanyId,
             }
         })
+        return { success: true, id: conversation.id }
     } catch(error){
         console.error(error)
-        return { success: false, error: "DEU RUIM" } 
+        return { success: false, error: "Faliure" } 
     }
+}
 
-    console.log("CRIADO")
-    return { success: true, error: "DEU BOM" } 
+export async function getChats(){
+    try{
+        const chats = await prisma.conversations.findMany({
+            orderBy: { createdAt: 'desc' }
+        })
+        return chats
+    } catch(error){
+        console.log(error)
+        return { success: false, error: "Faliure" }
+    }
+}
+
+export async function saveMessages(message: string, conversationId: string, role: string){
+    try{
+        await prisma.messages.create({
+            data: {
+                context: message,
+                conversationId: conversationId,
+                role: role as any,
+            }
+        })
+        return { success: true }
+    } catch(error){
+        console.error(error)
+        return { success: false, error: "Failure" }
+    }
 }

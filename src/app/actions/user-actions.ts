@@ -70,7 +70,7 @@ export async function loginUser(prevState: any, formData: FormData) {
         path: "/",
     });
 
-    redirect("/dashboard");
+    redirect("/chat");
 }
 
 export async function createEmpresa(prevState: any, form: FormData) {

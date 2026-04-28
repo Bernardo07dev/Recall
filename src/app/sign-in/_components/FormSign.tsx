@@ -68,7 +68,7 @@ export default function FormSign() {
         const result = await createUser(null, data)
 
         if (result.success) {
-            redirect("/dashboard")
+            redirect("/chat")
         } else {
             setErrormsg(true);
         }

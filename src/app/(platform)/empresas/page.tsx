@@ -38,7 +38,7 @@ export default async function Empresas(){
         return(
             <div className="flex flex-row text-[#334155] inter w-full justify-between mb-4">
                 <Truck size={40} className="bg-[#F1F5F9] p-2 rounded-xl w-fit"/>
-                <p className="bg-[#F1F5F9] h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{industria}</p>
+                <p className="bg-gray-100 h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{industria}</p>
             </div>
         )
     }
@@ -68,9 +68,9 @@ export default async function Empresas(){
                     </div>
                 ))}
 
-                <Link href="/context" className="cursor-pointer text-[#424752da] py-6 border-dashed border h-fit border-gray-300 text-center hover:border-[#1178df] transition-all p-4 w-full flex flex-col items-center justify-center rounded-2xl">
+                <Link href="/context" className="cursor-pointer text-[#424752a5] py-6 border-dashed border h-fit border-gray-300 text-center hover:border-[#1178df] transition-all p-4 w-full flex flex-col items-center justify-center rounded-2xl">
                     <Plus className="bg-[#F2F3FB] p-2 rounded-full mb-2" size={34}/>
-                    <h1 className="font-semibold text-sm">Adicionar novo contexto</h1>
+                    <h1 className="font-bold text-sm">Adicionar novo contexto</h1>
                     <p className="text-[11px] mx-2 text-gray-400">Clique aqui para criar um novo contexto</p>
                 </Link>
             </section>

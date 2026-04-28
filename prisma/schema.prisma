@@ -18,14 +18,6 @@ model User {
   conversations Conversations[]
 }
 
-model Conversations{
-  id        String  @id @default(uuid())
-  title     String
-  createdAt DateTime @default(now())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-}
-
 model Empresas{
   id        String  @id @default(uuid())
   nome      String
@@ -38,4 +30,31 @@ model Empresas{
   logo      String?
   relation  String?
   createdAt DateTime @default(now())
+  conversations Conversations[]
+}
+
+model Conversations{
+  id        String  @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+  userId    String
+  companyId String?
+  user      User     @relation(fields: [userId], references: [id])
+  company   Empresas? @relation(fields: [companyId], references: [id])
+  messages  Messages[]
+}
+
+enum Role {
+  human
+  AI
+}
+
+model Messages{
+  id             String @id @default(uuid())
+  context        String
+  role           Role
+  createdAt      DateTime @default(now())
+  conversationId String?
+  conversations  Conversations? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }

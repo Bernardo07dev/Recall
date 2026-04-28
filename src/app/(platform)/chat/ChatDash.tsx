@@ -2,7 +2,7 @@
 import { ChartBar, NotebookText, Map } from 'lucide-react';
 import ChatContainer from './ChatContainer'
 import { useState } from 'react';
-import { createConversation } from '@/src/app/actions/chat-action';
+import { createConversation, saveMessages } from '@/src/app/actions/chat-action';
 
 interface UserType {
     id: string
@@ -34,13 +34,21 @@ export default function Dashboard({ user, empresas }: Props) {
     const nome = user?.nome?.split(" ")[0];
 
 
-    const recebeMensagem = (msg: string, companyId: string | null, role: "human" | "AI") => {
-        if (conversationId == null){
-            setConversationId(user?.id || "0000")
-            createConversation(user?.id || "0000")
+    const recebeMensagem = async (msg: string, companyId: string | null, role: "human" | "AI") => {
+        let currentConversationId = conversationId
+
+        if (currentConversationId == null){
+            const result = await createConversation(user?.id || "0000", companyId)
+            if(result.success){
+                currentConversationId = result.id!
+                setConversationId(currentConversationId)
+            }
         }
 
         setHiding(true)
+        if (currentConversationId) {
+            saveMessages(msg, currentConversationId, role)
+        }
         setTimeout(() => setFirstmsg(true), 500)
         setMessage(prev => [...prev, { msg, companyId, role }])
     }
@@ -56,19 +64,19 @@ export default function Dashboard({ user, empresas }: Props) {
                     <h1 className="text-3xl font-bold">Olá, {nome}!</h1>
                     <p className="text-gray-500 font-semibold text-[15px] mb-4 -mt-1">Como posso te ajudar hoje?</p>
                     <section className="flex flex-row gap-4">
-                        <div onClick={() => recebeMensagem(oportunidades, "teste", "human")} className="bg-white p-6 w-[33%] rounded-2xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                        <div onClick={() => recebeMensagem(oportunidades, null, "human")} className="bg-white p-6 w-[33%] rounded-2xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
                             <ChartBar size={36} className="bg-[#EFF6FF] text-[#2563EB] mb-2 p-2 rounded-xl " />
                             <h1 className="text-md font-bold">Oportunidades</h1>
                             <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall mapear todas as possíveis oportunidades da empresa escolhida</p>
                         </div>
 
-                        <div onClick={() => recebeMensagem(retencao, "teste", "human")} className="bg-white p-6 rounded-2xl w-[33%] flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                        <div onClick={() => recebeMensagem(retencao, null, "human")} className="bg-white p-6 rounded-2xl w-[33%] flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
                             <NotebookText size={36} className="bg-[#FFEEE6] text-[#813900] mb-2 p-2 rounded-xl " />
                             <h1 className="text-md font-bold">Retenção</h1>
                             <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall identificar insatisfação ou risco na contexto da empresa</p>
                         </div>
 
-                        <div onClick={() => recebeMensagem(map, "teste", "human")} className="bg-white p-6 rounded-2xl flex w-[33%] flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                        <div onClick={() => recebeMensagem(map, null, "human")} className="bg-white p-6 rounded-2xl flex w-[33%] flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
                             <Map size={36} className="bg-[#D1FFE5] text-[#25751D] mb-2 p-2 rounded-xl " />
                             <h1 className="text-md font-bold">Mapeamento</h1>
                             <p className="text-xs font-semibold text-gray-400">Pergunte para o Recall mapear os produtos que estão sendo comentados ou possíveis ofertas</p>
@@ -77,7 +85,7 @@ export default function Dashboard({ user, empresas }: Props) {
                 </div>)
             }
 
-            {firstmsg && <section className='mb-32 fade-in my-4 w-[80%] inter text-sm'>
+            {firstmsg && <section className='mb-32 fade-in my-4 w-[80%] inter text-[13px]'>
                 {message?.map((message, index) => (
                     <div 
                         key={index} className={`flex items-center mt-2 text-sm ${

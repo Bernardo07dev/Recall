@@ -81,9 +81,9 @@ export default function ContextPage(){
 
     return(
         <main className="pt-22 pb-12 px-[5%]">
-            <Link href="/dashboard" className="flex flex-row text-[#1565C0] font-semibold gap-1 items-center mb-4">
+            <Link href="/chat" className="flex flex-row text-[#1565C0] font-semibold gap-1 items-center mb-4">
                 <ArrowLeft size={14}/>
-                <p className="text-xs">Voltar para o Dashboard</p>
+                <p className="text-xs">Voltar para o Chat</p>
             </Link>
             <h1 className="text-2xl font-bold mb-1">Crie um novo contexto de empresa</h1>
             <p className="text-gray-500 font-medium text-sm mb-4">Configure o contexto desta empresa para que o Recall possa extrair inteligência real das suas conversas e transformá-las em decisões.</p>

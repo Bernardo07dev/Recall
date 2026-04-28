@@ -6,11 +6,12 @@ interface Props {
     onEnviar: (input: string, companyId: string | null, role: "human" | "AI") => void;
     enableCompany?: boolean;
     empresas: { id: string, nome: string }[];
+    defaultCompanyId?: string | null;
 }
 
-export default function ChatContainer({ onEnviar, enableCompany, empresas }: Props) {
+export default function ChatContainer({ onEnviar, enableCompany, empresas, defaultCompanyId }: Props) {
     const [input, setInput] = useState("")
-    const [companyId, setCompanyId] = useState<string | null>(null)
+    const [companyId, setCompanyId] = useState<string | null>(defaultCompanyId ?? null)
     const [unavailable, setUnavailable] = useState<boolean>(false)
 
     const handleEnviar = () => {
@@ -38,6 +39,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas }: Pro
                     className="appearance-none w-full focus:outline-none bg-[#F2F3FB] px-6 py-2 rounded-full text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed" 
                     onChange={(e) => setCompanyId(e.target.value)}
                     disabled={enableCompany}
+                    value={companyId ?? undefined}
                 >
                     <option value={undefined}>Sem contexto</option>
                     {empresas.map((empresa) => (
