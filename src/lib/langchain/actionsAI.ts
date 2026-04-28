@@ -1,6 +1,7 @@
 import { BASE_PROMPT, TITLE_PROMPT } from '@/src/lib/langchain/utils'
 import { llmLeve } from './llm'
 import { HumanMessage, SystemMessage } from '@langchain/core/messages'
+import { graphEmpresa } from '@/src/lib/langchain/graphEmpresa'
 
 const tiitlePrompt = new SystemMessage(TITLE_PROMPT)
 
@@ -13,5 +14,19 @@ export async function generateTitle(mensagem: string){
     } catch(error){
         console.log(error)
         return "Nova Conversa"
+    }
+}
+
+export async function executeGraph(companyId: string){
+    try{
+        const result = await graphEmpresa.invoke({
+            companyId: companyId,
+            arquivos: [],
+            contextoExtra: "",
+            summarization: "",
+            jsonOutput: {},
+        });
+    }catch(error){
+        console.log()
     }
 }
