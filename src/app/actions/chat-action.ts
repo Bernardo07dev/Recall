@@ -50,3 +50,15 @@ export async function saveMessages(message: string, conversationId: string, role
         return { success: false, error: "Failure" }
     }
 }
+
+export async function getMessages(conversationId: string) {
+    try{
+        const messages = await prisma.messages.findMany({
+            where: {conversationId: conversationId},
+            orderBy: { createdAt: 'desc' }
+        })
+        return { success: true, data: messages}
+    } catch(error){
+        console.log(error)
+    }
+}

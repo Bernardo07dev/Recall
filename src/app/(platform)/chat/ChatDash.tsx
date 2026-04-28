@@ -85,7 +85,7 @@ export default function Dashboard({ user, empresas }: Props) {
                 </div>)
             }
 
-            {firstmsg && <section className='mb-32 fade-in my-4 w-[80%] inter text-[13px]'>
+            {firstmsg && <section className='mb-32 fade-in my-4 w-[80%] inter text-[12px]'>
                 {message?.map((message, index) => (
                     <div 
                         key={index} className={`flex items-center mt-2 text-sm ${
