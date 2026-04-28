@@ -23,9 +23,10 @@ export async function createConversation(userId: string, companyId: string | nul
     }
 }
 
-export async function getChats(){
+export async function getChats(userId: string){
     try{
         const chats = await prisma.conversations.findMany({
+            where: {userId: userId},
             orderBy: { createdAt: 'desc' }
         })
         return chats

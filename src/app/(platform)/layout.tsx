@@ -18,15 +18,18 @@ export default async function PlatformLayout({
     redirect("/log-in");
   }
 
+  let userId = "";
+
   try {
-    await decrypt(token);
+    const session = await decrypt(token);
+    userId = session.userId as string;
   } catch (error) {
     redirect("/log-in");
   }
 
   return (
       <div className="flex flex-row">
-        <SideBar />
+        <SideBar userId={userId}/>
         <div className="w-full bg-[#fbfbff]">
             <nav className="fixed bg-[#FBFBFF] w-full p-4 px-6 flex flex-row justify-between items-center">
               <Image src={Logo} alt="Logo Totvs" width={70}></Image>

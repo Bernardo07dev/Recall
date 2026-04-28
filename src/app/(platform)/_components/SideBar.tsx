@@ -6,14 +6,14 @@ import { redirect, usePathname, useRouter } from "next/navigation";
 import { getChats } from "@/src/app/actions/chat-action";
 import { useEffect, useState } from "react";
 
-export default function SideBar(){
+export default function SideBar({ userId }: { userId: string }){
     const pathname = usePathname();
     const router = useRouter();
     const [chats, setChats] = useState<any[]>([]);
 
     useEffect(() => {
         async function fetchChats() {
-            const data = await getChats();
+            const data = await getChats(userId);
             if (Array.isArray(data)) {
                 setChats(data);
             }
