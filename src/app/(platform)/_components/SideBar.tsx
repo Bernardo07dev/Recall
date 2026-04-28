@@ -24,7 +24,7 @@ export default function SideBar({ userId }: { userId: string }){
     console.log(chats);
 
     return(
-        <aside className="sticky top-0 h-screen w-[18%] p-4 shadow-md z-20 bg-white overflow-y-auto">
+        <aside className="sticky top-0 h-screen w-[19%] p-4 shadow-md z-20 bg-white overflow-y-auto">
             <Image src={Logo} alt="Logo Recall" width={100} className="pt-2"></Image>
             <p className="pt-1 text-xs text-gray-400 font-ms">UMA INICIATIVA TOTVS</p>
 
@@ -57,11 +57,11 @@ export default function SideBar({ userId }: { userId: string }){
                 </div>
             </section>
 
-            <section className="pt-4">
+            <section className="pt-4 fade-in">
                 <p className="text-left text-xs pb-[6px] px-1 text-gray-400">Conversas</p>
                 {chats.map((conversa) => (
-                    <div onClick={() => router.push(`/chat/${conversa.id}`)} key={conversa.id} className={`p-2 px-3 text-[13px] rounded-lg font-medium cursor-pointer ${pathname.includes(conversa.id) ? "text-[#1565C0] bg-[#e7eff872]" : "text-gray-500"}`}>
-                        <p>{conversa.title}</p>
+                    <div onClick={() => router.push(`/chat/${conversa.id}`)} key={conversa.id} className={`p-[7px] px-1 text-[13px] rounded-lg font-medium cursor-pointer ${pathname.includes(conversa.id) ? "text-[#1565C0] px-2 bg-[#e7eff872]" : "text-gray-500"}`}>
+                        <p>{conversa.title.length > 30 ? conversa.title.substring(0, 30) + "..." : conversa.title}</p>
                     </div>
                 ))}
             </section>

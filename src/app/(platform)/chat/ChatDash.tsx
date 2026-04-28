@@ -38,7 +38,7 @@ export default function Dashboard({ user, empresas }: Props) {
         let currentConversationId = conversationId
 
         if (currentConversationId == null){
-            const result = await createConversation(user?.id || "0000", companyId)
+            const result = await createConversation(user?.id || "0000", companyId, msg)
             if(result.success){
                 currentConversationId = result.id!
                 setConversationId(currentConversationId)
@@ -49,8 +49,8 @@ export default function Dashboard({ user, empresas }: Props) {
         if (currentConversationId) {
             saveMessages(msg, currentConversationId, role)
         }
-        setTimeout(() => setFirstmsg(true), 500)
         setMessage(prev => [...prev, { msg, companyId, role }])
+        setTimeout(() => setFirstmsg(true), 500)
     }
 
     const oportunidades = "Analise o contexto desta empresa e me mostre todas as oportunidades de upsell e cross-sell identificadas, com nível de prioridade e ação recomendada."

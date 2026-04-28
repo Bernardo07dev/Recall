@@ -4,15 +4,17 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
 import { error } from 'node:console';
+import { generateTitle } from '@/src/lib/langchain/actionsAI';
 
-export async function createConversation(userId: string, companyId: string | null){
+export async function createConversation(userId: string, companyId: string | null, firstMessage?: string){
     const validCompanyId = (!companyId || companyId === "undefined" || companyId === "teste") ? null : companyId;
+    const generatedTittle = await generateTitle(firstMessage || "Gere um texto básico para título, houve erro no envio da mensagem")
 
     try{
         const conversation = await prisma.conversations.create({
             data: {
                 userId: userId,
-                title: "Nova Conversa",
+                title: generatedTittle,
                 companyId: validCompanyId,
             }
         })
