@@ -49,7 +49,7 @@ export default async function Empresas(){
             <p className="text-gray-500 font-medium text-sm mb-4">Veja os contextos de empresas criados disponíveis no recall</p>
             <section className="grid grid-cols-4 gap-4">
                 {business.map((empresa) => (
-                    <div key={empresa.id} className="bg-white cursor-pointer p-4 w-full rounded-2xl shadow-sm border border-transparent hover:border-[#1178df] hover:shadow-sm transition-all duration-300">
+                    <Link href={`/dashboard/${empresa.id}`} key={empresa.id} className="bg-white cursor-pointer p-4 w-full rounded-2xl shadow-sm border border-transparent hover:border-[#1178df] hover:shadow-sm transition-all duration-300">
                         {empresa.logo ? (
                             <div className="flex flex-row text-gray-700 inter w-full justify-between mb-4">
                                 <img src={empresa.logo} alt="Logo" className="w-10 h-10 object-contain rounded-xl border border-gray-100" />
@@ -65,7 +65,7 @@ export default async function Empresas(){
                         )}
                         <p className="font-bold">{empresa.nome}</p>
                         <p className="text-xs text-gray-400">{empresa.industry}</p>
-                    </div>
+                    </Link>
                 ))}
 
                 <Link href="/context" className="cursor-pointer text-[#424752a5] py-6 border-dashed border h-fit border-gray-300 text-center hover:border-[#1178df] transition-all p-4 w-full flex flex-col items-center justify-center rounded-2xl">

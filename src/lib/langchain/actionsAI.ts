@@ -17,16 +17,17 @@ export async function generateTitle(mensagem: string){
     }
 }
 
-export async function executeGraph(companyId: string){
+export async function executeGraph(companyId: string, arquivos: string[] = []){
     try{
         const result = await graphEmpresa.invoke({
             companyId: companyId,
-            arquivos: [],
-            contextoExtra: "",
+            arquivos: arquivos,
+            rawContent: "",
             summarization: "",
             jsonOutput: {},
         });
+        console.log(result)
     }catch(error){
-        console.log()
+        console.log(error)
     }
 }

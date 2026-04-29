@@ -40,8 +40,8 @@ model Conversations{
   updatedAt DateTime @updatedAt 
   userId    String
   companyId String?
-  user      User     @relation(fields: [userId], references: [id])
-  company   Empresas? @relation(fields: [companyId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company   Empresas? @relation(fields: [companyId], references: [id], onDelete: Cascade)
   messages  Messages[]
 }
 

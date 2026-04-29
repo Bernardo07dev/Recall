@@ -1,0 +1,114 @@
+{
+  "insights": {
+    "prioritized": [
+      {
+        "id": "ins_001",
+        "category": "upsell_opportunity",
+        "criticality": "high",
+        "title": "Oportunidade de IA Generativa via APIs TOTVS",
+        "description": "Cliente busca integrar IA Generativa para prever tendências regulatórias com base em dados históricos de votações e tramitações. Objetivo estratégico declarado para 2026.",
+        "affected_totvs_product": "TOTVS Protheus",
+        "source_excerpt": "integrar ferramentas de IA Generativa via APIs TOTVS para prever tendências regulatórias",
+        "recommended_action": "Agendar reunião técnica para apresentar APIs de IA disponíveis no ecossistema TOTVS e mapear pontos de integração com o Protheus existente.",
+        "jira_task_suggestion": {
+          "title": "PoC APIs IA Generativa — Advocacy Consultoria",
+          "priority": "high",
+          "label": "upsell"
+        }
+      },
+      {
+        "id": "ins_002",
+        "category": "product_feedback",
+        "criticality": "high",
+        "title": "Triagem manual de documentos como dor crítica",
+        "description": "Cliente processa 450 documentos digitais por mês de forma manual. Necessidade explícita de automação na triagem e geração de resumos executivos para diretoria.",
+        "affected_totvs_product": "TOTVS Fluig",
+        "source_excerpt": "A triagem de documentos é manual, e há necessidade de gerar resumos executivos automáticos para os diretores",
+        "recommended_action": "Demonstrar capacidades avançadas de automação de workflows do Fluig com integração de IA para classificação e resumo automático de documentos.",
+        "jira_task_suggestion": {
+          "title": "Demo Fluig + IA para triagem documental — Advocacy",
+          "priority": "high",
+          "label": "product_improvement"
+        }
+      },
+      {
+        "id": "ins_003",
+        "category": "upsell_opportunity",
+        "criticality": "medium",
+        "title": "Expansão de base de inteligência legislativa",
+        "description": "Cliente deseja expandir base de dados proprietária de inteligência legislativa. Potencial para solução de analytics e BI integrada ao ecossistema TOTVS.",
+        "affected_totvs_product": "TOTVS Protheus",
+        "source_excerpt": "expansão de sua base de dados proprietária de inteligência legislativa",
+        "recommended_action": "Apresentar módulos de BI e analytics do ecossistema TOTVS que possam complementar a base de dados do cliente.",
+        "jira_task_suggestion": {
+          "title": "Proposta BI/Analytics — Advocacy Consultoria",
+          "priority": "medium",
+          "label": "upsell"
+        }
+      },
+      {
+        "id": "ins_004",
+        "category": "strategic_alert",
+        "criticality": "medium",
+        "title": "Alto volume de transcrições sem processamento automatizado",
+        "description": "Cliente gera aproximadamente 40 horas mensais de transcrições de reuniões para análise de contexto, indicando forte potencial para a plataforma Recall.",
+        "affected_totvs_product": null,
+        "source_excerpt": "aproximadamente 40 horas mensais de transcrições de reuniões para análise de contexto",
+        "recommended_action": "Posicionar o Recall como solução para processamento automático das 40h mensais de transcrições, gerando insights acionáveis sem esforço manual.",
+        "jira_task_suggestion": {
+          "title": "Piloto Recall para transcrições — Advocacy",
+          "priority": "medium",
+          "label": "strategic"
+        }
+      },
+      {
+        "id": "ins_005",
+        "category": "relationship_health",
+        "criticality": "low",
+        "title": "Cliente Prime com alta dependência do ecossistema TOTVS",
+        "description": "Advocacy é Cliente Prime utilizando Protheus (Financeiro, CRM) e Fluig (Workflows), com faturamento de R$ 1.2M/mês processado via Protheus. Alta integração indica relacionamento sólido.",
+        "affected_totvs_product": "TOTVS Protheus",
+        "source_excerpt": "Cliente Prime da TOTVS, utilizando o ERP Protheus para gestão financeira e back-office",
+        "recommended_action": null,
+        "jira_task_suggestion": null
+      },
+      {
+        "id": "ins_006",
+        "category": "growth",
+        "criticality": "low",
+        "title": "Potencial para estruturação de JSON de órgãos reguladores",
+        "description": "Cliente especificou formato desejado de output estruturado: Nome do órgão citado, Impacto e Recomendação. Indica maturidade para consumir dados estruturados automaticamente.",
+        "affected_totvs_product": null,
+        "source_excerpt": "O JSON final precisa conter: Nome do órgão citado, Impacto (Alto/Médio/Baixo) e Recomendação",
+        "recommended_action": "Incluir este formato no pipeline de processamento do Recall para gerar outputs customizados para o cliente.",
+        "jira_task_suggestion": {
+          "title": "Customização output JSON órgãos — Advocacy",
+          "priority": "low",
+          "label": "growth"
+        }
+      }
+    ]
+  },
+  "conversation_metrics": {
+    "sentiment_score": 78,
+    "engagement_level": "high",
+    "meeting_quality": "good"
+  },
+  "totvs_products_mapped": [
+    {
+      "product": "TOTVS Protheus",
+      "status": "active",
+      "satisfaction": "positive"
+    },
+    {
+      "product": "TOTVS Fluig",
+      "status": "active",
+      "satisfaction": "mixed"
+    },
+    {
+      "product": "TOTVS RM",
+      "status": "opportunity",
+      "satisfaction": null
+    }
+  ]
+}

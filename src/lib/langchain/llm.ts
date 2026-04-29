@@ -6,7 +6,7 @@ export const llmLeve = new ChatGoogleGenerativeAI({
     temperature: 0,
 })
 
-// const llmForte = await initChatModel("gemini-2.5-pro", {
-//     modelProvider: "google-genai",
-//     temperature: 0,
-// })
+export const llmBruta = new ChatGoogleGenerativeAI({
+    model: "gemini-3-flash-preview",
+    temperature: 0,
+})

@@ -40,19 +40,19 @@ export default function SideBar({ userId }: { userId: string }){
                 </div>
             </div>
 
-            <section className="flex flex-col mt-4 text-gray-500 font-medium">
-                <div onClick={() => router.push("/chat")} className={`cursor-pointer flex flex-row text-[13px] gap-2 items-center p-[8px] rounded-xl ${pathname.includes("chat") ? `text-[#1565C0]` : `text-gray-500`}`}>
-                    <MessageSquare size={16}/>
+            <section className="flex flex-col mt-5 text-gray-500 font-medium">
+                <div onClick={() => router.push("/chat")} className={`cursor-pointer flex flex-row text-[13px] gap-2 items-center p-[6px] rounded-xl ${pathname.includes("chat") ? `text-[#1565C0]` : `text-gray-500`}`}>
+                    <MessageSquare size={15}/>
                     <p>Chat</p>
                 </div>
 
-                <div onClick={() => redirect('/empresas')} className={`cursor-pointer flex flex-row text-[13px] gap-2 items-center p-[8px] rounded-xl ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}>
-                    <Building2 size={16}/>
+                <div onClick={() => redirect('/empresas')} className={`cursor-pointer flex flex-row text-[13px] gap-2 items-center p-[6px] rounded-xl ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}>
+                    <Building2 size={15}/>
                     <p>Empresas</p>
                 </div>
 
-                <div className={`cursor-pointer flex flex-row text-[13px] gap-2 items-center p-[8px] rounded-xl ${pathname.includes("config") ? `text-[#1565C0]` : `text-gray-500`}`}>
-                    <Settings size={16}/>
+                <div className={`cursor-pointer flex flex-row text-[13px] gap-2 items-center p-[6px] rounded-xl ${pathname.includes("config") ? `text-[#1565C0]` : `text-gray-500`}`}>
+                    <Settings size={15}/>
                     <p>Configurações</p>
                 </div>
             </section>

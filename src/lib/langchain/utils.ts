@@ -1,4 +1,6 @@
 import { SystemMessage } from "@langchain/core/messages";
+import { z } from 'zod'
+
 
 export const BASE_PROMPT = `Você é o Recall, um assistente de inteligência comercial desenvolvido para a TOTVS.
 Seu objetivo é analisar conversas, reuniões e contextos de empresas clientes da TOTVS, extraindo insights acionáveis que ajudem o time comercial e de CS a tomar melhores decisões.
@@ -25,3 +27,129 @@ ${arquivos}
 ---
 
 Gere o resumo detalhado abaixo, sem introduções ou saudações:`
+
+export const JSON_PROMPT = (json: Record<string, any>) => `Você é um analista de inteligência comercial especializado no ecossistema TOTVS.
+
+Baseado nos dados de contexto que recebeu você deve retornar um JSON denso, estruturado e acionável.
+
+ESTRUTURA:
+prioritized{
+    **Pelo menos 1
+},
+conversation_metrics{
+},
+totvs_products_mapped{
+}
+
+REGRAS ABSOLUTAS:
+- Retorne APENAS o JSON. Sem texto antes, sem texto depois, sem markdown, sem blocos de código.
+- Nunca invente informações que não estejam no contexto fornecido.
+- Se um campo não puder ser preenchido com base no contexto, use null ou [].
+- Nunca deixe o array "prioritized" vazio — sempre haverá pelo menos 1 insight possível.
+- O array "prioritized" deve estar ordenado do mais crítico para o menos crítico.
+
+CATEGORIAS VÁLIDAS PARA "prioritized" (use exatamente esses valores, nunca crie novas):
+- churn_risk
+- upsell_opportunity  
+- competitor_threat
+- product_feedback
+- relationship_health
+- financial_signal
+- growth
+- strategic_alert
+
+LIMITES:
+- Máximo de 8 insights no array "prioritized".
+- Títulos: máximo 60 caracteres.
+- Descrições: máximo 200 caracteres.
+- source_excerpt: máximo 100 caracteres.
+
+CRITICALITY VÁLIDOS: "low", "medium", "high", "critical"
+SENTIMENT VÁLIDOS: "positive", "negative", "mixed", "neutral"
+HEALTH LABEL VÁLIDOS: "healthy", "moderate", "at_risk", "critical"
+INFLUENCE TYPE VÁLIDOS: "decision_maker", "technical_influencer", "end_user", "financial_gatekeeper"
+PRODUCT STATUS VÁLIDOS: "active", "opportunity", "at_risk", "churned"
+
+PRODUTOS TOTVS VÁLIDOS:
+(TOTVS Protheus) É o principal e mais robusto sistema de gestão (ERP) da empresa. Altamente personalizável, ele controla o back-office completo de médias e grandes corporações, englobando financeiro, faturamento, compras, estoque e produção.
+
+(TOTVS RM) É outro sistema de gestão (ERP) muito popular, reconhecido principalmente por sua excelência no módulo de Recursos Humanos (Folha de Pagamento) e por ter ferramentas muito fortes para os setores de Educação e Construção Civil.
+
+(TOTVS Fluig) É uma plataforma corporativa de produtividade e colaboração. Ele funciona como um portal que centraliza a gestão de documentos digitais (GED), a automação de processos internos (Workflows) e a aprovação de tarefas.
+
+(TOTVS RD Station) É a plataforma líder em automação de Marketing Digital e CRM de Vendas. Focada na metodologia de "Inbound Marketing", ela ajuda as empresas a criar campanhas, atrair visitantes, capturar leads e fechar vendas de forma rastreável.
+
+(TOTVS Techfin) É o braço de serviços financeiros (B2B) da empresa. Em vez de ser apenas um software, é uma solução embutida no ERP que usa os dados da própria empresa para oferecer crédito, antecipação de recebíveis e facilidades de pagamento de forma rápida e sem burocracia bancária.
+
+- Outros (use o nome mencionado)
+
+SCHEMA OBRIGATÓRIO:
+{schema}
+Exemplo de input:
+**Resumo Corporativo: Advocacy Consultoria Estratégica**
+
+**1. Núcleo de Atuação, Produtos/Serviços e Público-Alvo:**
+A Advocacy Consultoria Estratégica é uma firma especializada em relações institucionais e governamentais (RIG), com mais de 15 anos de mercado. Sua atuação principal é a ponte entre grandes corporações e órgãos reguladores, garantindo conformidade e voz ativa em decisões de impacto setorial. Seus serviços focam em consultoria estratégica para RIG. O público-alvo são grandes corporações e órgãos reguladores.
+
+**2. Contexto Estratégico Atual:**
+*   **Objetivos Estratégicos 2026:** Foco na expansão de sua base de dados proprietária de inteligência legislativa. O objetivo é integrar ferramentas de IA Generativa via APIs TOTVS para prever tendências regulatórias com base em dados históricos de votações e tramitações.
+*   **Dores Identificadas:** A triagem de documentos é manual, e há necessidade de gerar resumos executivos automáticos para os diretores. O formato desejado para o JSON final inclui: Nome do órgão citado, Impacto (Alto/Médio/Baixo) e Recomendação.
+*   **Diferenciais e Pontos de Atenção:**
+    *   Opera no eixo Brasília-São Paulo.
+    *   Cliente Prime da TOTVS, utilizando o ERP Protheus para gestão financeira e back-office, com módulos de Financeiro (Contas a Pagar/Receber), CRM (Gestão de Relacionamento com Stakeholders) e Fluig (Automação de Workflows Internos).
+    *   Processa faturamento mensal de R$ 1.2M via Protheus.
+    *   Lida com um volume mensal de 450 documentos digitais (PDF/DOCX) e aproximadamente 40 horas mensais de transcrições de reuniões para análise de contexto.
+    *   A integração TOTVS permite controle rigoroso de contratos de honorários e despesas reembolsáveis.
+
+Exemplo de output:
+${json}
+`
+
+const JiraTaskSchema = z.object({
+  title: z.string(),
+  priority: z.enum(['low', 'medium', 'high']),
+  label: z.string(),
+}).optional()
+
+const InsightItemSchema = z.object({
+  id: z.string().describe('Formato: ins_001, ins_002...'),
+  category: z.enum([
+    'churn_risk',
+    'upsell_opportunity',
+    'competitor_threat',
+    'product_feedback',
+    'relationship_health',
+    'financial_signal',
+    'growth',
+    'strategic_alert',
+  ]),
+  criticality: z.enum(['low', 'medium', 'high', 'critical']),
+  title: z.string().max(60),
+  description: z.string().max(200),
+  affected_totvs_product: z.string().optional(),
+  source_excerpt: z.string().max(100),
+  recommended_action: z.string().optional(),
+  jira_task_suggestion: JiraTaskSchema,
+})
+
+const ConversationMetricsSchema = z.object({
+  sentiment_score: z.number().min(0).max(100),
+  engagement_level: z.enum(['low', 'medium', 'high']),
+  meeting_quality: z.enum(['poor', 'fair', 'good', 'excellent']),
+})
+
+const ProductMappedSchema = z.object({
+  product: z.string(),
+  status: z.enum(['active', 'opportunity', 'at_risk', 'churned']),
+  satisfaction: z.enum(['positive', 'negative', 'mixed', 'neutral']).optional(),
+})
+
+export const InsightSchema = z.object({
+  insights: z.object({
+    prioritized: z.array(InsightItemSchema).min(1).max(8),
+  }),
+  conversation_metrics: ConversationMetricsSchema,
+  totvs_products_mapped: z.array(ProductMappedSchema),
+})
+
+export type InsightOutput = z.infer<typeof InsightSchema>

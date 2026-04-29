@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
 import { encrypt } from "@/src/lib/auth";
 import { supabase } from "@/src/lib/supabase";
+import { executeGraph } from '@/src/lib/langchain/actionsAI';
 
 export async function createUser(prevState: any, formData: any) {
   const password = formData.get("password");
@@ -134,14 +135,21 @@ export async function createEmpresa(prevState: any, form: FormData) {
         links.push(data.publicUrl)
       }
 
-      await prisma.empresas.update({
+      const updatedBusiness = await prisma.empresas.update({
           where: { id: newBusiness.id },
           data: { 
               files: links,
               logo: logoUrl
           }
       })
-      return { success: true, empresa: newBusiness };
+
+      await executeGraph(newBusiness.id, links)
+      
+      const finalBusiness = await prisma.empresas.findUnique({
+          where: { id: newBusiness.id }
+      })
+
+      return { success: true, empresa: finalBusiness || updatedBusiness };
   } catch (error: any) {
         console.error("Erro ao criar empresa:", error);
         return { success: false, error: error.message };
