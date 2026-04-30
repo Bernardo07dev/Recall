@@ -1,6 +1,7 @@
 import { InsightOutput } from '@/src/lib/langchain/utils'
 import Image from "next/image";
 import { Metronome } from "lucide-react";
+import InsightsContainer from '@/src/app/(platform)/dashboard/[companyId]/insightsContainer';
 
 interface Empresa {
     id: string
@@ -56,15 +57,9 @@ export default function Container({ empresa } : Props ){
                     </div>
                 </div>
             </div>
-            <section className='grid grid-cols-3 gap-4'>
-                {dados && (
-                    dados.insights.prioritized.map((insights) => (
-                        <div className='bg-white inter p-6 border border-gray-100 rounded-xl text-sm'>
-                            <h1 className='text-gray-700 font-medium'>{insights.title}</h1>
-                        </div>
-                    ))
-                )}
-            </section>
+
+            {dados && <InsightsContainer insights={dados}/>}
+            
         </main>
     )
 }
