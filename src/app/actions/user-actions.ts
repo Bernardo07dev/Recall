@@ -83,7 +83,6 @@ export async function createEmpresa(prevState: any, form: FormData) {
             industry: form.get("industria") as string,
         }
       });
-
     
       const files = form.getAll("arquivos") as File[]
       const logo = form.get("logo") as File | null;
@@ -141,15 +140,25 @@ export async function createEmpresa(prevState: any, form: FormData) {
               files: links,
               logo: logoUrl
           }
-      })
+      });
 
-      await executeGraph(newBusiness.id, links)
-      
-      const finalBusiness = await prisma.empresas.findUnique({
-          where: { id: newBusiness.id }
-      })
+      (async () => {
+          try {
+              await executeGraph(newBusiness.id, links)
+              await prisma.empresas.update({
+                  where: { id: newBusiness.id },
+                  data: { status: "ready" }
+              })
+          } catch (error) {
+              console.error("Erro na IA:", error)
+              await prisma.empresas.update({
+                  where: { id: newBusiness.id },
+                  data: { status: "error" }
+              })
+          }
+      })();
 
-      return { success: true, empresa: finalBusiness || updatedBusiness };
+      return { success: true, empresa: updatedBusiness };
   } catch (error: any) {
         console.error("Erro ao criar empresa:", error);
         return { success: false, error: error.message };

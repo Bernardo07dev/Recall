@@ -30,6 +30,7 @@ model Empresas{
   logo      String?
   relation  String?
   createdAt DateTime @default(now())
+  status    String   @default("processing")
   conversations Conversations[]
 }
 

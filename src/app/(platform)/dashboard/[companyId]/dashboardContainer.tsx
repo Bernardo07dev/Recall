@@ -2,6 +2,7 @@ import { InsightOutput } from '@/src/lib/langchain/utils'
 import Image from "next/image";
 import { Metronome, Sparkles } from "lucide-react";
 import InsightsContainer from '@/src/app/(platform)/dashboard/[companyId]/insightsContainer';
+import Loading from '@/src/app/(platform)/dashboard/[companyId]/LoadingContainer';
 
 interface Empresa {
     id: string
@@ -14,6 +15,7 @@ interface Empresa {
     files: string[]
     logo: string | null
     relation: string | null
+    status: string;
     createdAt: Date
 }
 
@@ -38,12 +40,21 @@ export default function Container({ empresa } : Props ){
         }
     }
     
+    if (!empresa?.json || empresa?.status === "processing") {
+        return (
+            <Loading empresa={empresa}/>
+        )
+    }
+
     return(
         <main className="p-22 animate-fade-in">
             <div className='flex flex-row justify-between items-end mb-6'>
                 <div>
                     <Image src="/RECALL-logo.svg" className='w-16' alt="Logo" width={150} height={40}/>
-                    <h1 className='text-4xl font-bold mb-2'>Overview</h1>
+                    <div className='flex flex-row items-baseline gap-1'>
+                        <h1 className='text-4xl font-bold mb-2'>Overview</h1>
+                        <h1 className='font-semibold text-gray-500'>{empresa && empresa.nome}</h1>
+                    </div>
                     <p className='text-sm text-gray-400 mr-[30%]'>Métricas de conversação em tempo real e oportunidades estratégicas de IA em todo o ecossistema da sua empresa.</p>
                 </div>
                 <div className=''>

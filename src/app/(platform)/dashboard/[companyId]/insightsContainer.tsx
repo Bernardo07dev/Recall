@@ -81,7 +81,13 @@ export default function InsightsContainer({ insights }: Props) {
     }
 
     const critico = (critic: string) => {
-        if (critic == "high"){
+        if (critic == "critical"){
+            return(
+                <p className='bg-red-500/10 mb-3 p-1 px-2 w-fit text-[11px] text-red-600 font-medium montserrat rounded-full'>
+                    CRÍTICO
+                </p>
+            )
+        } else if (critic == "high"){
             return(
                 <p className='bg-orange-500/10 mb-3 p-1 px-2 w-fit text-[11px] text-orange-600 font-medium montserrat rounded-full'>
                     URGENTE
