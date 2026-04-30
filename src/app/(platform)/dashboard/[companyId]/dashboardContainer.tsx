@@ -1,6 +1,6 @@
 import { InsightOutput } from '@/src/lib/langchain/utils'
 import Image from "next/image";
-import { Metronome } from "lucide-react";
+import { Metronome, Sparkles } from "lucide-react";
 import InsightsContainer from '@/src/app/(platform)/dashboard/[companyId]/insightsContainer';
 
 interface Empresa {
@@ -39,14 +39,14 @@ export default function Container({ empresa } : Props ){
     }
     
     return(
-        <main className="p-22">
+        <main className="p-22 animate-fade-in">
             <div className='flex flex-row justify-between items-end mb-6'>
                 <div>
                     <Image src="/RECALL-logo.svg" className='w-16' alt="Logo" width={150} height={40}/>
                     <h1 className='text-4xl font-bold mb-2'>Overview</h1>
                     <p className='text-sm text-gray-400 mr-[30%]'>Métricas de conversação em tempo real e oportunidades estratégicas de IA em todo o ecossistema da sua empresa.</p>
                 </div>
-                <div className='pr-12'>
+                <div className=''>
                     <div className='bg-white p-6 border border-gray-100 rounded-xl'>
                         <div className='flex flex-row gap-1 mb-1 text-gray-500 items-center'>
                             <Metronome size={12}/>
@@ -58,6 +58,10 @@ export default function Container({ empresa } : Props ){
                 </div>
             </div>
 
+            <div className='flex flex-row gap-1 items-baseline mb-4'>
+                <h1 className='text-xl font-semibold text-gray-700'>Insights</h1>
+                <Sparkles className='mb-1 text-[#1565C0]' size={13}/>
+            </div>
             {dados && <InsightsContainer insights={dados}/>}
             
         </main>

@@ -1,5 +1,6 @@
 import { InsightOutput } from '@/src/lib/langchain/utils'
 import { BanknoteX, BadgeDollarSign, ShieldAlert, Megaphone, Handshake, PiggyBank, Rocket, MapPlus } from 'lucide-react';
+import { SiJira } from '@icons-pack/react-simple-icons';
 
 interface Props {
     insights: InsightOutput;
@@ -66,9 +67,18 @@ export default function InsightsContainer({ insights }: Props) {
         }
     }
 
-    // const jiraTask = (jira: any) => {
-    //     <h1></h1>
-    // }
+    const jiraTask = (jira: any) => {
+        return(
+            <div className='flex flex-col gap-1 items-start mt-4 border border-[#2381eb]/10 shadow-md shadow-[#2380eb15] p-4 rounded-xl'>
+                <div className='flex flex-row gap-1 mb-1'>
+                    <SiJira color="#2D88FF" size={13}/>
+                    <h1 className='text-xs text-gray-400'>Sugestão de Task no Jira</h1>
+                </div>
+                <p className='font-semibold'>{jira.title}</p>
+                <p className='text-gray-500 text-[11px] font-medium'>{jira.label}</p>
+            </div>
+        )
+    }
 
     const critico = (critic: string) => {
         if (critic == "high"){
@@ -95,11 +105,12 @@ export default function InsightsContainer({ insights }: Props) {
     return (
         <section className='grid grid-cols-3 gap-4'>
             {insights.insights.prioritized.map((ins, index) => (
-                <div key={index} className='bg-white inter p-6 border border-gray-100 rounded-xl text-sm'>
+                <div key={index} className='bg-white inter p-6 border border-[#167df3]/10 rounded-xl text-sm'>
                     {critico(ins.criticality)}
                     <h1 className='text-gray-700 text-lg font-semibold mb-2 leading-tight'>{ins.title}</h1>
                     {rederIcon(ins.category)}
                     <p className='text-gray-400 text-xs'>{ins.description}</p>
+                    {jiraTask(ins.jira_task_suggestion)}
                 </div>
             ))}
         </section>
