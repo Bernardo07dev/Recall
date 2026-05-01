@@ -47,7 +47,7 @@ export default function Container({ empresa } : Props ){
     }
 
     return(
-        <main className="p-22 animate-fade-in">
+        <main className="p-20 animate-fade-in">
             <div className='flex flex-row justify-between items-end mb-6'>
                 <div>
                     <Image src="/RECALL-logo.svg" className='w-16' alt="Logo" width={150} height={40}/>
@@ -69,7 +69,7 @@ export default function Container({ empresa } : Props ){
                 </div>
             </div>
 
-            <div className='flex flex-row gap-1 items-baseline mb-4'>
+            <div className='flex flex-row gap-1 items-baseline mb-1'>
                 <h1 className='text-xl font-semibold text-gray-700'>Insights</h1>
                 <Sparkles className='mb-1 text-[#1565C0]' size={13}/>
             </div>
