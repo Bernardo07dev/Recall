@@ -19,12 +19,12 @@ export default function InsightsContainer({ insights }: Props) {
     const totalInsights = insights.insights.prioritized.length;
 
     return (
-        <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-1 px-1">
-                <h2 className="text-gray-400 text-[10px] font-bold uppercase tracking-widest inter">
+        <div className="flex flex-col gap-2 mb-6">
+            <div className="flex items-center gap-1">
+                <h2 className="text-gray-400 text-[10px] font-semibold uppercase tracking-wide inter">
                     Insights Prioritizados
                 </h2>
-                <span className="bg-[#1565C0]/10 text-[#1565C0] text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1565C0]/10">
+                <span className="bg-[#1565C0]/10 flex items-center justify-center text-[#1565C0] text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                     {totalInsights}
                 </span>
             </div>
@@ -32,7 +32,7 @@ export default function InsightsContainer({ insights }: Props) {
                 <div className="overflow-hidden" ref={emblaRef}>
                     <div className='flex gap-4 py-2'>
                         {insights.insights.prioritized.map((ins, index) => (
-                            <div key={index} className='bg-white inter flex-none w-[calc(33.33%-11px)] p-6 border border-[#167df3]/10 rounded-xl text-sm shadow-sm shadow-[#398ded]/10'>
+                            <div key={index} className='bg-white inter flex-none w-[calc(33.33%-11px)] p-6 border border-[#167df3]/10 rounded-3xl text-sm shadow-sm shadow-[#398ded]/10'>
                                 {renderCriticality(ins.criticality)}
                                 <h1 className='text-gray-700 text-lg font-semibold mb-2 leading-tight'>{ins.title}</h1>
                                 {renderIcon(ins.category)}
@@ -54,7 +54,7 @@ export default function InsightsContainer({ insights }: Props) {
                 <div className="overflow-hidden" ref={emblaRef}>
                     <div className='flex gap-4 py-2'>
                         {insights.insights.prioritized.map((ins, index) => (
-                            <div key={index} className='bg-white inter flex-none w-[calc(33.33%-11px)] p-6 border border-[#167df3]/10 rounded-xl text-sm shadow-sm shadow-[#398ded]/10'>
+                            <div key={index} className='bg-white inter flex-none w-[calc(33.33%-11px)] p-6 border border-[#167df3]/10 rounded-3xl text-sm shadow-sm shadow-[#398ded]/10'>
                                 {renderCriticality(ins.criticality)}
                                 <h1 className='text-gray-700 text-lg font-semibold mb-2 leading-tight'>{ins.title}</h1>
                                 {renderIcon(ins.category)}

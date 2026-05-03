@@ -1,8 +1,10 @@
 import { InsightOutput } from '@/src/lib/langchain/utils'
 import Image from "next/image";
-import { Metronome, Sparkles } from "lucide-react";
+import { Metronome, Sparkles, Goal } from "lucide-react";
 import InsightsContainer from '@/src/app/(platform)/dashboard/[companyId]/insightsContainer';
+import TotvsContainer from '../totvsContainer';
 import Loading from '@/src/app/(platform)/dashboard/[companyId]/LoadingContainer';
+import Logo from "@/public/Logo-totvs.svg";
 
 interface Empresa {
     id: string
@@ -74,6 +76,13 @@ export default function Container({ empresa } : Props ){
                 <Sparkles className='mb-1 text-[#1565C0]' size={13}/>
             </div>
             {dados && <InsightsContainer insights={dados}/>}
+
+            <div className='flex gap-1 items-baseline mb-3'>
+                <h1 className='text-xl font-semibold text-gray-700'>Oportunidades</h1>
+                <Image src={Logo} alt="Logo Totvs" width={50}></Image>
+            </div>
+
+            {dados && <TotvsContainer empresa={dados} />}
             
         </main>
     )
