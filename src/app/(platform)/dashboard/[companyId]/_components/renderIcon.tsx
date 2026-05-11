@@ -3,7 +3,7 @@ import { BanknoteX, BadgeDollarSign, ShieldAlert, Megaphone, Handshake, PiggyBan
 export function renderIcon(category: string){
         if (category == "churn_risk") {
             return (
-                <div className='flex flex-row gap-1 text-gray-400 font-medium text-[13px] items-center mb-3'>
+                <div className='flex flex-row gap-1 font-semibold text-gray-400 text-[13px] items-center mb-3'>
                     <BanknoteX className='text-red-400/60' size={22}/>
                     <p>Risco de Churn</p>
                 </div>

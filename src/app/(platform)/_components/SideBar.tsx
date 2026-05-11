@@ -10,7 +10,7 @@ export default function SideBar({ userId }: { userId: string }){
     const pathname = usePathname();
     const router = useRouter();
     const [chats, setChats] = useState<any[]>([]);
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
 
     useEffect(() => {
         async function fetchChats() {

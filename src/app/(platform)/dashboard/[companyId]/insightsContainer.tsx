@@ -5,6 +5,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { renderIcon } from './_components/renderIcon'
 import { renderCriticality } from './_components/renderCriticality'
 import { JiraTaskSuggestion } from './_components/jiraTaskSuggestion'
+import { useState } from 'react';
+import { DetailedInsightModal } from './_components/detailedInsightModal';
 
 interface Props {
     insights: InsightOutput;
@@ -15,6 +17,7 @@ export default function InsightsContainer({ insights }: Props) {
         loop: false,
         align: 'start'
     })
+    const [activeInsight, setActiveInsight] = useState<any>(null);
 
     const totalInsights = insights.insights.prioritized.length;
 
@@ -33,12 +36,16 @@ export default function InsightsContainer({ insights }: Props) {
                 <div className="overflow-hidden" ref={emblaRef}>
                     <div className='flex gap-4 py-2'>
                         {insights.insights.prioritized.map((ins, index) => (
-                            <div key={index} className={`bg-white inter flex-none w-[calc(33.33%-11px)] p-6 border border-[#167df3]/10 rounded-3xl text-sm shadow-sm shadow-[#398ded]/10 ${!ins.jira_task_suggestion ? 'h-fit' : ''}`}>
+                            <div 
+                                key={index} 
+                                onClick={() => setActiveInsight(ins)}
+                                className={`bg-white inter flex-none w-[calc(33.33%-11px)] p-6 border border-[#167df3]/10 rounded-3xl text-sm shadow-sm shadow-[#398ded]/10 cursor-pointer hover:border-[#1565C0]/30 transition-all hover:shadow-md ${!ins.jira_task_suggestion ? 'h-fit' : ''}`}
+                            >
                                 {renderCriticality(ins.criticality)}
                                 <h1 className='text-gray-700 text-lg font-semibold mb-2 leading-tight'>{ins.title}</h1>
                                 {renderIcon(ins.category)}
                                 <p className='text-gray-400 text-xs'>{ins.description}</p>
-                                {ins.jira_task_suggestion && (<JiraTaskSuggestion jira={ins.jira_task_suggestion} />)}
+                                {/* {ins.jira_task_suggestion && (<JiraTaskSuggestion jira={ins.jira_task_suggestion} />)} */}
                             </div>
                         ))}
                     </div>
@@ -55,14 +62,18 @@ export default function InsightsContainer({ insights }: Props) {
                 <div className="overflow-hidden" ref={emblaRef}>
                     <div className='flex gap-4 py-2'>
                         {insights.insights.prioritized.map((ins, index) => (
-                            <div key={index} className={`bg-white inter flex-none w-[calc(33.33%-11px)] p-6 border border-[#167df3]/10 rounded-3xl text-sm shadow-sm shadow-[#398ded]/10 ${!ins.jira_task_suggestion ? 'h-fit' : ''}`}>
+                            <div 
+                                key={index} 
+                                onClick={() => setActiveInsight(ins)}
+                                className={`bg-white inter flex-none w-[calc(33.33%-11px)] p-6 border border-[#167df3]/10 rounded-3xl text-sm shadow-sm shadow-[#398ded]/10 cursor-pointer hover:border-[#1565C0]/30 transition-all hover:shadow-md ${!ins.jira_task_suggestion ? 'h-fit' : ''}`}
+                            >
                                 {renderCriticality(ins.criticality)}
                                 <h1 className='text-gray-700 text-lg font-semibold mb-2 leading-tight'>{ins.title}</h1>
                                 {renderIcon(ins.category)}
                                 <p className='text-gray-400 text-xs'>{ins.description}</p>
-                                {ins.jira_task_suggestion && (
+                                {/* {ins.jira_task_suggestion && (
                                     <JiraTaskSuggestion jira={ins.jira_task_suggestion} />
-                                )}
+                                )} */}
                             </div>
                         ))}
                     </div>
@@ -75,6 +86,8 @@ export default function InsightsContainer({ insights }: Props) {
                     <ChevronRight size={18} className="text-[#1565C0]" />
                 </button>
             </div>)}
+
+            <DetailedInsightModal activeInsight={activeInsight} setActiveInsight={setActiveInsight} />
         </div>
     )
 }
