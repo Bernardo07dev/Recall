@@ -145,6 +145,7 @@ export async function createEmpresa(prevState: any, form: FormData) {
       (async () => {
           try {
               await executeGraph(newBusiness.id, links)
+              console.log("Começando Graofo")
               await prisma.empresas.update({
                   where: { id: newBusiness.id },
                   data: { status: "ready" }

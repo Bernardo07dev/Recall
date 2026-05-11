@@ -6,6 +6,7 @@ import { BASE_PROMPT, INPUTIZATION_PROMPT, JSON_PROMPT, InsightSchema } from '@/
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import example from './example.json';
+import { lerPlanilha } from "@/src/lib/XLSX";
 
 
 export const EmpresaStateAnnotation = Annotation.Root({
@@ -45,8 +46,10 @@ const nodeDataingestion = async (empresa: EmpresaState) => {
                 
                 const textoPdf = docs.map(doc => doc.pageContent).join("\n");
                 conteudoExtraido += `\n--- [PDF] ${url} ---\n${textoPdf}\n`;
-            } else if{
-                
+            } else if(urlLower.endsWith(".xlsx") || urlLower.endsWith(".xls") || urlLower.endsWith(".csv")){
+                const buffer = await response.arrayBuffer()
+                const planilha = lerPlanilha(buffer)
+                conteudoExtraido += planilha
             }
         } catch (error) {
             console.error(`Falha ao processar ${url}:`, error);
@@ -54,6 +57,13 @@ const nodeDataingestion = async (empresa: EmpresaState) => {
 
     }
 
+    const MAX_CHARS = 500_000;
+    if (conteudoExtraido.length > MAX_CHARS) {
+        console.warn(`Conteúdo extraído muito grande (${conteudoExtraido.length} chars). Truncando para ${MAX_CHARS} chars.`);
+        conteudoExtraido = conteudoExtraido.substring(0, MAX_CHARS);
+    }
+
+    console.log(`Conteúdo total extraído: ${conteudoExtraido.length} caracteres`);
     return { rawContent: conteudoExtraido };
 }
 
