@@ -45,6 +45,8 @@ const nodeDataingestion = async (empresa: EmpresaState) => {
                 
                 const textoPdf = docs.map(doc => doc.pageContent).join("\n");
                 conteudoExtraido += `\n--- [PDF] ${url} ---\n${textoPdf}\n`;
+            } else if{
+                
             }
         } catch (error) {
             console.error(`Falha ao processar ${url}:`, error);

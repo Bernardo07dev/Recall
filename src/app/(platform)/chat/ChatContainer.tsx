@@ -21,7 +21,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
     }
 
     return (
-        <div className="w-full relative flex flex-col text-sm bg-white shadow-sm rounded-2xl z-20 p-4 border border-gray-100">
+        <div className="w-full relative flex flex-col text-sm bg-white rounded-3xl z-20 p-4 border border-[#ebebeb]">
             <div className="w-full flex fex-row items-center">
                 <input onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} className="p-2 w-full font-medium focus:outline-none text-gray-500" value={input} placeholder="Pergunte Algo..." onChange={(e) => setInput(e.target.value)} />
 

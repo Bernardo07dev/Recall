@@ -14,6 +14,7 @@
     "@langchain/core": "^1.1.42",
     "@langchain/google-genai": "^2.1.29",
     "@langchain/langgraph": "^1.2.9",
+    "@langchain/openai": "^1.4.5",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
     "@supabase/supabase-js": "^2.104.1",
@@ -30,7 +31,8 @@
     "react-dom": "19.2.4",
     "supabase": "^2.95.3",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^4.4.1"
+    "xlsx": "^0.18.5",
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

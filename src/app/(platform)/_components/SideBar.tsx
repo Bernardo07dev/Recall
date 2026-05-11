@@ -24,9 +24,9 @@ export default function SideBar({ userId }: { userId: string }){
     console.log(chats);
 
     return(
-        <aside className="sticky top-0 h-screen w-[19%] p-4 shadow-md z-20 bg-white overflow-y-auto">
-            <Image src={Logo} alt="Logo Recall" width={100} className="pt-2"></Image>
-            <p className="pt-1 text-xs text-gray-400 font-ms">UMA INICIATIVA TOTVS</p>
+        <aside className="sticky top-0 h-screen w-[20%] p-4 shadow-sm z-20 bg-white overflow-y-auto">
+            <Image src={Logo} alt="Logo Recall" width={90} className="pt-2"></Image>
+            {/* <p className="pt-1 text-xs text-gray-400 font-ms">UMA INICIATIVA TOTVS</p> */}
 
             <div className="sticky top-4 bg-white z-10">
                 <div onClick={() => redirect('/context')} className="flex flex-row mt-6 text-white text-[13px] gap-2 font-medium items-center justify-center bg-[#1565C0] p-2 rounded-lg cursor-pointer">

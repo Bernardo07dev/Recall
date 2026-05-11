@@ -1,4 +1,10 @@
 {
+  "indicators": {
+    "churn_risk": 28,
+    "upsell_score": 74,
+    "competitor_threat": "BAIXO",
+    "sentiment_overall": "POSITIVO COM RESERVAS"
+  },
   "insights": {
     "prioritized": [
       {
