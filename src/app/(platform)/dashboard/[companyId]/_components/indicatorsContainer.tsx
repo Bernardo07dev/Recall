@@ -36,12 +36,12 @@ export default function IndicatorsContainer({ indicators }: Props) {
     return (
         <div className="grid grid-cols-3 gap-4">
             {/* Churn Risk */}
-            <div className={`bg-white border-l-3 ${churn.border} rounded-2xl p-4 inter shadow-sm`}>
+            <div className={`bg-white border-l-3 ${churn.border} border-[0.5px] rounded-2xl p-4 inter`}>
                 <div className="flex items-center gap-2 mb-3">
                     <div className={`${churn.bg} p-1.5 rounded-lg`}>
                         <ShieldAlert size={14} className={churn.text} />
                     </div>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                    <span className="text-[10px] font-semibold uppercase text-gray-400">
                         Churn Risk
                     </span>
                 </div>
@@ -52,12 +52,12 @@ export default function IndicatorsContainer({ indicators }: Props) {
             </div>
 
             {/* Upsell Score */}
-            <div className={`bg-white border-l-3 ${upsell.border} rounded-2xl p-4 inter shadow-sm`}>
+            <div className={`bg-white border-l-3 border-[0.5px] ${upsell.border} rounded-2xl p-4 inter`}>
                 <div className="flex items-center gap-2 mb-3">
                     <div className={`${upsell.bg} p-1.5 rounded-lg`}>
                         <TrendingUp size={14} className={upsell.text} />
                     </div>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                    <span className="text-[10px] font-semibold uppercase text-gray-400">
                         Upsell Score
                     </span>
                 </div>
@@ -68,12 +68,12 @@ export default function IndicatorsContainer({ indicators }: Props) {
             </div>
 
             {/* Competitor Threat */}
-            <div className={`bg-white border-l-3 ${threat.border} rounded-2xl p-4 inter shadow-sm`}>
+            <div className={`bg-white border-l-3 border-[0.5px] ${threat.border} rounded-2xl p-4 inter`}>
                 <div className="flex items-center gap-2 mb-3">
                     <div className={`${threat.bg} p-1.5 rounded-lg`}>
                         <Swords size={14} className={threat.text} />
                     </div>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                    <span className="text-[10px] font-semibold uppercase text-gray-400">
                         Competidores
                     </span>
                 </div>

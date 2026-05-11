@@ -58,9 +58,9 @@ export default function Container({ empresa } : Props ){
                         <h1 className='text-4xl font-bold mb-2'>Overview</h1>
                         <h1 className='font-semibold text-gray-500'>{empresa && empresa.nome}</h1>
                     </div>
-                    <p className='text-sm text-gray-400 mr-[20%]'>Métricas de conversação em tempo real e oportunidades estratégicas de IA em todo o ecossistema da sua empresa.</p>
+                    <p className='text-sm text-gray-400 mr-[5%]'>Métricas de conversação em tempo real e oportunidades estratégicas de IA em todo o ecossistema da sua empresa.</p>
                 </div>
-                <div className='w-[70%]'>
+                <div className='w-full'>
                     {/* <div className='bg-white p-6 border border-gray-100 rounded-xl'>
                         <div className='flex flex-row gap-1 mb-1 text-gray-500 items-center'>
                             <Metronome size={12}/>
