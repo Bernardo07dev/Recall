@@ -21,7 +21,7 @@ export async function createConversation(userId: string, companyId: string | nul
         return { success: true, id: conversation.id }
     } catch(error){
         console.error(error)
-        return { success: false, error: "Faliure" } 
+        return { success: false, error: "Faliure" }
     }
 }
 
