@@ -7,15 +7,16 @@ interface Props {
     enableCompany?: boolean;
     empresas: { id: string, nome: string }[];
     defaultCompanyId?: string | null;
+    isStreaming?: boolean;
 }
 
-export default function ChatContainer({ onEnviar, enableCompany, empresas, defaultCompanyId }: Props) {
+export default function ChatContainer({ onEnviar, enableCompany, empresas, defaultCompanyId, isStreaming }: Props) {
     const [input, setInput] = useState("")
     const [companyId, setCompanyId] = useState<string | null>(defaultCompanyId ?? null)
     const [unavailable, setUnavailable] = useState<boolean>(false)
 
     const handleEnviar = () => {
-        if (!input){ return }
+        if (!input || isStreaming){ return }
         onEnviar(input, companyId, "human")
         setInput("")
     }
@@ -23,9 +24,20 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
     return (
         <div className="w-full relative flex flex-col text-sm bg-white rounded-3xl z-20 p-4 border border-[#ebebeb]">
             <div className="w-full flex fex-row items-center">
-                <input onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} className="p-2 w-full font-medium focus:outline-none text-gray-500" value={input} placeholder="Pergunte Algo..." onChange={(e) => setInput(e.target.value)} />
+                <input 
+                    onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} 
+                    className="p-2 w-full font-medium focus:outline-none text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" 
+                    value={input} 
+                    placeholder={isStreaming ? "Aguarde a resposta..." : "Pergunte Algo..."} 
+                    onChange={(e) => setInput(e.target.value)} 
+                    disabled={isStreaming}
+                />
 
-                <button className="cursor-pointer bg-[#004D99] text-white p-3 rounded-full" onClick={handleEnviar}>
+                <button 
+                    className="cursor-pointer bg-[#004D99] text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed" 
+                    onClick={handleEnviar}
+                    disabled={isStreaming}
+                >
                     <SendHorizontal size={15} className=""/>
                 </button>
             </div>

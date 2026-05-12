@@ -45,8 +45,11 @@ export default function Dashboard({ user, empresas }: Props) {
                 currentConversationId = result.id!
                 setConversationId(currentConversationId)
                 await saveMessages(msg, currentConversationId, role)
-                const companyParam = companyId ? `?company=${companyId}` : ''
-                router.push(`/chat/${currentConversationId}${companyParam}`)
+                const params = new URLSearchParams()
+                if (companyId) params.set('company', companyId)
+                params.set('pending', '1')
+                const qs = params.toString()
+                router.push(`/chat/${currentConversationId}${qs ? `?${qs}` : ''}`)
                 return
             }
         }

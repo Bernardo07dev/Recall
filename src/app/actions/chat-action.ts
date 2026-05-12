@@ -58,7 +58,7 @@ export async function getMessages(conversationId: string) {
     try{
         const messages = await prisma.messages.findMany({
             where: {conversationId: conversationId},
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: 'asc' }
         })
         return { success: true, data: messages}
     } catch(error){
