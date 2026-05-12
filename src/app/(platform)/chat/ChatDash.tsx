@@ -2,6 +2,7 @@
 import { ChartBar, NotebookText, Map } from 'lucide-react';
 import ChatContainer from './ChatContainer'
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createConversation, saveMessages } from '@/src/app/actions/chat-action';
 
 interface UserType {
@@ -30,6 +31,7 @@ export default function Dashboard({ user, empresas }: Props) {
     const [hiding, setHiding] = useState(false)
     const [message, setMessage] = useState<Message[]>([])
     const [conversationId, setConversationId] = useState<string | null>(null)
+    const router = useRouter()
 
     const nome = user?.nome?.split(" ")[0];
 
@@ -42,6 +44,10 @@ export default function Dashboard({ user, empresas }: Props) {
             if(result.success){
                 currentConversationId = result.id!
                 setConversationId(currentConversationId)
+                await saveMessages(msg, currentConversationId, role)
+                const companyParam = companyId ? `?company=${companyId}` : ''
+                router.push(`/chat/${currentConversationId}${companyParam}`)
+                return
             }
         }
 

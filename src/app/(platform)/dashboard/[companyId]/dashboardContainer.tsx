@@ -81,12 +81,12 @@ export default function Container({ empresa } : Props ){
             </div>
             {dados && <InsightsContainer insights={dados}/>}
 
-            <div className='flex gap-1 items-baseline mb-3'>
+            {/* <div className='flex gap-1 items-baseline mb-3'>
                 <h1 className='text-xl font-semibold text-gray-700'>Oportunidades</h1>
                 <Image src={Logo} alt="Logo Totvs" width={50}></Image>
-            </div>
+            </div> */}
 
-            {dados && <TotvsContainer empresa={dados} />}
+            {/* {dados && <TotvsContainer empresa={dados} />} */}
             
         </main>
     )
