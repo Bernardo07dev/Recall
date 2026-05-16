@@ -11,15 +11,15 @@ export const llmBruta = new ChatGoogleGenerativeAI({
     temperature: 0,
 })
 
-// export const llmOpenRouter = new ChatOpenAI({
-//     model: "anthropic/claude-sonnet-4",
-//     temperature: 0,
-//     apiKey: process.env.OPENROUTER_API_KEY,
-//     configuration: {
-//         baseURL: "https://openrouter.ai/api/v1",
-//         defaultHeaders: {
-//             "HTTP-Referer": "https://recall.totvs.com",
-//             "X-Title": "Recall",
-//         },
-//     },
-// })
+export const llmOpenRouter = new ChatOpenAI({
+    model: "perceptron/perceptron-mk1",
+    temperature: 0,
+    apiKey: process.env.OPENROUTER_API_KEY,
+    configuration: {
+        baseURL: "https://openrouter.ai/api/v1",
+        defaultHeaders: {
+            "HTTP-Referer": "https://recall.totvs.com",
+            "X-Title": "Recall",
+        },
+    },
+})

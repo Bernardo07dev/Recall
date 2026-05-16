@@ -1,5 +1,5 @@
 import { fetchCompany, fetchMessages } from "@/src/app/actions/fetchThings";
-import { llmLeve } from "@/src/lib/langchain/llm";
+import { llmOpenRouter } from "@/src/lib/langchain/llm";
 import { BASE_PROMPT } from "@/src/lib/langchain/utils";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { saveMessages } from "@/src/app/actions/chat-action";
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   const messages = [SYSTEM, ...history, userMessage];
 
   // Stream the LLM response
-  const stream = await llmLeve.stream(messages);
+  const stream = await llmOpenRouter.stream(messages);
 
   const encoder = new TextEncoder();
   let fullResponse = "";

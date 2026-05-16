@@ -39,8 +39,11 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
     }, [id])
 
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" })
-    }, [messages])
+        const timeoutId = setTimeout(() => {
+            bottomRef.current?.scrollIntoView({ behavior: isStreaming ? "auto" : "smooth", block: "end" })
+        }, 100);
+        return () => clearTimeout(timeoutId);
+    }, [messages, isStreaming])
 
     const streamResponse = useCallback(async (mensagem: string) => {
         setIsStreaming(true)
@@ -128,14 +131,14 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
 
     return (
         <div className="py-22 px-[15%] min-h-screen flex flex-col justify-end items-center">
-            <section className='mb-18 fade-in my-4 w-[80%] inter text-[12px]'>
+            <section className='mb-18 fade-in my-4 w-[80%] inter text-[0.75rem]'>
                 {messages?.map((msg, index) => (
                     <div 
                         key={index} className={`flex items-center mt-2 text-sm ${
                         msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"
                         }`}
                     >
-                        <div className={`w-fit p-3 py-2 rounded-xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-600" : " text-gray-800"}`}>
+                        <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
                             {msg.role === "AI" ? (
                                 <div className="prose prose-sm max-w-none text-gray-800">
                                     <ReactMarkdown>{msg.input}</ReactMarkdown>

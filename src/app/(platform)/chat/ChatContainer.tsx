@@ -65,7 +65,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
             </div>
 
             {unavailable && enableCompany && (
-                <div className="text-[11px] text-gray-500 absolute bottom-14 bg-white px-2 py-1 shadow-sm rounded-lg">
+                <div className="text-[0.6875rem] text-gray-500 absolute bottom-14 bg-white px-2 py-1 shadow-sm rounded-lg">
                     <p>Você já definiu o contexto desse chat. Para escolher outro <strong>crie um novo chat</strong></p>
                 </div>
             )}
