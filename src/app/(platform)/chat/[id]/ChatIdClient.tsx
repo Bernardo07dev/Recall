@@ -142,7 +142,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                     >
                         <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
                             {msg.role === "AI" ? (
-                                <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mt-4 prose-h2:mb-2">
+                                <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:font-bold prose-h1:text-gray-900 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mt-4 prose-h2:mb-2">
                                     <ReactMarkdown>{msg.input}</ReactMarkdown>
                                     {msg.input === "" && isStreaming && (
                                         <svg className="animate-pulse w-5 h-5 opacity-70 inline-block ml-1" viewBox="-3 -3 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
