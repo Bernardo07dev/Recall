@@ -27,7 +27,7 @@ ${arquivos}
 
 Gere o resumo detalhado abaixo, sem introduções ou saudações:`
 
-export const JSON_PROMPT = (json: Record<string, any>) => `Você é um analista de inteligência comercial especializado no ecossistema TOTVS.
+export const JSON_PROMPT = (json: Record<string, any>, schema?: string) => `Você é um analista de inteligência comercial especializado no ecossistema TOTVS.
 
 Baseado nos dados de contexto que recebeu você deve retornar um JSON denso, estruturado e acionável.
 
@@ -93,8 +93,7 @@ PRODUTOS TOTVS VÁLIDOS:
 
 - Outros (use o nome mencionado)
 
-SCHEMA OBRIGATÓRIO:
-{schema}
+${schema ? `SCHEMA OBRIGATÓRIO:\n${schema}\n` : ''}
 Exemplo de input:
 **Resumo Corporativo: Advocacy Consultoria Estratégica**
 

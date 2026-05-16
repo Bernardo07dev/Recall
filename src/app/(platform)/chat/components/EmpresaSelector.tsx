@@ -35,7 +35,7 @@ export default function EmpresaSelector({ empresas, onChange, disabled, defaultC
         <div className="relative w-fit">
             <button
                 onClick={() => !disabled && setOpen(!open)}
-                className={`flex items-center gap-2 bg-white px-4 py-2 rounded-full text-xs font-semibold transition-colors
+                className={`flex items-center gap-2 bg-white px-4 py-2 rounded-full [0.7rem] font-semibold transition-colors
                     ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-50/70 cursor-pointer'}`}
             >
                 <SelectedIcon size={13} className={selectedTextClass} />
@@ -56,7 +56,7 @@ export default function EmpresaSelector({ empresas, onChange, disabled, defaultC
                 <div className="absolute bottom-10 left-0 z-20 bg-white border border-gray-100 rounded-2xl shadow-lg overflow-hidden w-56">
                     <div
                         onClick={() => handleSelect(null)}
-                        className={`flex items-center gap-2 px-4 py-3 text-xs cursor-pointer hover:bg-gray-50 transition-colors ${!selected ? 'text-blue-500 font-semibold' : 'text-gray-500'}`}
+                        className={`flex items-center gap-2 px-4 py-3 [0.7rem] cursor-pointer hover:bg-gray-50 transition-colors ${!selected ? 'text-blue-500 font-semibold' : 'text-gray-500'}`}
                     >
                         <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
                             <X size={10} className="text-gray-400" />
@@ -71,7 +71,7 @@ export default function EmpresaSelector({ empresas, onChange, disabled, defaultC
                             <div
                                 key={empresa.id}
                                 onClick={() => handleSelect(empresa)}
-                                className={`flex items-center gap-2 px-4 py-3 text-xs cursor-pointer hover:bg-blue-50/40 transition-colors font-semibold ${selected?.id === empresa.id ? 'text-blue-500 bg-blue-50' : 'text-gray-700'}`}
+                                className={`flex items-center gap-2 px-4 py-3 text-[0.8rem] cursor-pointer hover:bg-blue-50/40 transition-colors font-semibold ${selected?.id === empresa.id ? 'text-blue-500 bg-blue-50' : 'text-gray-700'}`}
                             >
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${bgClass}`}>
                                     <Icon size={13} className={textClass} />

@@ -7,6 +7,7 @@ import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import example from './example.json';
 import { lerPlanilha } from "@/src/lib/XLSX";
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
 
 export const EmpresaStateAnnotation = Annotation.Root({
@@ -77,14 +78,10 @@ const nodeInputization = async (empresa: EmpresaState) => {
     const context = new SystemMessage(BASE_PROMPT)
     let finalContent = ""
 
-    if (dados) {
-        const promptFinal = new HumanMessage(INPUTIZATION_PROMPT(dados.content, empresa.rawContent))
-        const response = await llmLeve.invoke([context, promptFinal])
-        finalContent = response.content as string
-    } else {
-        const response = await llmLeve.invoke([context])
-        finalContent = response.content as string
-    }
+    const contextoExtra = dados?.content ?? empresa.rawContent ?? 'Nenhum contexto adicional fornecido.'
+    const promptFinal = new HumanMessage(INPUTIZATION_PROMPT(contextoExtra, empresa.rawContent))
+    const response = await llmLeve.invoke([context, promptFinal])
+    finalContent = response.content as string
 
     try {
         await prisma.empresas.update({
@@ -101,7 +98,8 @@ const nodeInputization = async (empresa: EmpresaState) => {
 
 const nodeGeneratejson = async (empresa: EmpresaState) => {
     console.log("... Começando JSON ...")
-    const instructions = new SystemMessage(JSON_PROMPT(example))
+    const schemaJson = JSON.stringify(zodToJsonSchema(InsightSchema), null, 2)
+    const instructions = new SystemMessage(JSON_PROMPT(example, schemaJson))
     const content = new HumanMessage(empresa.summarization)
 
     const structuredLlm = llmBruta.withStructuredOutput(InsightSchema)
