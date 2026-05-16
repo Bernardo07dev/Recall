@@ -20,7 +20,7 @@ export default function SideBar({ userId }: { userId: string }){
             }
         }
         fetchChats();
-    }, []);
+    }, [pathname, userId]);
 
     console.log(chats);
 
@@ -38,8 +38,8 @@ export default function SideBar({ userId }: { userId: string }){
                     }
                 </div>
             </div>
-            {/* <p className="pt-1 text-xs text-gray-400 font-ms">UMA INICIATIVA TOTVS</p> */}
 
+            <p className={`pt-1 text-xs text-gray-400 font-ms ${collapsed ? 'hidden' : 'block'}`}>UMA INICIATIVA TOTVS</p>
             <div className="top-6 bg-white z-10">
                 <div
                     onClick={() => redirect('/context')}

@@ -14,6 +14,8 @@ export async function POST(req: Request) {
   const combinedSystemPrompt = `
     ${BASE_PROMPT}
 
+    USE BASTANTE MARKDOEN E DEIXE BONITO
+
     [CONTEXTO DA EMPRESA]
     ${res?.context || "Sem contexto disponível"}
 
@@ -24,10 +26,8 @@ export async function POST(req: Request) {
   const SYSTEM = new SystemMessage(combinedSystemPrompt);
   const userMessage = new HumanMessage(mensagem);
 
-  // Build message array: system + history + new user message
   const messages = [SYSTEM, ...history, userMessage];
 
-  // Stream the LLM response
   const stream = await llmOpenRouter.stream(messages);
 
   const encoder = new TextEncoder();

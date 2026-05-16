@@ -101,9 +101,9 @@ export default function ContextPage(){
                         <div className="w-full">
                             <h1 className='text-xs font-semibold mb-2 text-gray-400'>NOME DA EMPRESA</h1>
                             <input className={`mb-6 border-[1.6px] border-[#C2C6D4]/30 rounded-lg transition-all placeholder:text-gray-400 font-medium w-full py-[11px] px-3 text-[13px] 
-                                                ${nomeEmpyty 
-                ? 'border-red-400 focus:outline-red-400 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.15)]' 
-                : 'border-[#C2C6D4]/30 focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]'}`}
+                                ${nomeEmpyty 
+                                ? 'border-red-400 focus:outline-red-400 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.15)]' 
+                                : 'border-[#C2C6D4]/30 focus:outline-sky-500 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]'}`}
                                 type='text' placeholder='ex: Totvs' name='nome' onChange={handleChange} value={form.nome}>
                             </input>
                             {nomeEmpyty && <p className="text-red-500 pb-4 text-[12px] -mt-5 pl-1 font-semibold animate-fade-in">Este campo precisa ser preenchido</p>}

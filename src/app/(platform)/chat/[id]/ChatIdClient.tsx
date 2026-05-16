@@ -1,5 +1,5 @@
 "use client"
-import ChatContainer from "@/src/app/(platform)/chat/ChatContainer"
+import ChatContainer from "@/src/app/(platform)/chat/components/ChatContainer"
 import { saveMessages, getMessages } from "@/src/app/actions/chat-action";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ interface Message {
 
 interface Props {
     id: string;
-    empresas: any[];
+    empresas: { id: string, nome: string, industry: string }[];
     companyId: string | null;
     userId: string;
 }
@@ -40,7 +40,10 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
-            bottomRef.current?.scrollIntoView({ behavior: isStreaming ? "auto" : "smooth", block: "end" })
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: isStreaming ? "auto" : "smooth"
+            });
         }, 100);
         return () => clearTimeout(timeoutId);
     }, [messages, isStreaming])
@@ -80,7 +83,6 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                 setMessages(prev => {
                     const aiIndex = prev.findIndex((m: any) => m.id === aiMessageId)
                     if (aiIndex === -1) {
-                        // Case where React StrictMode or DB fetch overwrites the state and removes the AI placeholder
                         return [...prev, { input: fullText, companyId, role: "AI", id: aiMessageId }]
                     }
 
@@ -134,13 +136,13 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
             <section className='mb-18 fade-in my-4 w-[80%] inter text-[0.75rem]'>
                 {messages?.map((msg, index) => (
                     <div 
-                        key={index} className={`flex items-center mt-2 text-sm ${
+                        key={index} className={`flex items-center mb-4 text-sm ${
                         msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"
                         }`}
                     >
                         <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
                             {msg.role === "AI" ? (
-                                <div className="prose prose-sm max-w-none text-gray-800">
+                                <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mt-4 prose-h2:mb-2">
                                     <ReactMarkdown>{msg.input}</ReactMarkdown>
                                     {msg.input === "" && isStreaming && (
                                         <span className="inline-block w-2 h-4 bg-gray-400 animate-pulse rounded-sm ml-0.5" />

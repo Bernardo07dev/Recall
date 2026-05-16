@@ -1,11 +1,12 @@
 'use client'
 import { useState } from "react"
 import { ChevronDown, SendHorizontal } from 'lucide-react';
+import EmpresaSelector from "@/src/app/(platform)/chat/components/EmpresaSelector";
 
 interface Props {
     onEnviar: (input: string, companyId: string | null, role: "human" | "AI") => void;
     enableCompany?: boolean;
-    empresas: { id: string, nome: string }[];
+    empresas: { id: string, nome: string, industry: string }[];
     defaultCompanyId?: string | null;
     isStreaming?: boolean;
 }
@@ -23,7 +24,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
 
     return (
         <div className="w-full relative flex flex-col text-sm bg-white rounded-3xl z-20 p-4 border border-[#ebebeb]">
-            <div className="w-full flex fex-row items-center">
+            <div className="w-full pb-3 flex fex-row items-center">
                 <input 
                     onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} 
                     className="p-2 w-full font-medium focus:outline-none text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" 
@@ -42,7 +43,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                 </button>
             </div>
 
-            <div 
+            {/* <div 
                 className="relative w-fit text-[#1E40AF] mt-2" 
                 onMouseEnter={() => setUnavailable(true)} 
                 onMouseLeave={() => setUnavailable(false)}
@@ -62,7 +63,14 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                 <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
                     <ChevronDown size={14} className="" />
                 </div>
-            </div>
+            </div> */}
+
+            <EmpresaSelector
+                empresas={empresas}
+                onChange={(id) => setCompanyId(id)}
+                disabled={enableCompany}
+                defaultCompanyId={companyId}
+            />
 
             {unavailable && enableCompany && (
                 <div className="text-[0.6875rem] text-gray-500 absolute bottom-14 bg-white px-2 py-1 shadow-sm rounded-lg">

@@ -1,44 +1,23 @@
 import { prisma } from "@/src/lib/prisma"
-import { Landmark, GraduationCap, Factory, Truck, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import Link from "next/link"
+import { sectorConfig, DefaultIconConfig } from '@/src/lib/sectorConfig'
 
 export default async function Empresas(){
     const business = await prisma.empresas.findMany({
         orderBy: { createdAt: 'desc' }
     })
 
-    const FinanceiroIcon = ({ industria }: { industria: string }) => {
-        return(
-            <div className="flex flex-row text-[#004D99] inter w-full justify-between mb-4">
-                <Landmark size={40} className="bg-[#EFF6FF] p-2 rounded-xl w-fit"/>
-                <p className="bg-[#EFF6FF] h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{industria}</p>
-            </div>
-        )
-    }
-
-    const EducacaoIcon = ({ industria }: { industria: string }) => {
-        return(
-            <div className="flex flex-row text-[#E2264F] inter w-full justify-between mb-4">
-                <GraduationCap size={40} className="bg-[#FFF1F2] p-2 rounded-xl w-fit"/>
-                <p className="bg-[#FFF1F2] h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{industria}</p>
-            </div>
-        )
-    }
-
-    const ManufaturaIcon = ({ industria }: { industria: string }) => {
-        return(
-            <div className="flex flex-row text-[#16A34A] inter w-full justify-between mb-4">
-                <Factory size={40} className="bg-[#F0FDF4] p-2 rounded-xl w-fit"/>
-                <p className="bg-[#F0FDF4] h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{industria}</p>
-            </div>
-        )
-    }
-
-    const LogisticaIcon = ({ industria }: { industria: string }) => {
-        return(
-            <div className="flex flex-row text-[#334155] inter w-full justify-between mb-4">
-                <Truck size={40} className="bg-[#F1F5F9] p-2 rounded-xl w-fit"/>
-                <p className="bg-gray-100 h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{industria}</p>
+    const IndustryIcon = ({ industria }: { industria: string }) => {
+        const config = sectorConfig[industria.toLowerCase()] || DefaultIconConfig;
+        const { Icon, textClass, bgClass } = config;
+        
+        return (
+            <div className={`flex flex-row inter w-full justify-between mb-4 ${textClass}`}>
+                <Icon size={40} className={`p-2 rounded-xl w-fit ${bgClass}`} />
+                <p className={`h-fit text-xs font-semibold p-1 px-2 rounded-2xl ${bgClass}`}>
+                    {industria}
+                </p>
             </div>
         )
     }
@@ -56,12 +35,7 @@ export default async function Empresas(){
                                 <p className="bg-gray-100 h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{empresa.industry}</p>
                             </div>
                         ) : (
-                            <>
-                                {empresa.industry === "financeiros" && <FinanceiroIcon industria={empresa.industry}/>}
-                                {empresa.industry === "educação" && <EducacaoIcon industria={empresa.industry}/>}
-                                {empresa.industry === "manufatura" && <ManufaturaIcon industria={empresa.industry}/>}
-                                {empresa.industry === "logística" && <LogisticaIcon industria={empresa.industry}/>}
-                            </>
+                            <IndustryIcon industria={empresa.industry} />
                         )}
                         <p className="font-bold">{empresa.nome}</p>
                         <p className="text-xs text-gray-400">{empresa.industry}</p>

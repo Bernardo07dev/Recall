@@ -1,6 +1,6 @@
 'use client'
 import { ChartBar, NotebookText, Map } from 'lucide-react';
-import ChatContainer from './ChatContainer'
+import ChatContainer from './components/ChatContainer'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createConversation, saveMessages } from '@/src/app/actions/chat-action';
@@ -17,7 +17,7 @@ interface UserType {
 
 interface Props {
     user: UserType | null;
-    empresas: { id: string, nome: string }[];
+    empresas: { id: string, nome: string, industry: string }[];
 }
 
 interface Message {

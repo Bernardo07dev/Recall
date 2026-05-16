@@ -22,10 +22,26 @@ export default function SelectIndustry({value, onChange, name, empytyState}: Sel
           <option value="" disabled className="text-slate-400">
             Qual o setor
           </option>
+          <option value="agricultura" className="text-gray-700">Agricultura</option>
+          <option value="alimentação" className="text-gray-700">Alimentação</option>
+          <option value="construção" className="text-gray-700">Construção</option>
+          <option value="educação" className="text-gray-700">Educação</option>
+          <option value="energia" className="text-gray-700">Energia</option>
+          <option value="entretenimento" className="text-gray-700">Entretenimento</option>
+          <option value="financeiros" className="text-gray-700">Serviços Financeiros</option>
+          <option value="governo" className="text-gray-700">Governo</option>
+          <option value="imobiliário" className="text-gray-700">Imobiliário</option>
           <option value="logística" className="text-gray-700">Logística</option>
           <option value="manufatura" className="text-gray-700">Manufatura</option>
-          <option value="educação" className="text-gray-700">Educação</option>
-          <option value="financeiros" className="text-gray-700">Serviços Financeiros</option>
+          <option value="mídia" className="text-gray-700">Mídia</option>
+          <option value="mineração" className="text-gray-700">Mineração</option>
+          <option value="saúde" className="text-gray-700">Saúde</option>
+          <option value="serviços" className="text-gray-700">Serviços</option>
+          <option value="tecnologia" className="text-gray-700">Tecnologia</option>
+          <option value="telecomunicações" className="text-gray-700">Telecomunicações</option>
+          <option value="transporte" className="text-gray-700">Transporte</option>
+          <option value="turismo" className="text-gray-700">Turismo</option>
+          <option value="varejo" className="text-gray-700">Varejo</option>
         </select>
 
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400">
