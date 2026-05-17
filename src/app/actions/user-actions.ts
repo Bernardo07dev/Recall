@@ -6,6 +6,7 @@ import { prisma } from "@/src/lib/prisma";
 import { encrypt } from "@/src/lib/auth";
 import { supabase } from "@/src/lib/supabase";
 import { executeGraph } from '@/src/lib/langchain/actionsAI';
+import { after } from "next/server";
 
 export async function createUser(prevState: any, formData: any) {
   const password = formData.get("password");
@@ -142,7 +143,7 @@ export async function createEmpresa(prevState: any, form: FormData) {
           }
       });
 
-      (async () => {
+      after(async () => {
           try {
               await executeGraph(newBusiness.id, links)
               console.log("Começando Graofo")
@@ -157,7 +158,7 @@ export async function createEmpresa(prevState: any, form: FormData) {
                   data: { status: "error" }
               })
           }
-      })();
+      });
 
       return { success: true, empresa: updatedBusiness };
   } catch (error: any) {

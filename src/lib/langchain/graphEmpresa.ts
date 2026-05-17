@@ -1,7 +1,7 @@
 import { prisma } from "@/src/lib/prisma";
 import { END, START, StateGraph } from "@langchain/langgraph"
 import { Annotation } from "@langchain/langgraph"
-import { llmLeve, llmBruta } from './llm'
+import { llmLeve, llmBruta, llmJson } from './llm'
 import { BASE_PROMPT, INPUTIZATION_PROMPT, JSON_PROMPT, InsightSchema } from '@/src/lib/langchain/utils'
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
@@ -26,9 +26,13 @@ const nodeDataingestion = async (empresa: EmpresaState) => {
 
     const arquivosParaProcessar = empresa.arquivos || [];
 
+    console.log("Arquivos para processar:", arquivosParaProcessar);
+
     for (const url of arquivosParaProcessar) {
+        console.log(`>>> Iniciando download do arquivo: ${url}`);
         try {
             const response = await fetch(url);
+            console.log(`<<< Download concluído. Status: ${response.status}`);
             if (!response.ok) {
                 console.warn(`Erro ao baixar arquivo: ${url}`);
                 continue;
@@ -37,20 +41,31 @@ const nodeDataingestion = async (empresa: EmpresaState) => {
             const urlLower = url.toLowerCase();
 
             if (urlLower.endsWith(".txt")) {
+                console.log("Lendo arquivo TXT...");
                 const texto = await response.text();
                 conteudoExtraido += `\n--- Arquivo TXT: ${url} ---\n${texto}\n`;
+                console.log("TXT processado com sucesso.");
             } else if (urlLower.endsWith(".pdf")) {
+                console.log("Lendo arquivo PDF (convertendo para blob)...");
                 const blob = await response.blob(); 
-                        
+                
+                console.log("Iniciando WebPDFLoader...");
                 const loader = new WebPDFLoader(blob);
                 const docs = await loader.load();
+                console.log(`PDF carregado com ${docs.length} páginas.`);
                 
                 const textoPdf = docs.map(doc => doc.pageContent).join("\n");
                 conteudoExtraido += `\n--- [PDF] ${url} ---\n${textoPdf}\n`;
             } else if(urlLower.endsWith(".xlsx") || urlLower.endsWith(".xls") || urlLower.endsWith(".csv")){
-                const buffer = await response.arrayBuffer()
-                const planilha = lerPlanilha(buffer)
-                conteudoExtraido += planilha
+                console.log("Lendo arquivo de planilha (arrayBuffer)...");
+                const response = await fetch("http://localhost:3000/api/XlsToString", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url })
+                })
+                const texto = await response.text()
+                console.log(texto)
+                conteudoExtraido += texto
             }
         } catch (error) {
             console.error(`Falha ao processar ${url}:`, error);
@@ -102,9 +117,15 @@ const nodeGeneratejson = async (empresa: EmpresaState) => {
     const instructions = new SystemMessage(JSON_PROMPT(example, schemaJson))
     const content = new HumanMessage(empresa.summarization)
 
-    const structuredLlm = llmBruta.withStructuredOutput(InsightSchema)
-    const parsed = await structuredLlm.invoke([instructions, content])
-    console.log(parsed)
+    let parsed: any = null;
+    try {
+        const structuredLlm = llmJson.withStructuredOutput(InsightSchema, { strict: true })
+        parsed = await structuredLlm.invoke([instructions, content])
+        console.log("JSON gerado com sucesso!")
+    } catch (e) {
+        console.error("ERRO NO structuredLlm.invoke:", e)
+        throw new Error("Falha ao gerar estruturação de JSON na IA.");
+    }
 
     try {
         await prisma.empresas.update({

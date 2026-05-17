@@ -27,7 +27,8 @@ export async function executeGraph(companyId: string, arquivos: string[] = []){
             jsonOutput: {},
         });
         console.log(result)
-    }catch(error){
-        console.log(error)
+    } catch (error) {
+        console.error("Erro no executeGraph:", error)
+        throw error;
     }
 }

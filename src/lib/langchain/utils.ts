@@ -79,6 +79,7 @@ SENTIMENT VÁLIDOS: "positive", "negative", "mixed", "neutral"
 HEALTH LABEL VÁLIDOS: "healthy", "moderate", "at_risk", "critical"
 INFLUENCE TYPE VÁLIDOS: "decision_maker", "technical_influencer", "end_user", "financial_gatekeeper"
 PRODUCT STATUS VÁLIDOS: "active", "opportunity", "at_risk", "churned"
+JIRA TASK PRIORITY VÁLIDOS: "low", "medium", "high"
 
 PRODUTOS TOTVS VÁLIDOS:
 (TOTVS Protheus) É o principal e mais robusto sistema de gestão (ERP) da empresa. Altamente personalizável, ele controla o back-office completo de médias e grandes corporações, englobando financeiro, faturamento, compras, estoque e produção.
@@ -125,7 +126,7 @@ const JiraTaskSchema = z.object({
   title: z.string(),
   priority: z.enum(['low', 'medium', 'high']),
   label: z.string(),
-}).optional()
+}).nullish()
 
 const InsightItemSchema = z.object({
   id: z.string().describe('Formato: ins_001, ins_002...'),
@@ -142,9 +143,9 @@ const InsightItemSchema = z.object({
   criticality: z.enum(['low', 'medium', 'high', 'critical']),
   title: z.string().max(60),
   description: z.string().max(200),
-  affected_totvs_product: z.string().optional(),
+  affected_totvs_product: z.string().nullish(),
   source_excerpt: z.string().max(100),
-  recommended_action: z.string().optional(),
+  recommended_action: z.string().nullish(),
   jira_task_suggestion: JiraTaskSchema,
 })
 
@@ -157,7 +158,7 @@ const ConversationMetricsSchema = z.object({
 const ProductMappedSchema = z.object({
   product: z.string(),
   status: z.enum(['active', 'opportunity', 'at_risk', 'churned']),
-  satisfaction: z.enum(['positive', 'negative', 'mixed', 'neutral']).optional(),
+  satisfaction: z.enum(['positive', 'negative', 'mixed', 'neutral']).nullish(),
 })
 
 export const InsightSchema = z.object({
