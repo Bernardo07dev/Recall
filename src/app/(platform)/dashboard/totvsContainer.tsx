@@ -23,7 +23,7 @@ export default function totvsContainer({ empresa } : Props){
         }
     }
 
-    const satisfaction = (satisfactionValue?: string) => {
+    const satisfaction = (satisfactionValue?: string | null) => {
         switch (satisfactionValue) {
             case "positive":
                 return <div className="p-1.5 rounded-full bg-emerald-100 text-emerald-600" title="Positivo"><Smile size={16} /></div>;
