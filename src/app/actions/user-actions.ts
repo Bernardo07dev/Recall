@@ -166,3 +166,9 @@ export async function createEmpresa(prevState: any, form: FormData) {
         return { success: false, error: error.message };
   }
 }
+
+export async function deleteChat(conversationId: string) {
+    await prisma.conversations.delete({
+        where: {id: conversationId}
+    });
+}

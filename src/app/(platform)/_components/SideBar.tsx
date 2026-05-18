@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
 import Logo from "../../../../public/RECALL-logo.svg";
-import { CirclePlus, MessageSquare, Building2, Settings, MessageCirclePlus, PanelRight, PanelLeft } from "lucide-react";
+import { CirclePlus, MessageSquare, Building2, Settings, MessageCirclePlus, PanelRight, PanelLeft, Trash } from "lucide-react";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import { getChats } from "@/src/app/actions/chat-action";
 import { useEffect, useState } from "react";
+import { deleteChat } from "@/src/app/actions/user-actions";
 
 export default function SideBar({ userId }: { userId: string }){
     const pathname = usePathname();
@@ -23,6 +24,11 @@ export default function SideBar({ userId }: { userId: string }){
     }, [pathname, userId]);
 
     console.log(chats);
+
+    const deleteChatUI = async (conversationId: string) => {
+        await deleteChat(conversationId);
+        setChats(prevChats => prevChats.filter(chat => chat.id !== conversationId));
+    }
 
     return(
         <aside
@@ -92,8 +98,9 @@ export default function SideBar({ userId }: { userId: string }){
                 <section className="pt-4 fade-in">
                     <p className="text-left text-xs pb-1.5 px-1 text-gray-400">Conversas</p>
                     {chats.map((conversa) => (
-                        <div onClick={() => router.push(`/chat/${conversa.id}`)} key={conversa.id} className={`p-1.75 px-1 text-[0.8125rem] rounded-lg font-medium cursor-pointer ${pathname.includes(conversa.id) ? "text-[#1565C0] px-2 bg-[#e7eff872]" : "text-gray-500"}`}>
+                        <div onClick={() => router.push(`/chat/${conversa.id}`)} key={conversa.id} className={`p-1.75 px-1 text-[0.8rem] flex gap-1 items-center justify-between rounded-lg font-medium cursor-pointer hover:text-[#1565C0] ${pathname.includes(conversa.id) ? "text-[#1565C0] px-2 bg-[#e7eff872]" : "text-gray-500"}`}>
                             <p>{conversa.title.length > 30 ? conversa.title.substring(0, 30) + "..." : conversa.title}</p>
+                            <Trash onClick={(e) => { e.stopPropagation(); deleteChatUI(conversa.id); }} size={13} className="hover:text-red-500"/>
                         </div>
                     ))}
                 </section>
