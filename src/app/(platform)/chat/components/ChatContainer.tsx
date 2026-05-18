@@ -9,9 +9,10 @@ interface Props {
     empresas: { id: string, nome: string, industry: string }[];
     defaultCompanyId?: string | null;
     isStreaming?: boolean;
+    onCompanyChange?: (companyId: string | null) => void;
 }
 
-export default function ChatContainer({ onEnviar, enableCompany, empresas, defaultCompanyId, isStreaming }: Props) {
+export default function ChatContainer({ onEnviar, enableCompany, empresas, defaultCompanyId, isStreaming, onCompanyChange }: Props) {
     const [input, setInput] = useState("")
     const [companyId, setCompanyId] = useState<string | null>(defaultCompanyId ?? null)
     const [unavailable, setUnavailable] = useState<boolean>(false)
@@ -67,7 +68,10 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
 
             <EmpresaSelector
                 empresas={empresas}
-                onChange={(id) => setCompanyId(id)}
+                onChange={(id) => {
+                    setCompanyId(id);
+                    if (onCompanyChange) onCompanyChange(id);
+                }}
                 disabled={enableCompany}
                 defaultCompanyId={companyId}
             />

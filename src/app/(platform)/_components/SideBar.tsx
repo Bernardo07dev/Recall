@@ -64,7 +64,7 @@ export default function SideBar({ userId }: { userId: string }){
                 <div
                     onClick={() => router.push("/chat")}
                     title="Chat"
-                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-[0.375rem] rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("chat") ? `text-[#1565C0]` : `text-gray-500`}`}
+                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("chat") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
                     <MessageSquare size={18} className="shrink-0"/>
                     {!collapsed && <p>Chat</p>}
@@ -73,7 +73,7 @@ export default function SideBar({ userId }: { userId: string }){
                 <div
                     onClick={() => redirect('/empresas')}
                     title="Empresas"
-                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-[0.375rem] rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}
+                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
                     <Building2 size={18} className="shrink-0"/>
                     {!collapsed && <p>Empresas</p>}
@@ -81,7 +81,7 @@ export default function SideBar({ userId }: { userId: string }){
 
                 <div
                     title="Configurações"
-                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-[0.375rem] rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("config") ? `text-[#1565C0]` : `text-gray-500`}`}
+                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("config") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
                     <Settings size={18} className="shrink-0"/>
                     {!collapsed && <p>Configurações</p>}
@@ -90,9 +90,9 @@ export default function SideBar({ userId }: { userId: string }){
 
             {!collapsed && (
                 <section className="pt-4 fade-in">
-                    <p className="text-left text-xs pb-[0.375rem] px-1 text-gray-400">Conversas</p>
+                    <p className="text-left text-xs pb-1.5 px-1 text-gray-400">Conversas</p>
                     {chats.map((conversa) => (
-                        <div onClick={() => router.push(`/chat/${conversa.id}`)} key={conversa.id} className={`p-[0.4375rem] px-1 text-[0.8125rem] rounded-lg font-medium cursor-pointer ${pathname.includes(conversa.id) ? "text-[#1565C0] px-2 bg-[#e7eff872]" : "text-gray-500"}`}>
+                        <div onClick={() => router.push(`/chat/${conversa.id}`)} key={conversa.id} className={`p-1.75 px-1 text-[0.8125rem] rounded-lg font-medium cursor-pointer ${pathname.includes(conversa.id) ? "text-[#1565C0] px-2 bg-[#e7eff872]" : "text-gray-500"}`}>
                             <p>{conversa.title.length > 30 ? conversa.title.substring(0, 30) + "..." : conversa.title}</p>
                         </div>
                     ))}

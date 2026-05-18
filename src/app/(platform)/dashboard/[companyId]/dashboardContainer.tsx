@@ -1,11 +1,12 @@
 import { InsightOutput } from '@/src/lib/langchain/utils'
 import Image from "next/image";
-import { Metronome, Sparkles, Goal } from "lucide-react";
+import { Sparkles, MessageCircleCode} from "lucide-react";
 import InsightsContainer from '@/src/app/(platform)/dashboard/[companyId]/insightsContainer';
 import TotvsContainer from '../totvsContainer';
 import Loading from '@/src/app/(platform)/dashboard/[companyId]/LoadingContainer';
 import IndicatorsContainer from './_components/indicatorsContainer';
 import Logo from "@/public/Logo-totvs.svg";
+import Link from 'next/link';
 
 interface Empresa {
     id: string
@@ -58,7 +59,11 @@ export default function Container({ empresa } : Props ){
                         <h1 className='text-4xl font-bold mb-2'>Overview</h1>
                         <h1 className='font-semibold text-gray-500'>{empresa && empresa.nome}</h1>
                     </div>
-                    <p className='text-sm text-gray-400 mr-[5%]'>Métricas de conversação em tempo real e oportunidades estratégicas de IA em todo o ecossistema da sua empresa.</p>
+                    <p className='text-sm text-gray-400 mr-[5%] mb-2'>Métricas de conversação em tempo real e oportunidades estratégicas de IA em todo o ecossistema da sua empresa.</p>
+                    <Link href={`../chat/context/${empresa.id}`} className='text-xs cursor-pointer gap-1 items-center flex bg-[#1565C0] w-fit text-white/95 py-2 px-3 font-semibold rounded-lg'>
+                        <p>Ir para chat</p>
+                        <MessageCircleCode size={14}/>
+                    </Link>
                 </div>
                 <div className='w-full'>
                     {/* <div className='bg-white p-6 border border-gray-100 rounded-xl'>
