@@ -1,5 +1,5 @@
 import { prisma } from "@/src/lib/prisma"
-import { Plus } from "lucide-react"
+import { Plus, Trash } from "lucide-react"
 import Link from "next/link"
 import { sectorConfig, DefaultIconConfig } from '@/src/lib/sectorConfig'
 
@@ -13,10 +13,21 @@ export default async function Empresas(){
         const { Icon, textClass, bgClass } = config;
         
         return (
-            <div className={`flex flex-row inter w-full justify-between mb-4 ${textClass}`}>
+            <div className={`flex flex-row inter w-full justify-between items-center mb-4 ${textClass}`}>
                 <Icon size={40} className={`p-2 rounded-xl w-fit ${bgClass}`} />
-                <p className={`h-fit text-xs font-semibold p-1 px-2 rounded-2xl ${bgClass}`}>
-                    {industria}
+                <Trash className="mr-2 text-gray-400 hover:text-red-500" size={16} />
+            </div>
+        )
+    }
+
+    const IndustryText = ({ industria }: { industria: string }) => {
+        const config = sectorConfig[industria.toLowerCase()] || DefaultIconConfig;
+        const { Icon, textClass, bgClass } = config;
+
+        return (
+            <div className={`flex flex-row inter w-full justify-between mb-4 ${textClass}`}>
+                <p className={`h-fit text-xs font-medium p-2 px-3 rounded-xl ${bgClass}`}>
+                    {industria.charAt(0).toUpperCase() + industria.slice(1)}
                 </p>
             </div>
         )
@@ -37,12 +48,14 @@ export default async function Empresas(){
                         ) : (
                             <IndustryIcon industria={empresa.industry} />
                         )}
-                        <p className="font-bold">{empresa.nome}</p>
-                        <p className="text-xs text-gray-400">{empresa.industry}</p>
+                        <div className="flex flex-row justify-between items-center">
+                            <h2 className="font-semibold mb-1 text-lg">{empresa.nome}</h2>
+                            <div className="inter"><IndustryText industria={empresa.industry} /></div>
+                        </div>
                     </Link>
                 ))}
 
-                <Link href="/context" className="cursor-pointer text-[#424752a5] py-6 border-dashed border h-fit border-gray-300 text-center hover:border-[#1178df] transition-all p-4 w-full flex flex-col items-center justify-center rounded-2xl">
+                <Link href="/context" className="cursor-pointer text-[#424752a5] py-6 border-dashed border-2 h-fit border-gray-300 text-center hover:border-[#1178df] transition-all p-4 w-full flex flex-col items-center justify-center rounded-2xl">
                     <Plus className="bg-[#F2F3FB] p-2 rounded-full mb-2" size={34}/>
                     <h1 className="font-bold text-sm">Adicionar novo contexto</h1>
                     <p className="text-[11px] mx-2 text-gray-400">Clique aqui para criar um novo contexto</p>

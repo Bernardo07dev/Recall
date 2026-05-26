@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${manrope.className} ${inter.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="pt-BR" className={`${manrope.className} ${inter.variable} scroll-smooth`} suppressHydrationWarning data-scroll-behavior="smooth">
       <body suppressHydrationWarning>{children}</body>
     </html>
   );

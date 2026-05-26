@@ -1,11 +1,28 @@
 {
   "tailwindCSS.experimental.configFile": "src/app/globals.css",
   "editor.quickSuggestions": {
-    "strings": "on"
+    "other": "off",
+    "comments": "off",
+    "strings": "off"
   },
-  "editor.suggest.autoImports": true,
-  "typescript.suggest.autoImports": true,
-  "javascript.suggest.autoImports": true,
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.tabCompletion": "off",
+  "editor.wordBasedSuggestions": "off",
+  "editor.hover.enabled": "off",
+  "editor.parameterHints.enabled": false,
+  "editor.inlineSuggest.enabled": false,
+  "editor.suggest.autoImports": false,
+  "typescript.suggest.autoImports": false,
+  "javascript.suggest.autoImports": false,
+  "editor.autoClosingBrackets": "never",
+  "editor.autoClosingQuotes": "never",
+  "editor.autoClosingComments": "never",
+  "editor.autoClosingDelete": "never",
+  "editor.autoClosingOvertype": "never",
+  "editor.autoSurround": "never",
+  "editor.autoIndent": "none",
+  "scm.diffDecorations": "none",
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "javascript.preferences.importModuleSpecifier": "non-relative"
 }
