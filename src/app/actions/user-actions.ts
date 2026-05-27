@@ -172,3 +172,9 @@ export async function deleteChat(conversationId: string) {
         where: {id: conversationId}
     });
 }
+
+export async function deleteBusiness(businessId: string) {
+    await prisma.empresas.delete({
+        where: { id: businessId }
+    });
+}

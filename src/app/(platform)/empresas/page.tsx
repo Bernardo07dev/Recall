@@ -2,20 +2,37 @@ import { prisma } from "@/src/lib/prisma"
 import { Plus, Trash } from "lucide-react"
 import Link from "next/link"
 import { sectorConfig, DefaultIconConfig } from '@/src/lib/sectorConfig'
+import { deleteBusiness } from "@/src/app/actions/user-actions"
+import RemoveBusiness from "./removeBusiness"
+
+interface empresa {
+    id: string;
+    nome: string;
+    content: string;
+    json?: any;
+    context?: string | null;
+    resume?: string | null;
+    industry: string;
+    files: string[];
+    logo?: string | null;
+    relation?: string | null;
+    createdAt: Date;
+    status: string;
+}
 
 export default async function Empresas(){
     const business = await prisma.empresas.findMany({
         orderBy: { createdAt: 'desc' }
     })
 
-    const IndustryIcon = ({ industria }: { industria: string }) => {
-        const config = sectorConfig[industria.toLowerCase()] || DefaultIconConfig;
+    const IndustryIcon = ({ empresa }: { empresa: empresa }) => {
+        const config = sectorConfig[empresa.industry.toLowerCase()] || DefaultIconConfig;
         const { Icon, textClass, bgClass } = config;
         
         return (
             <div className={`flex flex-row inter w-full justify-between items-center mb-4 ${textClass}`}>
                 <Icon size={40} className={`p-2 rounded-xl w-fit ${bgClass}`} />
-                <Trash className="mr-2 text-gray-400 hover:text-red-500" size={16} />
+                <RemoveBusiness businessId={ empresa.id } />
             </div>
         )
     }
@@ -46,7 +63,7 @@ export default async function Empresas(){
                                 <p className="bg-gray-100 h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{empresa.industry}</p>
                             </div>
                         ) : (
-                            <IndustryIcon industria={empresa.industry} />
+                            <IndustryIcon empresa={empresa} />
                         )}
                         <div className="flex flex-row justify-between items-center">
                             <h2 className="font-semibold mb-1 text-lg">{empresa.nome}</h2>
