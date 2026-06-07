@@ -4,6 +4,7 @@ import ChatContainer from './components/ChatContainer'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createConversation, saveMessages } from '@/src/app/actions/chat-action';
+import Loading from '../loading';
 
 interface UserType {
     id: string
@@ -32,6 +33,7 @@ export default function Dashboard({ user, empresas }: Props) {
     const [message, setMessage] = useState<Message[]>([])
     const [conversationId, setConversationId] = useState<string | null>(null)
     const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null)
+    const [loading, setLoading] = useState(false);
     const router = useRouter()
 
     const nome = user?.nome?.split(" ")[0];
@@ -39,7 +41,7 @@ export default function Dashboard({ user, empresas }: Props) {
 
     const recebeMensagem = async (msg: string, companyId: string | null, role: "human" | "AI") => {
         let currentConversationId = conversationId
-
+        setLoading(true)
         if (currentConversationId == null){
             const result = await createConversation(user?.id || "0000", companyId, msg)
             if(result.success){
@@ -66,6 +68,10 @@ export default function Dashboard({ user, empresas }: Props) {
     const oportunidades = "Analise o contexto desta empresa e me mostre todas as oportunidades de upsell e cross-sell identificadas, com nível de prioridade e ação recomendada."
     const retencao = "Existe algum sinal de insatisfação ou risco de churn nesta empresa? Me mostre os alertas encontrados e o que deve ser feito para reter esse cliente."
     const map = "Quais produtos da TOTVS estão sendo mencionados nas conversas desta empresa? Faça um mapeamento total dos produtos"
+
+    if (loading) {
+        return <Loading />
+    }
 
     return (
         <main className={`py-8 px-[16%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen bg-[#fbfbff]`}>
