@@ -8,7 +8,7 @@ export default function RemoveBusiness({ businessId }: { businessId: string }){
 
     const handleDelete = async () => {
         await deleteBusiness(businessId);
-        router.refresh();
+        router.push("/empresas");
     };
 
     return (

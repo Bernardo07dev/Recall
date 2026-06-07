@@ -1,5 +1,5 @@
 import { InsightOutput } from "@/src/lib/langchain/utils";
-import { Smile, Frown, Meh, Minus } from "lucide-react";
+import { Smile, Frown, Meh, Minus} from "lucide-react";
 
 interface Props {
     empresa: InsightOutput;

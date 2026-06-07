@@ -1,6 +1,6 @@
 import { InsightOutput } from '@/src/lib/langchain/utils'
 import Image from "next/image";
-import { Sparkles, MessageCircleCode} from "lucide-react";
+import { Sparkles, MessageCircleCode, ArrowLeft} from "lucide-react";
 import InsightsContainer from '@/src/app/(platform)/dashboard/[companyId]/insightsContainer';
 import TotvsContainer from '../totvsContainer';
 import Loading from '@/src/app/(platform)/dashboard/[companyId]/LoadingContainer';
@@ -51,7 +51,11 @@ export default function Container({ empresa } : Props ){
     }
 
     return(
-        <main className="p-16 pt-26 animate-fade-in">
+        <main className="p-16 pt-20 animate-fade-in">
+            <Link href="/empresas" className="flex flex-row text-[#1565C0] font-semibold gap-1 items-center mb-8">
+                <ArrowLeft size={14} />
+                <p className="text-xs">Voltar para Empresas</p>
+            </Link>
             <div className='flex flex-row justify-between items-start mb-6'>
                 <div>
                     <Image src="/RECALL-logo.svg" className='w-16' alt="Logo" width={150} height={40}/>
