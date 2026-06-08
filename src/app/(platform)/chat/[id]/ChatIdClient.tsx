@@ -133,7 +133,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
 
     return (
         <div className="py-22 px-[15%] min-h-screen flex flex-col justify-end items-center">
-            <section className='mb-18 fade-in my-4 w-[80%] inter text-[0.75rem]'>
+            <section className='mb-18 fade-in my-4 w-[80%] font-medium text-gray-500 text-[0.85rem]'>
                 {messages?.map((msg, index) => (
                     <div 
                         key={index} className={`flex items-center mb-4 text-sm ${
@@ -142,7 +142,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                     >
                         <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
                             {msg.role === "AI" ? (
-                                <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:font-bold prose-h1:text-gray-900 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mt-4 prose-h2:mb-2">
+                                <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mt-4 prose-h2:mb-2">
                                     <ReactMarkdown>{msg.input}</ReactMarkdown>
                                     {msg.input === "" && isStreaming && (
                                         <svg className="animate-pulse w-5 h-5 opacity-70 inline-block ml-1" viewBox="-3 -3 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -158,7 +158,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                 ))}
             </section>
             <div ref={bottomRef} />
-            <div className="w-[53%] fixed bottom-0">
+            <div className="w-[52.6%] fixed bottom-0">
                 <ChatContainer 
                     empresas={empresas} 
                     onEnviar={handleEnviar} 
