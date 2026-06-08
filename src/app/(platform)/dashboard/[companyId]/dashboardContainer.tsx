@@ -2,10 +2,8 @@ import { InsightOutput } from '@/src/lib/langchain/utils'
 import Image from "next/image";
 import { Sparkles, MessageCircleCode, ArrowLeft} from "lucide-react";
 import InsightsContainer from '@/src/app/(platform)/dashboard/[companyId]/insightsContainer';
-import TotvsContainer from '../totvsContainer';
 import Loading from '@/src/app/(platform)/dashboard/[companyId]/LoadingContainer';
 import IndicatorsContainer from './_components/indicatorsContainer';
-import Logo from "@/public/Logo-totvs.svg";
 import Link from 'next/link';
 
 interface Empresa {
