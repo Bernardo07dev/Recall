@@ -24,7 +24,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
     }
 
     return (
-        <div className="w-full relative flex flex-col text-sm bg-white rounded-3xl z-20 p-4 border border-[#ebebeb]">
+        <div className="w-full relative flex flex-col text-sm bg-white rounded-3xl z-20 p-3 border border-[#ebebeb]">
             <div className="w-full pb-3 flex fex-row items-center">
                 <input 
                     onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} 
@@ -75,12 +75,6 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                 disabled={enableCompany}
                 defaultCompanyId={companyId}
             />
-
-            {unavailable && enableCompany && (
-                <div className="text-[0.6875rem] text-gray-500 absolute bottom-14 bg-white px-2 py-1 shadow-sm rounded-lg">
-                    <p>Você já definiu o contexto desse chat. Para escolher outro <strong>crie um novo chat</strong></p>
-                </div>
-            )}
 
         </div>
     )

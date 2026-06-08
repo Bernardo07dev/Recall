@@ -74,7 +74,7 @@ export default function Dashboard({ user, empresas }: Props) {
     }
 
     return (
-        <main className={`py-8 px-[16%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen bg-[#fbfbff]`}>
+        <main className={`py-8 px-[15%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen bg-[#fbfbff]`}>
             {!firstmsg &&
                 (<div className={`w-full py-18 flex flex-col items-start gap-2 ${hiding ? "animate-fade-out" : "animate-fade-in"}`}>
                     <h1 className="text-4xl font-semibold">Olá, {nome}!</h1>
