@@ -83,7 +83,7 @@ export default async function Empresas(){
 
         return (
             <div className={`flex flex-row inter w-full justify-between ${textClass}`}>
-                <p className={`h-fit text-[11px] font-light italic`}>
+                <p className={`h-fit text-[0.6rem] mb-0.5`}>
                     {industria.charAt(0).toUpperCase() + industria.slice(1)}
                 </p>
             </div>
@@ -108,25 +108,25 @@ export default async function Empresas(){
                                 <IndustryIcon empresa={empresa} />
                             )}
 
-                            <div className="flex flex-row gap-2 justify-baseline items-end mb-5">
-                                <h2 className="font-bold text-[1.2rem]">{empresa.nome}</h2>
+                            <div className="flex flex-row gap-1 justify-baseline items-end mb-5">
+                                <h2 className="font-bold text-[1.1rem]">{empresa.nome}</h2>
                                 <div className="inter"><IndustryText industria={empresa.industry} /></div>
                             </div>
                             
                             {empresa.json ? (
                                 <div className="flex flex-wrap w-full gap-2">
-                                    <div className="flex items-center gap-1.5 text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60 w-fit px-2.5 py-0.5 rounded-md -mt-2">
+                                    <div className="flex items-center mb-2 gap-1.5 text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60 w-fit px-2.5 py-1 rounded-lg -mt-2">
                                         <span className="w-1 h-1 rounded-full bg-emerald-500 animate-ping" />
                                         <span>Ativo</span>
                                     </div>
 
-                                    <div className="flex items-center gap-1.5 text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200/60 w-fit px-2.5 py-0.5 rounded-md -mt-2">
+                                    <div className="flex items-center mb-2 gap-1.5 text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200/60 w-fit px-2.5 py-1 rounded-lg -mt-2">
                                         <Sparkles className="text-blue-400 animate-pulse" size={9}/>
                                         <p>Insights: <span className="font-semibold">{getInsightCount(empresa.json)}</span></p>
                                     </div>
 
                                     {churn && (
-                                        <div className={`flex items-center gap-1.5 text-[10px] font-medium border w-fit px-2.5 py-0.5 rounded-md -mt-2 ${churn.classes}`}>
+                                        <div className={`flex items-center mb-2 gap-1.5 text-[10px] font-medium border w-fit px-2.5 py-1 rounded-lg -mt-2 ${churn.classes}`}>
                                             <ShieldAlert size={10} className="opacity-70" />
                                             <p className="font-semibold">{churn.label}</p>
                                         </div>
