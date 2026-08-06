@@ -18,7 +18,7 @@ interface FormData {
 const PassParmetrs = ({ password }: { password: string }) => {
     const hasMinLength = password.length >= 8;
     const hasUpper = /[A-Z]/.test(password);
-    const hasSpecial = /[@ # $ % & * ® © ñ _]/.test(password);
+    const hasSpecial = /[@ # $ % & * ® © ñ _ -]/.test(password);
 
     return (
         <div className="text-xs font-medium mb-6 flex flex-col gap-2 text-gray-500 animate-fade-in">
@@ -32,7 +32,7 @@ const PassParmetrs = ({ password }: { password: string }) => {
             </div>
             <div className="flex flex-row gap-1 items-center">
                 {hasSpecial ? <Check size={15} className="text-green-500"/> : <X size={15} className="text-red-500"/>}
-                <p>Pelo menos uma caracter especial (@, #, !, %, &, *, ®, ©, ñ, _)</p>
+                <p>Pelo menos uma caracter especial (@, #, !, %, &, *, ®, ©, ñ, _, -)</p>
             </div>
         </div>
     )
@@ -93,7 +93,7 @@ export default function FormSign() {
         }));
     };
 
-    const isPasswordStrong = formData.password.length >= 8 && /[A-Z]/.test(formData.password) && /[@#$%&*®©ñ_]/.test(formData.password);
+    const isPasswordStrong = formData.password.length >= 8 && /[A-Z]/.test(formData.password) && /[@#$%&*®©ñ_-]/.test(formData.password);
     const passwordsMatch = formData.password === formData.confirmPassword && formData.password !== "";
     const isFormValid = formData.nome.trim().length > 3 && formData.email.includes("@") && formData.cargo !== "" && formData.area !== "" && isPasswordStrong && passwordsMatch;
 

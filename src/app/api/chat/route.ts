@@ -6,7 +6,7 @@ import { saveMessages } from "@/src/app/actions/chat-action";
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { mensagem, id, chatId } = body;
+  const { mensagem, id, chatId } = body; 
 
   const res = id ? await fetchCompany(id) : null;
   const history = chatId ? await fetchMessages(chatId) : [];

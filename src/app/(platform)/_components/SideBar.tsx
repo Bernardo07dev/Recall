@@ -31,10 +31,31 @@ export default function SideBar({ userId }: { userId: string }){
     }
 
     return(
-        <aside
-            style={{ width: collapsed ? '4.25rem' : '24%', transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
-            className="scroll-smooth sticky top-0 h-screen p-4 shadow-sm z-20 bg-white overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:h-8 [&::-webkit-scrollbar]:w-[0.4rem] [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-[#E7EFF8] [&::-webkit-scrollbar-thumb]:rounded-full transition-colors"
+        <div 
+            style={{ width: collapsed ? '4.5rem' : '26%', transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
+            className="sticky top-0 h-screen p-3 z-20 transition-all bg-[#FBFBFF]"
         >
+            <style>{`
+                @keyframes gradient-shadow {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+                .animate-gradient-shadow {
+                    background: linear-gradient(90deg, #1565C0, #599be7, #9b59b6, #1565C0);
+                    background-size: 300% 300%;
+                    animation: gradient-shadow 4s ease infinite;
+                    filter: blur(12px);
+                }
+            `}</style>
+            
+            <div className="relative h-full w-full">
+                {/* Sombra de gradiente animada */}
+                <div className={`absolute -inset-0.5 animate-gradient-shadow rounded-xl transition-opacity duration-300 ${collapsed ? 'opacity-40' : 'opacity-0'}`}></div>
+                
+                <aside
+                    className={`relative z-10 scroll-smooth h-full rounded-xl bg-white overflow-y-auto transition-opacity overflow-x-hidden [&::-webkit-scrollbar]:h-8 [&::-webkit-scrollbar]:w-[0.4rem] [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-[#E7EFF8] [&::-webkit-scrollbar-thumb]:rounded-full transition-all duration-300 ${!collapsed ? 'shadow-sm border border-gray-100 p-4' : 'p-2'}`}
+                >
             <div className={`flex flex-row items-center ${collapsed ? 'justify-center' : 'justify-between'}`}>
                 {!collapsed && <Image src={Logo} alt="Logo Recall" width={90} className="pt-2"></Image>}
                 <div onClick={() => setCollapsed(!collapsed)} className="hover:bg-gray-100 p-1 rounded-md transition-colors">
@@ -50,7 +71,7 @@ export default function SideBar({ userId }: { userId: string }){
                 <div
                     onClick={() => redirect('/context')}
                     title="Nova Empresa"
-                    className={`flex flex-row mt-6 text-white text-[0.8125rem] gap-2 font-medium items-center justify-center bg-[#1565C0] p-2 rounded-lg cursor-pointer ${collapsed ? 'px-0' : ''}`}
+                    className={`flex flex-row mt-6 text-white text-[0.8rem] gap-2 font-medium items-center justify-center bg-[#1565C0] p-2 rounded-lg cursor-pointer ${collapsed ? 'px-0' : ''}`}
                 >
                     <CirclePlus size={18} className="shrink-0"/>
                     {!collapsed && <p className="whitespace-nowrap">Nova Empresa</p>}
@@ -59,7 +80,7 @@ export default function SideBar({ userId }: { userId: string }){
                 <div
                     onClick={() => window.location.href = '/chat'}
                     title="Novo Chat"
-                    className={`flex inter flex-row mt-2 text-[#1565C0] text-[0.8125rem] font-medium items-center gap-2 justify-center bg-[#1565C0]/10 p-2 rounded-lg cursor-pointer ${collapsed ? 'px-0' : ''}`}
+                    className={`flex inter flex-row mt-2 text-[#1565C0] text-[0.8rem] font-medium items-center gap-2 justify-center bg-[#1565C0]/10 p-2 rounded-lg cursor-pointer ${collapsed ? 'px-0' : ''}`}
                 >
                     <MessageCirclePlus size={18} className="shrink-0"/>
                     {!collapsed && <p className="whitespace-nowrap">Novo Chat</p>}
@@ -70,7 +91,7 @@ export default function SideBar({ userId }: { userId: string }){
                 <div
                     onClick={() => router.push("/chat")}
                     title="Chat"
-                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("chat") ? `text-[#1565C0]` : `text-gray-500`}`}
+                    className={`cursor-pointer flex flex-row text-[0.8rem] gap-2 font-semibold items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("chat") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
                     <MessageSquare size={18} className="shrink-0"/>
                     {!collapsed && <p>Chat</p>}
@@ -79,7 +100,7 @@ export default function SideBar({ userId }: { userId: string }){
                 <div
                     onClick={() => redirect('/empresas')}
                     title="Empresas"
-                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}
+                            className={`cursor-pointer flex flex-row text-[0.8rem] gap-2 font-semibold items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
                     <Building2 size={18} className="shrink-0"/>
                     {!collapsed && <p>Empresas</p>}
@@ -87,7 +108,7 @@ export default function SideBar({ userId }: { userId: string }){
 
                 <div
                     title="Configurações"
-                    className={`cursor-pointer flex flex-row text-[0.8125rem] gap-2 items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("config") ? `text-[#1565C0]` : `text-gray-500`}`}
+                            className={`cursor-pointer flex flex-row text-[0.8rem] gap-2 font-semibold items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("config") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
                     <Settings size={18} className="shrink-0"/>
                     {!collapsed && <p>Configurações</p>}
@@ -106,5 +127,7 @@ export default function SideBar({ userId }: { userId: string }){
                 </section>
             )}
         </aside>
+        </div>
+        </div>
     )
 }
