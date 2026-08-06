@@ -4,6 +4,7 @@ import { saveMessages, getMessages } from "@/src/app/actions/chat-action";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Message {
     input: string;
@@ -143,7 +144,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                         <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
                             {msg.role === "AI" ? (
                                 <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mt-4 prose-h2:mb-2">
-                                    <ReactMarkdown>{msg.input}</ReactMarkdown>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.input}</ReactMarkdown>
                                     {msg.input === "" && isStreaming && (
                                         <svg className="animate-pulse w-5 h-5 opacity-70 inline-block ml-1" viewBox="-3 -3 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z" fill="#1E40AF"/>

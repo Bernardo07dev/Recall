@@ -23,26 +23,45 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
         setInput("")
     }
 
-    return (
-        <div className="w-full relative flex flex-col text-sm bg-white rounded-3xl z-20 p-3 border border-[#ebebeb]">
-            <div className="w-full pb-3 flex fex-row items-center">
-                <input 
-                    onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} 
-                    className="p-2 w-full font-medium focus:outline-none text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" 
-                    value={input} 
-                    placeholder={isStreaming ? "Aguarde a resposta..." : "Pergunte Algo..."} 
-                    onChange={(e) => setInput(e.target.value)} 
-                    disabled={isStreaming}
-                />
+    const isInputEmpty = input.trim() === "";
 
-                <button 
-                    className="cursor-pointer bg-[#004D99] text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed" 
-                    onClick={handleEnviar}
-                    disabled={isStreaming}
-                >
-                    <SendHorizontal size={15} className=""/>
-                </button>
-            </div>
+    return (
+        <div className="relative w-full z-20">
+            <style>{`
+                @keyframes container-gradient-shadow {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+                .animate-container-gradient-shadow {
+                    background: linear-gradient(90deg, #1565C0, #599be7, #9b59b6, #1565C0);
+                    background-size: 300% 300%;
+                    animation: container-gradient-shadow 4s ease infinite;
+                    filter: blur(8px);
+                }
+            `}</style>
+
+            <div className={`absolute -inset-[2px] animate-container-gradient-shadow rounded-3xl transition-opacity duration-500 pointer-events-none ${isStreaming ? 'opacity-20' : 'opacity-0'}`}></div>
+            
+            <div className={`w-full relative flex flex-col text-sm bg-white rounded-3xl p-3 border transition-colors duration-300 ${isStreaming ? 'border-transparent shadow-sm' : 'border-[#ebebeb]'}`}>
+                <div className="w-full pb-3 flex flex-row items-center">
+                    <input 
+                        onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} 
+                        className="p-2 w-full font-medium focus:outline-none text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed bg-transparent" 
+                        value={input} 
+                        placeholder={isStreaming ? "Aguarde a resposta..." : "Pergunte Algo..."} 
+                        onChange={(e) => setInput(e.target.value)} 
+                        disabled={isStreaming}
+                    />
+
+                    <button 
+                        className={`p-3 rounded-full transition-all duration-300 ${isInputEmpty ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#004D99] text-white cursor-pointer hover:bg-[#003d7a]'} ${isStreaming ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handleEnviar}
+                        disabled={isStreaming || isInputEmpty}
+                    >
+                        <SendHorizontal size={15} className=""/>
+                    </button>
+                </div>
 
             {/* <div 
                 className="relative w-fit text-[#1E40AF] mt-2" 
@@ -76,6 +95,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                 defaultCompanyId={companyId}
             />
 
+        </div>
         </div>
     )
 }
