@@ -13,13 +13,15 @@ export function DetailedInsightModal({ activeInsight, setActiveInsight }: Detail
 
     return (
         <div 
-            className="fixed inset-0 bg-black/10 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-200" 
+            className="fixed w-[40%] min-w-125 inset-y-0 right-0 z-50 flex items-center p-4 animate-in fade-in duration-200" 
             onClick={() => setActiveInsight(null)}
         >
-            <div 
-                className="bg-white rounded-4xl w-[80%] max-w-5xl h-[80%] max-h-[800px] shadow-sm flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
-                onClick={(e) => e.stopPropagation()}
-            >
+            <div className="relative h-full w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
+                {/* Shadow rainbow no fundo */}
+                <div className="absolute -inset-0.5 rainbow-shadow rounded-4xl opacity-30"></div>
+                
+                {/* Conteúdo do modal */}
+                <div className="relative bg-white rounded-4xl w-full h-full flex flex-col overflow-hidden animate-in slide-in-from-right-12 duration-300">
                 <div className="flex justify-between items-start p-8 pb-3 border-b border-gray-100 shadow-md shadow-gray-100">
                     <div>
                         <h2 className="text-2xl mb-2 font-bold text-gray-800 leading-tight">{activeInsight.title}</h2>
@@ -36,7 +38,7 @@ export function DetailedInsightModal({ activeInsight, setActiveInsight }: Detail
                     </button>
                 </div>
             
-                <div className="p-8 overflow-y-auto flex-1 text-sm flex flex-col gap-8 inter bg-gray-50/30 inter">
+                    <div className="p-8 overflow-y-auto flex-1 text-sm flex flex-col gap-8 inter bg-gray-50/30 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-200-200/60 hover:[&::-webkit-scrollbar-thumb]:bg-gray-200/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
                     <div className="bg-blue-50/50 p-6 rounded-xl border border-blue-100/50">
                         <p className="text-gray-800">
                             {activeInsight.description}
@@ -86,6 +88,7 @@ export function DetailedInsightModal({ activeInsight, setActiveInsight }: Detail
                         </div>
                     )}
                 </div>
+            </div>
             </div>
         </div>
     )

@@ -21,4 +21,23 @@
   }
 
   --animate-fade-out: fade-out 1s ease-out;
+
+  @keyframes gradient-shadow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}
+
+@utility rainbow-bg {
+  background: linear-gradient(90deg, #1565C0, #599be7, #9b59b6, #1565C0);
+  background-size: 300% 300%;
+  animation: gradient-shadow 4s ease infinite;
+}
+
+@utility rainbow-shadow {
+  background: linear-gradient(90deg, #1565C0, #599be7, #9b59b6, #1565C0);
+  background-size: 300% 300%;
+  animation: gradient-shadow 4s ease infinite;
+  filter: blur(12px);
 }

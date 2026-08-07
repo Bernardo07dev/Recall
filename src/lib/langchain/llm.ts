@@ -1,5 +1,8 @@
+import { webSearchTool } from "@/src/lib/langchain/tools"
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
 import { ChatOpenAI } from "@langchain/openai"
+import { createAgent } from "langchain"
+
 
 export const llmLeve = new ChatGoogleGenerativeAI({
     model: "gemini-2.5-flash",
@@ -11,8 +14,8 @@ export const llmBruta = new ChatGoogleGenerativeAI({
     temperature: 0,
 })
 
-export const llmOpenRouter = new ChatOpenAI({
-    model: "perceptron/perceptron-mk1",
+const openRouterModel = new ChatOpenAI({
+    model: "openai/gpt-4o-mini",
     temperature: 0,
     apiKey: process.env.OPENROUTER_API_KEY,
     configuration: {
@@ -21,7 +24,12 @@ export const llmOpenRouter = new ChatOpenAI({
             "HTTP-Referer": "https://recall.totvs.com",
             "X-Title": "Recall",
         },
-    },
+    }
+})
+
+export const agentOpenRouter = createAgent({
+    model: openRouterModel,
+    tools: [webSearchTool],
 })
 
 export const llmJson = new ChatOpenAI({

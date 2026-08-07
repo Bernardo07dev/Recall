@@ -35,23 +35,10 @@ export default function SideBar({ userId }: { userId: string }){
             style={{ width: collapsed ? '4.5rem' : '26%', transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
             className="sticky top-0 h-screen p-3 z-20 transition-all bg-[#FBFBFF]"
         >
-            <style>{`
-                @keyframes gradient-shadow {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
-                }
-                .animate-gradient-shadow {
-                    background: linear-gradient(90deg, #1565C0, #599be7, #9b59b6, #1565C0);
-                    background-size: 300% 300%;
-                    animation: gradient-shadow 4s ease infinite;
-                    filter: blur(12px);
-                }
-            `}</style>
-            
+
             <div className="relative h-full w-full">
                 {/* Sombra de gradiente animada */}
-                <div className={`absolute -inset-0.5 animate-gradient-shadow rounded-xl transition-opacity duration-300 ${collapsed ? 'opacity-40' : 'opacity-0'}`}></div>
+                <div className={`absolute -inset-0.5 rainbow-shadow rounded-xl transition-opacity duration-300 ${collapsed ? 'opacity-40' : 'opacity-0'}`}></div>
                 
                 <aside
                     className={`relative z-10 scroll-smooth h-full rounded-xl bg-white overflow-y-auto transition-opacity overflow-x-hidden [&::-webkit-scrollbar]:h-8 [&::-webkit-scrollbar]:w-[0.4rem] [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-[#E7EFF8] [&::-webkit-scrollbar-thumb]:rounded-full transition-all duration-300 ${!collapsed ? 'shadow-sm border border-gray-100 p-4' : 'p-2'}`}
