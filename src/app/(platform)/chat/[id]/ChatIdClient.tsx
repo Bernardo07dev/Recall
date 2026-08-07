@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getToolDisplayName } from './toolsname';
-import { SaveCheck, SquareChartGantt } from 'lucide-react';
+import { SquareCheck, SquareChartGantt } from 'lucide-react';
 
 interface Message {
     input: string;
@@ -191,7 +191,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                                     if (!isStart) {
                                                         return (
                                                             <div className="flex items-center gap-2 rounded-xl animate-fade-in -mt-3">
-                                                                <SaveCheck className="text-[#1a3d6594]" size={15} />
+                                                                <SquareCheck className="text-[#1a3d6594]" size={15} />
                                                                 <span className="text-xs text-[#0c3a6f71]"><i>{displayName}</i> finalizada com sucesso!</span>
                                                             </div>
                                                         );
