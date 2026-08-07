@@ -18,7 +18,7 @@ export default async function ContextChatPage() {
   const empresas = await prisma.empresas.findMany({ orderBy: { createdAt: 'desc' } });
 
   if (!user) {
-    redirect("/log-in");
+    redirect("/api/logout");
   }
 
   return <ChatContext user={user} empresas={empresas} />

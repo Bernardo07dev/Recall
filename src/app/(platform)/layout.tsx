@@ -24,7 +24,7 @@ export default async function PlatformLayout({
     const session = await decrypt(token);
     userId = session.userId as string;
   } catch (error) {
-    redirect("/log-in");
+    redirect("/api/logout");
   }
 
   return (

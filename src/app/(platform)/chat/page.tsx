@@ -18,7 +18,7 @@ export default async function ChatPage() {
   const empresas = await prisma.empresas.findMany({ orderBy: { createdAt: 'desc' } });
 
   if (!user) {
-    redirect("/log-in");
+    redirect("/api/logout");
   }
 
   return <ChatDash user={user} empresas={empresas} />
