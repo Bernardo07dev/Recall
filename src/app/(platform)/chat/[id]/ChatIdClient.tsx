@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getToolDisplayName } from './toolsname';
+import ToolMessageBlock from './ToolMessageBlock';
 import { SquareCheck, SquareChartGantt, Copy, Check, Globe } from 'lucide-react';
 
 interface Message {
@@ -87,6 +88,8 @@ const CopyButton = ({ text }: { text: string }) => {
         </button>
     );
 };
+
+
 
 export default function ChatIdClient({ id, empresas, companyId, userId }: Props) {
     const [messages, setMessages] = useState<Message[]>([])
@@ -281,17 +284,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                     )}
                                 </div>
                             ) : msg.role === "Tool" ? (
-                                <div className="relative mb-[-35px]">
-                                        <h1 className="text-xs font-medium flex items-center gap-1.5">
-                                            <img src="/RECALL-logo.svg" className="w-12 object-contain opacity-90" alt="Recall Logo" />
-                                                <p className="text-xs text-[#0c3a6f93]"><i>{getToolDisplayName(msg.toolMetadata?.name || "Desconhecida")}</i></p>
-                                                {/* <p className="text-xs text-gray-500 font-normal">
-                                                    {typeof msg.toolMetadata?.output === "object" 
-                                                        ? JSON.stringify(msg.toolMetadata?.output?.content) 
-                                                        : msg.toolMetadata?.output || ""}
-                                                </p> */}
-                                        </h1>
-                                </div>
+                                <ToolMessageBlock msg={msg} />
                             ) : (
                                 <p className="whitespace-pre-wrap">{msg.input}</p>
                             )}
