@@ -41,3 +41,7 @@
   animation: gradient-shadow 4s ease infinite;
   filter: blur(12px);
 }
+
+@utility shadow-rainbow {
+  box-shadow: 0 4px 20px 0px rgba(21, 101, 192, 0.05), 0 0 30px 0px rgba(155, 89, 182, 0.05);
+}

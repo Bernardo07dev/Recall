@@ -6,8 +6,10 @@ import { useSearchParams, useRouter } from "next/navigation";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getToolDisplayName } from './toolsname';
-import ToolMessageBlock from './ToolMessageBlock';
-import { SquareCheck, SquareChartGantt, Copy, Check, Globe } from 'lucide-react';
+import ToolMessageBlock from './components/ToolMessageBlock';
+import { SquareCheck, SquareChartGantt } from 'lucide-react';
+import LinkWithTooltip from './components/LinkWithTooltip';
+import CopyButton from './components/CopyButton';
 
 interface Message {
     input: string;
@@ -23,72 +25,6 @@ interface Props {
     companyId: string | null;
     userId: string;
 }
-
-const LinkWithTooltip = ({ href, children }: { href: string, children: React.ReactNode }) => {
-    const [showTooltip, setShowTooltip] = useState(false);
-    const [copied, setCopied] = useState(false);
-    
-    const truncateUrl = (url: string) => {
-        if (!url) return "";
-        const cleanUrl = url.replace(/^https?:\/\//, '');
-        if (cleanUrl.length > 35) {
-            return cleanUrl.substring(0, 32) + '...';
-        }
-        return cleanUrl;
-    };
-
-    const handleCopy = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        navigator.clipboard.writeText(href);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
-    return (
-        <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowTooltip(true)}onMouseLeave={() => setShowTooltip(false)}>
-            <a 
-                href={href}
-                className="text-black font-medium underline decoration-dotted decoration-[1px] underline-offset-[3px] decoration-gray-400 hover:decoration-black transition-colors" target="_blank" 
-                rel="noopener noreferrer"
-            >
-                {children} <span className="inline-block text-[10px] ml-[2px]">↗</span>
-            </a>
-            
-            {showTooltip && (
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-[9999] flex items-center gap-2.5 bg-white rounded-xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-gray-100 px-3 py-2 text-[13px] font-normal text-gray-700 whitespace-nowrap">
-                    <Globe size={14} className="text-[#1a3d65]" />
-                    <span className="font-medium tracking-tight text-gray-600">{truncateUrl(href)}</span>
-                    <button 
-                        onClick={handleCopy}
-                        className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-md bg-gray-50 hover:bg-gray-100"
-                        title="Copiar link"
-                    >
-                        {copied ? <Check size={14} className="text-gray-600" /> : <Copy size={14} />}
-                    </button>
-                </div>
-            )}
-        </span>
-    );
-};
-
-const CopyButton = ({ text }: { text: string }) => {
-    const [copied, setCopied] = useState(false);
-    
-    const handleCopy = () => {
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
-    return (
-        <button onClick={handleCopy} className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors rounded-md hover:bg-gray-100 flex items-center gap-1 text-xs" title="Copiar">
-            {copied ? <Check size={14} /> : <Copy size={14} />}
-            {copied ? <span>Copiado!</span> : <span>Copiar</span>}
-        </button>
-    );
-};
-
 
 
 export default function ChatIdClient({ id, empresas, companyId, userId }: Props) {

@@ -43,7 +43,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
 
             <div className={`absolute -inset-[2px] animate-container-gradient-shadow rounded-3xl transition-opacity duration-500 pointer-events-none ${isStreaming ? 'opacity-20' : 'opacity-0'}`}></div>
             
-            <div className={`w-full relative flex flex-col text-sm bg-white rounded-3xl p-3 border transition-colors duration-300 ${isStreaming ? 'border-transparent shadow-sm' : 'border-[#ebebeb]'}`}>
+            <div className={`w-full relative shadow-rainbow flex flex-col text-sm bg-white rounded-3xl p-3 border transition-colors duration-300 ${isStreaming ? 'border-transparent shadow-sm' : 'border-[#ebebeb]'}`}>
                 <div className="w-full pb-3 flex flex-row items-center">
                     <input 
                         onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} 

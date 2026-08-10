@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { getToolDisplayName } from './toolsname';
+import { getToolDisplayName } from '../toolsname';
 import ToolContent from './toolContent';
 
 export default function ToolMessageBlock({ msg }: { msg: any }) {
