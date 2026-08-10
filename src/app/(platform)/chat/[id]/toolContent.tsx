@@ -1,8 +1,6 @@
 "use client";
-
 import React, { useState } from 'react';
 import { ExternalLink, Globe, ChevronRight, ChevronDown } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
 
 interface ToolContentProps {
     content: any;
@@ -76,9 +74,9 @@ const CollapsibleJson = ({ data }: { data: any }) => {
             </div>
             {isOpen && (
                 <div className="flex">
-                    <div className="w-4 flex justify-center ml-0.5">
+                    {/* <div className="w-4 flex justify-center ml-0.5">
                         <div className="w-[1.5px] bg-gray-200 min-h-full my-1 rounded-full"></div>
-                    </div>
+                    </div> */}
                     <div className="flex-1 pb-4 pt-1 pl-4">
                         <pre className="text-[10px] overflow-x-auto bg-gray-50 p-3 rounded-xl border border-gray-100">
                             {JSON.stringify(data, null, 2)}

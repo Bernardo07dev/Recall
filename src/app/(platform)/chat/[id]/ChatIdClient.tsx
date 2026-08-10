@@ -82,7 +82,7 @@ const CopyButton = ({ text }: { text: string }) => {
     };
 
     return (
-        <button onClick={handleCopy} className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors p-1 rounded-md hover:bg-gray-100 flex items-center gap-1 text-xs" title="Copiar">
+        <button onClick={handleCopy} className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors rounded-md hover:bg-gray-100 flex items-center gap-1 text-xs" title="Copiar">
             {copied ? <Check size={14} /> : <Copy size={14} />}
             {copied ? <span>Copiado!</span> : <span>Copiar</span>}
         </button>
@@ -247,21 +247,21 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
 
                                                     if (isStart) {
                                                         return (
-                                                            <div className="flex flex-col gap-1 my-1 animate-fade-in w-fit">
-                                                                <div className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
+                                                            <span className="flex flex-col gap-1 my-1 animate-fade-in w-fit">
+                                                                <span className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
                                                                     <SquareChartGantt className="text-[#1a3d6594]" size={15} />
                                                                     <span className="text-xs text-[#0c3a6f71]">Iniciando <i>{displayName}...</i></span>
-                                                                </div>
-                                                                <div className={`w-[1.5px] h-3 bg-[#1a3d651e] ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
-                                                            </div>
+                                                                </span>
+                                                                <span className={`w-[1.5px] h-3 bg-[#1a3d651e] ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
+                                                            </span>
                                                         );
                                                     }
                                                     if (!isStart) {
                                                         return (
-                                                            <div className="flex items-center gap-2 rounded-xl animate-fade-in -mt-3">
+                                                            <span className="flex items-center gap-2 rounded-xl animate-fade-in -mt-3">
                                                                 <SquareCheck className="text-[#1a3d6594]" size={15} />
                                                                 <span className="text-xs text-[#0c3a6f71]"><i>{displayName}</i> finalizada com sucesso!</span>
-                                                            </div>
+                                                            </span>
                                                         );
                                                     }
                                                 }
@@ -277,7 +277,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                             <path d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z" fill="#1E40AF"/>
                                         </svg>
                                     )}
-                                    {msg.input && (
+                                    {msg.input && !(isStreaming && index === messages.length - 1) && (
                                         <div className="flex justify-start mt-3">
                                             <CopyButton text={msg.input} />
                                         </div>

@@ -24,10 +24,7 @@ export default function ToolMessageBlock({ msg }: { msg: any }) {
             </div>
             {isOpen && (
                 <div className="flex w-full mt-1">
-                    <div className="w-5 flex justify-center ml-0.5">
-                        <div className="w-[1.5px] bg-gray-200 min-h-full my-1 rounded-full"></div>
-                    </div>
-                    <div className="flex-1 pl-3 w-full">
+                    <div className="flex-1 w-full">
                         <ToolContent content={msg.toolMetadata?.output?.kwargs?.content || msg.toolMetadata?.output} />
                     </div>
                 </div>
