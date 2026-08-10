@@ -60,17 +60,27 @@ export async function POST(req: Request) {
           } else if (event.event === "on_tool_start") {
             const toolName = event.name;
             const toolInput = event.data?.input;
-            console.log(`[Tool Start] ${toolName} | Input:`, toolInput);
-            
+            // console.log(`[Tool Start] ${toolName} | Input:`, toolInput);  
             const jsonChunk = JSON.stringify({ type: "tool_start", toolName, input: toolInput }) + "\n";
             controller.enqueue(encoder.encode(jsonChunk));
           } else if (event.event === "on_tool_end") {
             const toolName = event.name;
             const toolOutput = event.data?.output;
-            console.log(`[Tool End] ${toolName} | Output:`, toolOutput);
+            // console.log(`[Tool End] ${toolName} | Output:`, toolOutput);
             
             const jsonChunk = JSON.stringify({ type: "tool_end", toolName }) + "\n";
             controller.enqueue(encoder.encode(jsonChunk));
+
+            const toolJson = {
+              name: toolName,
+              output: toolOutput,
+              status: "success",
+              timestamp: new Date().toISOString(),
+            };
+
+            if (chatId) {
+              await saveMessages(`Resultado da ferramenta: ${toolName}`, chatId, "Tool", toolJson);
+            }
           }
         }
 

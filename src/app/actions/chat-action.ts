@@ -38,13 +38,14 @@ export async function getChats(userId: string){
     }
 }
 
-export async function saveMessages(message: string, conversationId: string, role: string){
+export async function saveMessages(message: string, conversationId: string, role: string, toolMetadata?: any){
     try{
         await prisma.messages.create({
             data: {
                 context: message,
                 conversationId: conversationId,
                 role: role as any,
+                toolMetadata: toolMetadata,
             }
         })
         return { success: true }

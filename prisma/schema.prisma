@@ -49,12 +49,14 @@ model Conversations{
 enum Role {
   human
   AI
+  Tool
 }
 
 model Messages{
   id             String @id @default(uuid())
   context        String
   role           Role
+  toolMetadata   Json?
   createdAt      DateTime @default(now())
   conversationId String?
   conversations  Conversations? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
