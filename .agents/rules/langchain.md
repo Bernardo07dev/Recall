@@ -1,5 +1,0 @@
----
-trigger: always_on
----
-
-SEMPRE QUE FOR FAZER ALGO DE LANGCHAIN/LANGGRAPH VEJA A DOCUMENTAÇÃO NOVA: https://docs.langchain.com/?_gl=1*1s9h23h*_gcl_au*MTQ1Nzc2NzE1Ny4xNzcxMTczNjA0*_ga*NjQ3MTk5MzA0LjE3NzExNzM2MDU.*_ga_47WX3HKKY2*czE3NzczNTk1MTgkbzEzJGcwJHQxNzc3MzU5NTE4JGo2MCRsMCRoMA..
