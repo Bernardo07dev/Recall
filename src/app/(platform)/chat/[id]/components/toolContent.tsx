@@ -32,7 +32,7 @@ const CollapsibleItem = ({ item }: { item: any }) => {
                     {/* <div className="w-4 flex justify-center ml-0.5">
                         <div className="w-[1.5px] bg-gray-200 min-h-full my-1 rounded-full"></div>
                     </div> */}
-                    <div className="flex-1 py-1 pl-4">
+                    <div className="flex-1 py-1 pl-2">
                         {/* {item.content && (
                                 <p className="text-[11px] text-gray-600 leading-relaxed mb-2 whitespace-pre-wrap">
                                     {item.content}
@@ -60,7 +60,7 @@ const CollapsibleJson = ({ data }: { data: any }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="flex flex-col mt-2 pb-2">
+        <div className="flex flex-col pb-2">
             <div 
                 className="flex items-center gap-2 cursor-pointer group py-1.5"
                 onClick={() => setIsOpen(!isOpen)}

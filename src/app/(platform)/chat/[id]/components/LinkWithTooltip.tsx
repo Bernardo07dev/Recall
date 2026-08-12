@@ -49,7 +49,7 @@ export default function LinkWithTooltip({ href, children }: { href: string, chil
             </a>
             
             {showTooltip && (
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-0.5 z-9999 flex items-center gap-2 bg-white rounded-xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-gray-100 px-3 py-2 text-xs font-normal text-gray-700 whitespace-nowrap">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-0.5 z-10 flex items-center gap-2 bg-white rounded-xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-gray-100 px-3 py-2 text-xs font-normal text-gray-700 whitespace-nowrap">
                     <Globe size={14} className="text-[#1a3d65]" />
                     <span className="font-medium tracking-tight text-gray-600">{truncateUrl(href)}</span>
                     <button 

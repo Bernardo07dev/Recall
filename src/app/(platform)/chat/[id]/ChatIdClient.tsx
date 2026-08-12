@@ -84,6 +84,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
             const decoder = new TextDecoder()
             let fullText = ""
             let buffer = ""
+            let currentToolMetadata: any = null
 
             while (true) {
                 const { done, value } = await reader.read()
@@ -105,6 +106,9 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                         } else if (parsed.type === "tool_end") {
                             setShowTool(false);
                             fullText += `\n\n[${parsed.toolName}](https://tool.end/${parsed.toolName})\n\n`
+                            if (parsed.toolMetadata) {
+                                currentToolMetadata = parsed.toolMetadata
+                            }
                         }
                     } catch (e) {
                         console.error("Erro no parser do chunk JSON:", line)
@@ -114,13 +118,20 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                 setMessages(prev => {
                     const aiIndex = prev.findIndex((m: any) => m.id === aiMessageId)
                     if (aiIndex === -1) {
-                        return [...prev, { input: fullText, companyId, role: "AI", id: aiMessageId }]
+                        return [...prev, { 
+                            input: fullText, 
+                            companyId, 
+                            role: "AI", 
+                            id: aiMessageId,
+                            ...(currentToolMetadata ? { toolMetadata: currentToolMetadata } : {}) 
+                        }]
                     }
 
                     const updated = [...prev]
                     updated[aiIndex] = {
                         ...updated[aiIndex],
                         input: fullText,
+                        ...(currentToolMetadata ? { toolMetadata: currentToolMetadata } : {})
                     }
                     return updated
                 })
@@ -166,7 +177,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
         <div className="py-22 px-[15%] min-h-screen flex flex-col justify-end items-center">
             <section className='mb-18 fade-in my-4 w-[80%] font-medium text-gray-500 text-[0.85rem]'>
                 {messages?.map((msg, index) => (
-                    <div key={index} className={`flex items-center mb-4 text-sm ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
+                    <div key={index} className={`flex items-center mb-1 text-sm ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
                     >
                         <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
                             {msg.role === "AI" ? (
@@ -183,21 +194,18 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
 
                                                     if (isStart) {
                                                         return (
-                                                            <span className="flex flex-col gap-1 my-1 animate-fade-in w-fit">
+                                                            <span className="flex flex-col gap-1 my-1 w-fit">
                                                                 <span className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
                                                                     <SquareChartGantt className="text-[#1a3d6594]" size={15} />
                                                                     <span className="text-xs text-[#0c3a6f71]">Iniciando <i>{displayName}...</i></span>
                                                                 </span>
-                                                                <span className={`w-[1.5px] h-3 bg-[#1a3d651e] ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
+                                                                <span className={`w-[1.5px] -mb-4 mt-0.5 h-3 bg-[#1a3d651e] ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
                                                             </span>
                                                         );
                                                     }
                                                     if (!isStart) {
                                                         return (
-                                                            <span className="flex items-center gap-2 rounded-xl animate-fade-in -mt-3">
-                                                                <SquareCheck className="text-[#1a3d6594]" size={15} />
-                                                                <span className="text-xs text-[#0c3a6f71]"><i>{displayName}</i> finalizada com sucesso!</span>
-                                                            </span>
+                                                            <ToolMessageBlock msg={msg} toolName={toolName} />
                                                         );
                                                     }
                                                 }
@@ -237,7 +245,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                     defaultCompanyId={companyId} 
                     isStreaming={isStreaming}
                 />
-                <div className='bg-[#FBFBFF] backdrop-blur-sm w-full h-8 z-10 '></div>
+                <div className='bg-[#FBFBFF] backdrop-blur-sm w-full h-8 z-999 '></div>
             </div>
         </div> 
         

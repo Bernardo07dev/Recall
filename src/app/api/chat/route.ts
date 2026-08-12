@@ -66,17 +66,16 @@ export async function POST(req: Request) {
           } else if (event.event === "on_tool_end") {
             const toolName = event.name;
             const toolOutput = event.data?.output;
-            // console.log(`[Tool End] ${toolName} | Output:`, toolOutput);
             
-            const jsonChunk = JSON.stringify({ type: "tool_end", toolName }) + "\n";
-            controller.enqueue(encoder.encode(jsonChunk));
-
             const toolJson = {
               name: toolName,
               output: toolOutput,
               status: "success",
               timestamp: new Date().toISOString(),
             };
+
+            const jsonChunk = JSON.stringify({ type: "tool_end", toolName, toolMetadata: toolJson }) + "\n";
+            controller.enqueue(encoder.encode(jsonChunk));
 
             if (chatId) {
               await saveMessages(`Resultado da ferramenta: ${toolName}`, chatId, "Tool", toolJson);
