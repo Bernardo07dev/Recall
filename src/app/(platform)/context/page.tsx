@@ -94,14 +94,16 @@ export default function ContextPage(){
     <>
     {loading ? ( <Loading />) : (
                 <main className="pt-22 pb-12 px-[5%]">
-                    <Link href="/empresas" className="flex flex-row text-[#1565C0] font-bold gap-1 items-center mb-4">
+                    <Link href="/empresas" className="flex flex-row text-[#1565C0] font-semibold gap-1 items-center mb-4">
                         <ArrowLeft size={14} />
                         <p className="text-xs">Voltar para Empresas</p>
                     </Link>
                     <h1 className="text-2xl font-bold mb-1">Crie um novo contexto de empresa</h1>
                     <p className="text-gray-500 font-medium text-sm mb-4">Configure o contexto desta empresa para que o Recall possa extrair inteligência real das suas conversas e transformá-las em decisões.</p>
         
-                    <section className="bg-white/90 p-8 mb-6 rounded-xl shadow-sm shadow-gray-100 border border-gray-200">
+                    <div className="relative mb-6">
+                        <div className="absolute -inset-0.5 rainbow-shadow rounded-xl opacity-10"></div>
+                        <section className="relative z-10 bg-white p-8 rounded-3xl">
                         <div className="flex flex-row gap-4 items-center mb-6">
                             <BriefcaseBusiness size={42} className="bg-[#EFF6FF] text-[#1565C0] p-2 rounded-lg" />
                             <div>
@@ -144,8 +146,11 @@ export default function ContextPage(){
 
                         <UploadDocumentos onChange={(files) => setArquivos(files)} />
                     </section>
+                    </div>
 
-                    <section className="bg-white/90  p-8 rounded-xl shadow-sm shadow-gray-100 border border-gray-200">
+                    <div className="relative">
+                        <div className="absolute -inset-0.5 rainbow-shadow rounded-xl opacity-10"></div>
+                        <section className="relative z-10 bg-white/95 p-8 rounded-3xl">
                         <div className="flex flex-row gap-4 items-center mb-8">
                             <Workflow size={42} className="bg-[#EFF6FF] text-[#1565C0] p-2 rounded-lg" />
                             <div>
@@ -180,6 +185,7 @@ export default function ContextPage(){
                             </div>
                         </div>
                     </section>
+                    </div>
 
                     <div onClick={handleSubmit} className="w-full flex my-4">
                         <button className="text-white rounded-lg font-semibold p-3 px-4 text-sm align-middle cursor-pointer bg-[#1565C0]">Cria Contexto</button>

@@ -32,7 +32,7 @@ export default function SideBar({ userId }: { userId: string }){
 
     return(
         <div 
-            style={{ width: collapsed ? '4.5rem' : '26%', transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
+            style={{ width: collapsed ? '4.5rem' : '28%', transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
             className="sticky top-0 h-screen p-3 z-20 transition-all bg-[#FBFBFF]"
         >
 
@@ -107,7 +107,7 @@ export default function SideBar({ userId }: { userId: string }){
                     <p className="text-left text-xs pb-1.5 px-1 text-gray-400">Conversas</p>
                     {chats.map((conversa) => (
                         <div onClick={() => router.push(`/chat/${conversa.id}`)} key={conversa.id} className={`p-1.75 px-1 text-[0.8rem] flex gap-1 items-center justify-between rounded-lg font-medium cursor-pointer hover:text-[#1565C0] ${pathname.includes(conversa.id) ? "text-[#1565C0] px-2 bg-[#e7eff872]" : "text-gray-500"}`}>
-                            <p>{conversa.title.length > 30 ? conversa.title.substring(0, 30) + "..." : conversa.title}</p>
+                            <p>{conversa.title.length > 30 ? conversa.title.substring(0, 34) + "..." : conversa.title}</p>
                             <Trash onClick={(e) => { e.stopPropagation(); deleteChatUI(conversa.id); }} size={13} className="hover:text-red-500"/>
                         </div>
                     ))}

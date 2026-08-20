@@ -174,7 +174,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
     }
 
     return (
-        <div className="py-22 px-[15%] min-h-screen flex flex-col justify-end items-center">
+        <div className="py-22 px-[13%] min-h-screen flex flex-col justify-end items-center">
             <section className='mb-18 fade-in my-4 w-[80%] font-medium text-gray-500 text-[0.85rem]'>
                 {messages?.map((msg, index) => (
                     <div key={index} className={`flex items-center mb-1 text-sm ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
@@ -196,10 +196,10 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                                         return (
                                                             <span className="flex flex-col gap-1 my-1 w-fit">
                                                                 <span className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
-                                                                    <SquareChartGantt className="text-[#1a3d6594]" size={15} />
-                                                                    <span className="text-xs text-[#0c3a6f71]">Iniciando <i>{displayName}...</i></span>
+                                                                    <SquareChartGantt className="text-[#0c3a6f71]/40" size={15} />
+                                                                    <span className="text-[11px] text-[#0c3a6f71]/40 font-medium">Iniciando {displayName}...</span>
                                                                 </span>
-                                                                <span className={`w-[1.5px] -mb-4 mt-0.5 h-3 bg-[#1a3d651e] ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
+                                                                <span className={`w-[1.5px] -mb-4 mt-0.5 h-2.5 bg-[#1a3d651e] ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
                                                             </span>
                                                         );
                                                     }
@@ -237,7 +237,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                 ))}
             </section>
             <div ref={bottomRef} />
-            <div className="w-[52.6%] fixed bottom-0">
+            <div className="w-[55%] fixed bottom-0">
                 <ChatContainer 
                     empresas={empresas} 
                     onEnviar={handleEnviar} 

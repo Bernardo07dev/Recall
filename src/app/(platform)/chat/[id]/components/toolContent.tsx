@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ExternalLink, Globe, ChevronRight, ChevronDown } from 'lucide-react';
 
 interface ToolContentProps {
@@ -77,7 +77,7 @@ const CollapsibleJson = ({ data }: { data: any }) => {
                     {/* <div className="w-4 flex justify-center ml-0.5">
                         <div className="w-[1.5px] bg-gray-200 min-h-full my-1 rounded-full"></div>
                     </div> */}
-                    <div className="flex-1 pb-4 pt-1 pl-4">
+                    <div className="flex-1 pb-1 pt-1 pl-4">
                         <pre className="text-[10px] overflow-x-auto bg-gray-50 p-3 rounded-xl border border-gray-100">
                             {JSON.stringify(data, null, 2)}
                         </pre>
@@ -103,7 +103,7 @@ export default function ToolContent({ content }: ToolContentProps) {
 
     if (Array.isArray(parsedContent)) {
         return (
-            <div className="flex flex-col mt-2 w-full max-w-xl pb-2">
+            <div className="flex flex-col mt-2 bg-[#FFFFFF]/50 border-2 border-[#1565C0]/10 rounded-xl shadow-rainbow p-3 w-full max-w-2xl">
                 <div className="flex flex-col gap-0.5">
                     {parsedContent.map((item, idx) => (
                         <CollapsibleItem key={item.id || idx} item={item} />

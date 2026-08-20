@@ -121,7 +121,7 @@ export default function Dashboard({ user, empresas }: Props) {
                 ))}
             </section>}
 
-            <section className='w-[48%] fixed bottom-0 z-10'>
+            <section className='w-[55%] fixed bottom-0 z-10'>
                 <ChatContainer 
                     onEnviar={recebeMensagem} 
                     enableCompany={firstmsg} 

@@ -1,6 +1,7 @@
 import { InsightOutput } from '@/src/lib/langchain/utils'
 import Image from "next/image";
-import { Sparkles, MessageCircleCode, ArrowLeft} from "lucide-react";
+import { Sparkles, MessageCircleCode, ArrowLeft } from "lucide-react";
+import MenuDropdown from './_components/MenuDropdown';
 import InsightsContainer from '@/src/app/(platform)/dashboard/[companyId]/insightsContainer';
 import Loading from '@/src/app/(platform)/dashboard/[companyId]/LoadingContainer';
 import IndicatorsContainer from './_components/indicatorsContainer';
@@ -49,13 +50,12 @@ export default function Container({ empresa } : Props ){
     }
 
     return(
-        <main className="p-16 pt-20 animate-fade-in">
-            <Link href="/empresas" className="flex flex-row text-[#1565C0] font-semibold gap-1 items-center mb-8">
-                <ArrowLeft size={14} />
-                <p className="text-xs">Voltar para Empresas</p>
-            </Link>
+        <main className="p-12 pt-16 animate-fade-in">
+            <div className='w-full flex flex-row justify-between items-start mb-6'>
+                <MenuDropdown companyId={empresa.id} />
+            </div>
             <div className='flex flex-row justify-between items-start mb-6'>
-                <div>
+                <div className=''>
                     <Image src="/RECALL-logo.svg" className='w-16' alt="Logo" width={150} height={40}/>
                     <div className='flex flex-row items-baseline gap-1'>
                         <h1 className='text-4xl font-bold mb-2'>Overview</h1>
@@ -68,14 +68,6 @@ export default function Container({ empresa } : Props ){
                     </Link>
                 </div>
                 <div className='w-full'>
-                    {/* <div className='bg-white p-6 border border-gray-100 rounded-xl'>
-                        <div className='flex flex-row gap-1 mb-1 text-gray-500 items-center'>
-                            <Metronome size={12}/>
-                            <h1 className='text-[11px]'>Sentimnto</h1>
-                        </div>
-                        <p className='text-[#1565C0] font-bold text-3xl'>{dados && dados.conversation_metrics.sentiment_score}</p>
-                        <p className='text-xs text-gray-500 font-semibold'>{dados && getStatus(dados.conversation_metrics.sentiment_score)}</p>
-                    </div> */}
                     {dados?.indicators && <IndicatorsContainer indicators={dados.indicators} />}
                 </div>
             </div>
@@ -87,13 +79,6 @@ export default function Container({ empresa } : Props ){
                 <Sparkles className='mb-1 text-[#1565C0]' size={13}/>
             </div>
             {dados && <InsightsContainer insights={dados}/>}
-
-            {/* <div className='flex gap-1 items-baseline mb-3'>
-                <h1 className='text-xl font-semibold text-gray-700'>Oportunidades</h1>
-                <Image src={Logo} alt="Logo Totvs" width={50}></Image>
-            </div> */}
-
-            {/* {dados && <TotvsContainer empresa={dados} />} */}
             
         </main>
     )
