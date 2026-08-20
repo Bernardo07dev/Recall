@@ -103,7 +103,7 @@ export default function ToolContent({ content }: ToolContentProps) {
 
     if (Array.isArray(parsedContent)) {
         return (
-            <div className="flex flex-col mt-2 bg-[#FFFFFF]/50 border-2 border-[#1565C0]/10 rounded-xl shadow-rainbow p-3 w-full max-w-2xl">
+            <div className="flex flex-col mt-2 mb-4 bg-[#FFFFFF]/50 border-2 border-[#1565C0]/10 rounded-xl shadow-rainbow p-3 w-full max-w-2xl">
                 <div className="flex flex-col gap-0.5">
                     {parsedContent.map((item, idx) => (
                         <CollapsibleItem key={item.id || idx} item={item} />
@@ -118,7 +118,7 @@ export default function ToolContent({ content }: ToolContentProps) {
     }
 
     return (
-        <p className="text-xs text-gray-500 font-normal whitespace-pre-wrap mt-2 pb-2">
+        <p className="text-xs text-gray-500 font-normal whitespace-pre-wrap mb-4 mt-2 pb-2">
             {String(parsedContent)}
         </p>
     );

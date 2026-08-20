@@ -181,7 +181,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                     >
                         <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
                             {msg.role === "AI" ? (
-                                <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mt-4 prose-h2:mb-2">
+                                <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800  prose-h2:mb-2">
                                     <ReactMarkdown
                                         remarkPlugins={[remarkGfm]}
                                         components={{
@@ -199,7 +199,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                                                     <SquareChartGantt className="text-[#0c3a6f71]/40" size={15} />
                                                                     <span className="text-[11px] text-[#0c3a6f71]/40 font-medium">Iniciando {displayName}...</span>
                                                                 </span>
-                                                                <span className={`w-[1.5px] -mb-4 mt-0.5 h-2.5 bg-[#1a3d651e] ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
+                                                                <span className={`w-[1.5px] -mb-1.5 h-3 bg-gradient-to-b from-gray-100 to-[#1565C0]/40 rounded-full ml-[7px] animate-pulse`} />
                                                             </span>
                                                         );
                                                     }
@@ -210,6 +210,22 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                                     }
                                                 }
                                                 return <LinkWithTooltip href={props.href || ""}>{props.children}</LinkWithTooltip>
+                                            },
+                                            p: ({ node, children, ...props }) => {
+                                                // Check if this <p> only wraps a tool link (no visible text)
+                                                const childArray = Array.isArray(children) ? children : [children];
+                                                const hasOnlyToolLinks = childArray.every((child: any) => {
+                                                    if (typeof child === 'string') return child.trim() === '';
+                                                    if (child?.props?.href?.startsWith('https://tool.start/')) return true;
+                                                    if (child?.props?.href?.startsWith('https://tool.end/')) return true;
+                                                    // Check for already-rendered tool components (span with not-prose)
+                                                    if (child?.props?.className?.includes('not-prose')) return true;
+                                                    return false;
+                                                });
+                                                if (hasOnlyToolLinks) {
+                                                    return <p {...props} className="!m-0 !p-0">{children}</p>;
+                                                }
+                                                return <p {...props}>{children}</p>;
                                             }
                                         }}
                                     >
