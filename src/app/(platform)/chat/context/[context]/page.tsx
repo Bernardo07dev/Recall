@@ -4,7 +4,7 @@ import { prisma } from '@/src/lib/prisma';
 import { redirect } from "next/navigation";
 import { decrypt } from '@/src/lib/auth';
 
-export default async function ContextChatPage() {
+export default async function ContextChatPage({ params }: { params: Promise<{ context: string }> }) {
   const cookieStore = await cookies()
   const token = cookieStore.get('recall-session')?.value
 
@@ -21,5 +21,7 @@ export default async function ContextChatPage() {
     redirect("/api/logout");
   }
 
-  return <ChatContext user={user} empresas={empresas} />
+  const { context } = await params;
+
+  return <ChatContext user={user} empresas={empresas} initialContext={context} />
 }

@@ -18,6 +18,7 @@ interface UserType {
 interface Props {
     user: UserType | null;
     empresas: { id: string, nome: string, industry: string }[];
+    initialContext?: string;
 }
 
 interface Message {
@@ -26,19 +27,15 @@ interface Message {
     role: "human" | "AI"
 }
 
-export default function ChatContext({ user, empresas }: Props) {
-    const params = useParams();
-    const contextParam = params?.context as string | undefined;
-
+export default function ChatContext({ user, empresas, initialContext }: Props) {
     const [firstmsg, setFirstmsg] = useState(false)
     const [hiding, setHiding] = useState(false)
     const [message, setMessage] = useState<Message[]>([])
     const [conversationId, setConversationId] = useState<string | null>(null)
-    const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(contextParam || null)
+    const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(initialContext || null)
     const router = useRouter()
 
     const nome = user?.nome?.split(" ")[0];
-
 
     const recebeMensagem = async (msg: string, companyId: string | null, role: "human" | "AI") => {
         let currentConversationId = conversationId
