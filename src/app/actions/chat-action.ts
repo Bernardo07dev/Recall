@@ -7,6 +7,7 @@ import { error } from 'node:console';
 import { generateTitle } from '@/src/lib/langchain/actionsAI';
 
 export async function createConversation(userId: string, companyId: string | null, firstMessage?: string){
+    console.log("CREATE CONVERSATION CALLED WITH COMPANYID:", companyId);
     const validCompanyId = (!companyId || companyId === "undefined" || companyId === "teste") ? null : companyId;
     const generatedTittle = await generateTitle(firstMessage || "Gere um texto básico para título, houve erro no envio da mensagem")
 

@@ -1,8 +1,0 @@
-{
-  "tailwindCSS.experimental.configFile": "src/app/globals.css",
-  "editor.autoClosingBrackets": "always",
-  "editor.inlineSuggest.enabled": false,
-  "editor.suggest.preview": false,
-  "typescript.preferences.importModuleSpecifier": "non-relative",
-  "javascript.preferences.importModuleSpecifier": "non-relative"
-}

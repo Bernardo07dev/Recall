@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronDown, SendHorizontal } from 'lucide-react';
 import EmpresaSelector from "@/src/app/(platform)/chat/components/EmpresaSelector";
 
@@ -16,6 +16,12 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
     const [input, setInput] = useState("")
     const [companyId, setCompanyId] = useState<string | null>(defaultCompanyId ?? null)
     const [unavailable, setUnavailable] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (defaultCompanyId !== undefined) {
+            setCompanyId(defaultCompanyId)
+        }
+    }, [defaultCompanyId])
 
     const handleEnviar = () => {
         if (!input || isStreaming){ return }

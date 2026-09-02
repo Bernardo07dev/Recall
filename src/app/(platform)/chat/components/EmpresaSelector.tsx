@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ChevronDown, X, Building2 } from 'lucide-react'
 import { sectorConfig, DefaultIconConfig } from '@/src/lib/sectorConfig'
 
@@ -20,6 +20,10 @@ export default function EmpresaSelector({ empresas, onChange, disabled, defaultC
     const defaultEmpresa = empresas.find(e => e.id === defaultCompanyId) ?? null
     const [open, setOpen] = useState(false)
     const [selected, setSelected] = useState<Empresa | null>(defaultEmpresa)
+
+    useEffect(() => {
+        setSelected(empresas.find(e => e.id === defaultCompanyId) ?? null)
+    }, [defaultCompanyId, empresas])
 
     function handleSelect(empresa: Empresa | null) {
         setSelected(empresa)

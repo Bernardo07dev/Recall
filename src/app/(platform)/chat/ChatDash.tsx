@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createConversation, saveMessages } from '@/src/app/actions/chat-action';
 import Loading from '../loading';
+import DropZoneWrapper from './components/DropZoneWrapper';
 
 interface UserType {
     id: string
@@ -35,6 +36,7 @@ export default function Dashboard({ user, empresas }: Props) {
     const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null)
     const [loading, setLoading] = useState(false);
     const router = useRouter()
+    const [attachments, setAttachments] = useState<File[]>([])
 
     const nome = user?.nome?.split(" ")[0];
 
@@ -74,6 +76,7 @@ export default function Dashboard({ user, empresas }: Props) {
     }
 
     return (
+        <DropZoneWrapper onFilesDropped={(files) => setAttachments(prev => [...prev, ...files])}>
         <main className={`py-8 px-[15%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen bg-[#fbfbff]`}>
             {!firstmsg &&
                 (<div className={`w-full py-18 flex flex-col items-start gap-2 ${hiding ? "animate-fade-out" : "animate-fade-in"}`}>
@@ -130,6 +133,7 @@ export default function Dashboard({ user, empresas }: Props) {
                 />
                 <div className='bg-[#FBFBFF]/5 backdrop-blur-sm w-full h-8 z-10 '></div>
             </section>
-        </main>
+            </main>
+        </DropZoneWrapper>
     );
 }

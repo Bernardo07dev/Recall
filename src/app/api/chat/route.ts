@@ -9,6 +9,8 @@ export async function POST(req: Request) {
   const { mensagem, id, chatId } = body;
 
   const res = id ? await fetchCompany(id) : null;
+  console.log("API/CHAT RECEIVED ID:", id);
+  console.log("FETCHED COMPANY:", res ? res.nome : "NULL", "HAS CONTEXT:", !!res?.context);
   const history = chatId ? await fetchMessages(chatId) : [];
 
   const today = new Date().toLocaleDateString("pt-BR", {
@@ -33,7 +35,12 @@ export async function POST(req: Request) {
   const SYSTEM = new SystemMessage(combinedSystemPrompt);
   const userMessage = new HumanMessage(mensagem);
 
-  const messages = [SYSTEM, ...history, userMessage];
+  let messages = [SYSTEM, ...history];
+
+  const lastHistoryMsg = history.length > 0 ? history[history.length - 1] : null;
+  if (!lastHistoryMsg || lastHistoryMsg.content !== mensagem) {
+      messages.push(new HumanMessage(mensagem));
+  }
 
   const stream = await agentOpenRouter.streamEvents(
     { messages },
