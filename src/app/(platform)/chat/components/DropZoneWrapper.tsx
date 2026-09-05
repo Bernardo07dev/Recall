@@ -1,6 +1,6 @@
 'use client'
-import { useState, useRef } from 'react'
-import { FileCode, ImageIcon, FileText } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { FileCode, ImageIcon, FileText, X } from 'lucide-react'
 
 interface Props {
     children: React.ReactNode
@@ -8,7 +8,6 @@ interface Props {
 }
 
 const ACCEPTED_TYPES = [
-    'application/pdf',
     'text/plain',
     'text/csv',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -20,11 +19,19 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 export default function DropZoneWrapper({ children, onFilesDropped }: Props) {
     const [isDragging, setIsDragging] = useState(false)
     const dragCounter = useRef(0)
+    const [PopUp, setPopUp] = useState<string | false>(false)
+
+    useEffect(() => {
+        if (PopUp) {
+            const timer = setTimeout(() => setPopUp(false), 4000)
+            return () => clearTimeout(timer)
+        }
+    }, [PopUp])
 
     const handleDragEnter = (e: React.DragEvent) => {
         e.preventDefault()
         dragCounter.current++
-        setIsDragging(true)
+        setIsDragging(true) 
     }
 
     const handleDragLeave = () => {
@@ -37,16 +44,15 @@ export default function DropZoneWrapper({ children, onFilesDropped }: Props) {
         dragCounter.current = 0
         setIsDragging(false)
         const droppedFiles = Array.from(e.dataTransfer.files)
-        if (droppedFiles.length > 0) {
-            alert(`Você soltou o arquivo ${droppedFiles[0].name}`)
-        }
 
         const validFiles = droppedFiles.filter(file => {
             if (!ACCEPTED_TYPES.includes(file.type)) {
+                setPopUp(`Arquivo Proibido: O arquivo ${file.name} não é suportado. Apenas arquivos .txt, .csv, .xls e .xlsx são aceitos.`)
                 console.warn(`Tipo não suportado: ${file.name} (${file.type})`)
                 return false
             }
             if (file.size > MAX_FILE_SIZE) {
+                setPopUp(`Arquivo Proibido: O arquivo ${file.name} é muito grande. O limite é 10MB.`)
                 console.warn(`Arquivo muito grande: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)}MB)`)
                 return false
             }
@@ -92,9 +98,18 @@ export default function DropZoneWrapper({ children, onFilesDropped }: Props) {
                         </div>
                     </div>
                     <p className="text-black text-2xl font-bold">Solte seus arquivos aqui</p>
-                    <p className="text-gray-700 text-sm mt-2 font-medium">Adicione qualquer arquivo PDF, TXT, CSV, XLSX — até 10MB</p>
+                    <p className="text-gray-700 text-sm mt-2 font-medium">Adicione qualquer arquivo TXT, CSV, XLS, XLSX — até 10MB</p>
                 </div>
             </div>
+            )}
+
+            {PopUp && (
+                <div className="fixed top-10 left-1/2 -translate-x-1/2 z-50 bg-[#ef4444] text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-4 animate-in fade-in slide-in-from-top-5 duration-300">
+                    <span className="font-semibold text-sm">{PopUp}</span>
+                    <button onClick={() => setPopUp(false)} className="text-white/80 hover:text-white transition-colors cursor-pointer">
+                        <X size={16} />
+                    </button>
+                </div>
             )}
         </div>
     )
