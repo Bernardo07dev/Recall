@@ -35,13 +35,13 @@ const extractTextFromFile = async (file: File): Promise<string> => {
                     });
                     resolve(result);
                 } catch (error) {
-                    resolve(`Erro ao ler planilha ${file.name}`);
+                    reject(`Erro ao ler planilha ${file.name}`);
                 }
             };
             reader.onerror = (e) => reject(e);
             reader.readAsArrayBuffer(file);
         } else {
-            resolve(`[Nome do arquivo: ${file.name} - Tipo: ${file.type}]`);
+            reject("Arquivo Proibido");
         }
     });
 };
@@ -68,11 +68,15 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
             setIsProcessing(true);
             try {
                 const fileContents = await Promise.all(attachments.map(file => extractTextFromFile(file)));
-                const filesText = fileContents.map((content, index) => `Arquivo anexado: ${attachments[index].name}\nConteúdo:\n${content}`).join('\n\n');
+                const filesText = fileContents.map((content, index) => 
+                    `<file-attachment name="${attachments[index].name}">\n${content}\n</file-attachment>`
+                ).join('\n\n');
                 
-                finalInput = `${input}\n\n[Arquivos Anexados]\n${filesText}`;
+                finalInput = `${input}\n\n${filesText}`;
             } catch (error) {
                 console.error("Erro ao ler arquivos", error);
+                setIsProcessing(false);
+                return;
             }
             setIsProcessing(false);
             if (setAttachments) setAttachments([]);

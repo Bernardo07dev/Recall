@@ -7,10 +7,11 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getToolDisplayName } from './toolsname';
 import ToolMessageBlock from './components/ToolMessageBlock';
-import { SquareCheck, SquareChartGantt } from 'lucide-react';
+import { SquareCheck, SquareChartGantt, FileText } from 'lucide-react';
 import LinkWithTooltip from './components/LinkWithTooltip';
 import CopyButton from './components/CopyButton';
 import DropZoneWrapper from "../components/DropZoneWrapper";
+import HumanMessage from "../components/HumanMessage";
 
 interface Message {
     input: string;
@@ -26,7 +27,6 @@ interface Props {
     companyId: string | null;
     userId: string;
 }
-
 
 export default function ChatIdClient({ id, empresas, companyId, userId }: Props) {
     const [messages, setMessages] = useState<Message[]>([])
@@ -249,7 +249,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                 ) : msg.role === "Tool" ? (
                                     <ToolMessageBlock msg={msg} />
                                 ) : (
-                                    <p className="whitespace-pre-wrap">{msg.input}</p>
+                                    <HumanMessage content={msg.input} />
                                 )}
                             </div>
                         </div>
