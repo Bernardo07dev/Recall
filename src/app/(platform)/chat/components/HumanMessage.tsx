@@ -60,13 +60,13 @@ export default function HumanMessage({ content }: Props) {
                         }
 
                         return (
-                            <div key={`file-${idx}`} className="flex items-center gap-4 bg-white border border-[#EBEBEB] px-5 py-4 rounded-[1.25rem] w-[280px]">
+                            <div key={`file-${idx}`} className="flex items-center gap-4 bg-white border border-[#EBEBEB] px-6 py-3.5 rounded-[1.25rem] w-[300px]">
                                 <div className={`flex-shrink-0 ${iconColor}`}>
                                     <Icon size={18} strokeWidth={2} />
                                 </div>
                                 <div className="flex flex-col overflow-hidden">
-                                    <span className="text-[0.85rem] font-semibold text-gray-900 truncate leading-tight mb-0.5">{part.name}</span>
-                                    <span className="text-[0.7rem] font-medium text-gray-400 leading-tight">{typeText}</span>
+                                    <span className="text-[0.80rem] text-gray-900 truncate leading-tight mb-0.5">{part.name}</span>
+                                    <span className="text-[0.75rem] font-light text-gray-600 leading-tight">{typeText}</span>
                                 </div>
                             </div>
                         );
