@@ -8,7 +8,9 @@ export default function HumanMessage({ content }: Props) {
     if (!content) return null;
     
     const attachmentRegex = /<file-attachment name="([^"]+)">[\s\S]*?<\/file-attachment>/g;
-    const parts = [];
+    
+    type MessagePart = { type: 'text'; content: string } | { type: 'file'; name: string };
+    const parts: MessagePart[] = [];
     let lastIndex = 0;
     let match;
     
@@ -28,8 +30,8 @@ export default function HumanMessage({ content }: Props) {
         return <p className="whitespace-pre-wrap bg-[#F2F3FB] text-gray-800 p-4 py-3 rounded-2xl w-fit ml-auto">{content.trim()}</p>;
     }
 
-    const fileParts = parts.filter(p => p.type === 'file');
-    const textParts = parts.filter(p => p.type === 'text' && p.content?.trim());
+    const fileParts = parts.filter((p): p is { type: 'file'; name: string } => p.type === 'file');
+    const textParts = parts.filter((p): p is { type: 'text'; content: string } => p.type === 'text' && !!p.content?.trim());
 
     return (
         <div className="flex flex-col gap-2 items-end">
