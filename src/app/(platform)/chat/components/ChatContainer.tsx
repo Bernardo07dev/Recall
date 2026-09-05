@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { ChevronDown, SendHorizontal, Loader2, X, FileText } from 'lucide-react';
 import EmpresaSelector from "@/src/app/(platform)/chat/components/EmpresaSelector";
 import * as XLSX from 'xlsx';
+import { getFileIcon } from '../[id]/components/FileIcons';
 
 interface Props {
     onEnviar: (input: string, companyId: string | null, role: "human" | "AI") => void;
@@ -116,16 +117,47 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
             <div className={`w-full relative shadow-rainbow flex flex-col text-sm bg-white rounded-3xl p-3 border transition-colors duration-300 ${isStreaming || isProcessing ? 'border-transparent shadow-sm' : 'border-[#544a972b]'}`}>
                 
                 {attachments && attachments.length > 0 && (
-                    <div className="flex flex-wrap gap-2 px-2 pt-2 pb-3 mb-2 border-b border-gray-100">
-                        {attachments.map((file, idx) => (
-                            <div key={idx} className="flex items-center gap-2 bg-[#F2F3FB] text-[#004D99] px-3 py-1.5 rounded-xl border border-[#e1e4f3] max-w-[200px]">
-                                <FileText size={14} className="min-w-[14px]" />
-                                <span className="text-xs font-medium truncate">{file.name}</span>
-                                <button onClick={() => removeAttachment(idx)} className="ml-1 text-gray-400 hover:text-red-500 transition-colors">
-                                    <X size={14} />
-                                </button>
-                            </div>
-                        ))}
+                    <div className="flex flex-wrap gap-2 px-2 pt-2 pb-3 mb-2">
+                        {attachments.map((file, idx) => {
+                            const Icon = getFileIcon(file.name);
+                            const ext = file.name.split('.').pop()?.toLowerCase();
+                            
+                            const isAudio = ['mp3', 'wav', 'ogg'].includes(ext || '');
+                            const isSpreadsheet = ['csv', 'xls', 'xlsx'].includes(ext || '');
+                            const isDoc = ['txt', 'pdf', 'doc', 'docx'].includes(ext || '');
+                            
+                            let iconColor = "text-gray-500";
+                            let typeText = "File";
+                            
+                            if (isAudio) {
+                                iconColor = "text-[#8A2BE2]"; 
+                                typeText = "File";
+                            } else if (isSpreadsheet) {
+                                iconColor = "text-[#00A35C]";
+                                typeText = "Spreadsheet";
+                            } else if (isDoc) {
+                                iconColor = "text-[#0078FF]"; 
+                                typeText = "Document";
+                            }
+
+                            return (
+                                <div key={idx} className="relative flex items-center gap-4 bg-white border border-[#EBEBEB] px-5 py-4 rounded-[1.25rem] w-[280px]">
+                                    <div className={`flex-shrink-0 ${iconColor}`}>
+                                        <Icon size={18} strokeWidth={2} />
+                                    </div>
+                                    <div className="flex flex-col overflow-hidden pr-6">
+                                        <span className="text-[0.85rem] font-semibold text-gray-900 truncate leading-tight mb-0.5">{file.name}</span>
+                                        <span className="text-[0.7rem] font-medium text-gray-400 leading-tight">{typeText}</span>
+                                    </div>
+                                    <button 
+                                        onClick={() => removeAttachment(idx)} 
+                                        className="absolute -top-1.5 cursor-pointer -right-1.5 bg-black text-white rounded-full p-1 hover:bg-gray-800 transition-colors"
+                                    >
+                                        <X size={10} strokeWidth={3} />
+                                    </button>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
 

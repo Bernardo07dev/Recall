@@ -182,7 +182,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                     {messages?.map((msg, index) => (
                         <div key={index} className={`flex items-center mb-1 text-[0.9375rem] ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
                         >
-                            <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
+                            <div className={`w-fit ${msg.role === "human" ? "flex flex-col items-end" : "p-4 py-3 rounded-2xl text-gray-800"}`}>
                                 {msg.role === "AI" ? (
                                     <div className="prose prose-base max-w-none text-gray-800 text-[0.9375rem] leading-relaxed prose-h1:text-[1.4rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-[1.05rem] prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mb-2 prose-p:my-2">
                                         <ReactMarkdown
