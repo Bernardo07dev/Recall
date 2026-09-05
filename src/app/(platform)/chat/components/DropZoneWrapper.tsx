@@ -37,9 +37,6 @@ export default function DropZoneWrapper({ children, onFilesDropped }: Props) {
         dragCounter.current = 0
         setIsDragging(false)
         const droppedFiles = Array.from(e.dataTransfer.files)
-        if (droppedFiles.length > 0) {
-            alert(`Você soltou o arquivo ${droppedFiles[0].name}`)
-        }
 
         const validFiles = droppedFiles.filter(file => {
             if (!ACCEPTED_TYPES.includes(file.type)) {

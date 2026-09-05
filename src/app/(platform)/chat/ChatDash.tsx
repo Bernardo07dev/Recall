@@ -130,6 +130,8 @@ export default function Dashboard({ user, empresas }: Props) {
                     enableCompany={firstmsg} 
                     empresas={empresas} 
                     onCompanyChange={setSelectedCompanyId}
+                    attachments={attachments}
+                    setAttachments={setAttachments}
                 />
                 <div className='bg-[#FBFBFF]/5 backdrop-blur-sm w-full h-8 z-10 '></div>
             </section>

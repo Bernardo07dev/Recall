@@ -10,6 +10,7 @@ import ToolMessageBlock from './components/ToolMessageBlock';
 import { SquareCheck, SquareChartGantt } from 'lucide-react';
 import LinkWithTooltip from './components/LinkWithTooltip';
 import CopyButton from './components/CopyButton';
+import DropZoneWrapper from "../components/DropZoneWrapper";
 
 interface Message {
     input: string;
@@ -35,6 +36,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
     const searchParams = useSearchParams()
     const router = useRouter()
     const [showTool, setShowTool] = useState(true)
+    const [attachments, setAttachments] = useState<File[]>([])
 
     useEffect(() => {
         getMessages(id).then((result) => {
@@ -174,95 +176,99 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
     }
 
     return (
-        <div className="py-22 px-[13%] min-h-screen flex flex-col justify-end items-center">
-            <section className='mb-18 fade-in my-4 w-[80%] font-medium text-gray-500 text-[0.85rem]'>
-                {messages?.map((msg, index) => (
-                    <div key={index} className={`flex items-center mb-1 text-sm ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
-                    >
-                        <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
-                            {msg.role === "AI" ? (
-                                <div className="prose prose-sm max-w-none text-gray-800 prose-h1:text-[1.3rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-sm prose-h2:font-bold prose-h2:text-gray-800  prose-h2:mb-2">
-                                    <ReactMarkdown
-                                        remarkPlugins={[remarkGfm]}
-                                        components={{
-                                            a: ({ node, ...props }) => {
-                                                const href = props.href || "";
-                                                if (href.startsWith("https://tool.start/") || href.startsWith("https://tool.end/")) {
-                                                    const isStart = href.startsWith("https://tool.start/");
-                                                    const toolName = isStart ? href.replace("https://tool.start/", "") : href.replace("https://tool.end/", "");
-                                                    const displayName = getToolDisplayName(toolName);
+        <DropZoneWrapper onFilesDropped={(files) => setAttachments(prev => [...prev, ...files])}>
+            <div className="py-22 px-[13%] min-h-screen flex flex-col justify-end items-center">
+                <section className='mb-18 fade-in my-4 w-[80%] font-medium text-gray-500 text-[0.9375rem]'>
+                    {messages?.map((msg, index) => (
+                        <div key={index} className={`flex items-center mb-1 text-[0.9375rem] ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
+                        >
+                            <div className={`w-fit p-4 py-3 rounded-2xl ${msg.role === "human" ? "bg-[#F2F3FB] text-gray-800" : " text-gray-800"}`}>
+                                {msg.role === "AI" ? (
+                                    <div className="prose prose-base max-w-none text-gray-800 text-[0.9375rem] leading-relaxed prose-h1:text-[1.4rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-[1.05rem] prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mb-2 prose-p:my-2">
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                a: ({ node, ...props }) => {
+                                                    const href = props.href || "";
+                                                    if (href.startsWith("https://tool.start/") || href.startsWith("https://tool.end/")) {
+                                                        const isStart = href.startsWith("https://tool.start/");
+                                                        const toolName = isStart ? href.replace("https://tool.start/", "") : href.replace("https://tool.end/", "");
+                                                        const displayName = getToolDisplayName(toolName);
 
-                                                    if (isStart) {
-                                                        return (
-                                                            <span className="flex flex-col gap-1 my-1 w-fit">
-                                                                <span className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
-                                                                    <SquareChartGantt className="text-[#0c3a6f71]/40" size={15} />
-                                                                    <span className="text-[11px] text-[#0c3a6f71]/40 font-medium">Iniciando {displayName}...</span>
+                                                        if (isStart) {
+                                                            return (
+                                                                <span className="flex flex-col gap-1 my-1 w-fit">
+                                                                    <span className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
+                                                                        <SquareChartGantt className="text-[#0c3a6f71]/40" size={15} />
+                                                                        <span className="text-[11px] text-[#0c3a6f71]/40 font-medium">Iniciando {displayName}...</span>
+                                                                    </span>
+                                                                    <span className={`w-[1.5px] -mb-1.5 h-3 bg-gradient-to-b from-gray-100 to-[#1565C0]/40 rounded-full ml-[7px] animate-pulse`} />
                                                                 </span>
-                                                                <span className={`w-[1.5px] -mb-1.5 h-3 bg-gradient-to-b from-gray-100 to-[#1565C0]/40 rounded-full ml-[7px] animate-pulse`} />
-                                                            </span>
-                                                        );
+                                                            );
+                                                        }
+                                                        if (!isStart) {
+                                                            return (
+                                                                <ToolMessageBlock msg={msg} toolName={toolName} />
+                                                            );
+                                                        }
                                                     }
-                                                    if (!isStart) {
-                                                        return (
-                                                            <ToolMessageBlock msg={msg} toolName={toolName} />
-                                                        );
+                                                    return <LinkWithTooltip href={props.href || ""}>{props.children}</LinkWithTooltip>
+                                                },
+                                                p: ({ node, children, ...props }) => {
+                                                    // Check if this <p> only wraps a tool link (no visible text)
+                                                    const childArray = Array.isArray(children) ? children : [children];
+                                                    const hasOnlyToolLinks = childArray.every((child: any) => {
+                                                        if (typeof child === 'string') return child.trim() === '';
+                                                        if (child?.props?.href?.startsWith('https://tool.start/')) return true;
+                                                        if (child?.props?.href?.startsWith('https://tool.end/')) return true;
+                                                        // Check for already-rendered tool components (span with not-prose)
+                                                        if (child?.props?.className?.includes('not-prose')) return true;
+                                                        return false;
+                                                    });
+                                                    if (hasOnlyToolLinks) {
+                                                        return <p {...props} className="!m-0 !p-0">{children}</p>;
                                                     }
+                                                    return <p {...props}>{children}</p>;
                                                 }
-                                                return <LinkWithTooltip href={props.href || ""}>{props.children}</LinkWithTooltip>
-                                            },
-                                            p: ({ node, children, ...props }) => {
-                                                // Check if this <p> only wraps a tool link (no visible text)
-                                                const childArray = Array.isArray(children) ? children : [children];
-                                                const hasOnlyToolLinks = childArray.every((child: any) => {
-                                                    if (typeof child === 'string') return child.trim() === '';
-                                                    if (child?.props?.href?.startsWith('https://tool.start/')) return true;
-                                                    if (child?.props?.href?.startsWith('https://tool.end/')) return true;
-                                                    // Check for already-rendered tool components (span with not-prose)
-                                                    if (child?.props?.className?.includes('not-prose')) return true;
-                                                    return false;
-                                                });
-                                                if (hasOnlyToolLinks) {
-                                                    return <p {...props} className="!m-0 !p-0">{children}</p>;
-                                                }
-                                                return <p {...props}>{children}</p>;
-                                            }
-                                        }}
-                                    >
-                                        {msg.input}
+                                            }}
+                                        >
+                                            {msg.input}
 
-                                    </ReactMarkdown>
-                                    {msg.input === "" && isStreaming && (
-                                        <svg className="animate-pulse w-5 h-5 opacity-70 inline-block ml-1" viewBox="-3 -3 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z" fill="#1E40AF"/>
-                                        </svg>
-                                    )}
-                                    {msg.input && !(isStreaming && index === messages.length - 1) && (
-                                        <div className="flex justify-start mt-3">
-                                            <CopyButton text={msg.input} />
-                                        </div>
-                                    )}
-                                </div>
-                            ) : msg.role === "Tool" ? (
-                                <ToolMessageBlock msg={msg} />
-                            ) : (
-                                <p className="whitespace-pre-wrap">{msg.input}</p>
-                            )}
+                                        </ReactMarkdown>
+                                        {msg.input === "" && isStreaming && (
+                                            <svg className="animate-pulse w-5 h-5 opacity-70 inline-block ml-1" viewBox="-3 -3 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z" fill="#1E40AF"/>
+                                            </svg>
+                                        )}
+                                        {msg.input && !(isStreaming && index === messages.length - 1) && (
+                                            <div className="flex justify-start mt-3">
+                                                <CopyButton text={msg.input} />
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : msg.role === "Tool" ? (
+                                    <ToolMessageBlock msg={msg} />
+                                ) : (
+                                    <p className="whitespace-pre-wrap">{msg.input}</p>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </section>
-            <div ref={bottomRef} />
-            <div className="w-[55%] fixed bottom-0">
-                <ChatContainer 
-                    empresas={empresas} 
-                    onEnviar={handleEnviar} 
-                    enableCompany={true} 
-                    defaultCompanyId={companyId} 
-                    isStreaming={isStreaming}
-                />
-                <div className='bg-[#FBFBFF] backdrop-blur-sm w-full h-8 z-999 '></div>
-            </div>
-        </div> 
+                    ))}
+                </section>
+                <div ref={bottomRef} />
+                <div className="w-[55%] fixed bottom-0">
+                    <ChatContainer 
+                        empresas={empresas} 
+                        onEnviar={handleEnviar} 
+                        enableCompany={true} 
+                        defaultCompanyId={companyId} 
+                        isStreaming={isStreaming}
+                        attachments={attachments}
+                        setAttachments={setAttachments}
+                    />
+                    <div className='bg-[#FBFBFF] backdrop-blur-sm w-full h-8 z-999 '></div>
+                </div>
+            </div> 
+        </DropZoneWrapper>
         
 )}
