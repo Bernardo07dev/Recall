@@ -1,6 +1,6 @@
 'use client'
-import { useState, useEffect } from "react"
-import { ChevronDown, SendHorizontal, Loader2, X, FileText } from 'lucide-react';
+import { useState, useEffect, useRef } from "react"
+import { ChevronDown, SendHorizontal, Loader2, X, FileText, Paperclip } from 'lucide-react';
 import EmpresaSelector from "@/src/app/(platform)/chat/components/EmpresaSelector";
 import * as XLSX from 'xlsx';
 import { getFileIcon } from '../[id]/components/FileIcons';
@@ -58,6 +58,50 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
             setCompanyId(defaultCompanyId)
         }
     }, [defaultCompanyId])
+
+    const [PopUp, setPopUp] = useState<string | false>(false);
+
+    useEffect(() => {
+        if (PopUp) {
+            const timer = setTimeout(() => setPopUp(false), 4000)
+            return () => clearTimeout(timer)
+        }
+    }, [PopUp])
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length === 0) return;
+        
+        const ACCEPTED_TYPES = [
+            'text/plain',
+            'text/csv',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.ms-excel',
+        ];
+        const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+        const validFiles = files.filter(file => {
+            if (!ACCEPTED_TYPES.includes(file.type)) {
+                setPopUp(`Arquivo Proibido: O arquivo ${file.name} não é suportado. Apenas arquivos .txt, .csv, .xls e .xlsx são aceitos.`)
+                return false
+            }
+            if (file.size > MAX_FILE_SIZE) {
+                setPopUp(`Arquivo Proibido: O arquivo ${file.name} é muito grande. O limite é 10MB.`)
+                return false
+            }
+            return true
+        })
+
+        if (validFiles.length > 0 && setAttachments) {
+            setAttachments(prev => [...prev, ...validFiles]);
+        }
+        
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    }
 
     const handleEnviar = async () => {
         const hasAttachments = attachments && attachments.length > 0;
@@ -162,6 +206,17 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                 )}
 
                 <div className="w-full pb-3 flex flex-row items-center">
+                    <button
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={disableInput}
+                        className="p-2 ml-1 cursor-pointer text-gray-300 hover:text-gray-600 transition-colors disabled:opacity-50"
+                        title="Anexar arquivo"
+                    >
+                        <Paperclip size={15} strokeWidth={2.5} />
+                    </button>
+
+                    <input type="file" multiple className="hidden" ref={fileInputRef} onChange={handleFileSelect} accept=".txt,.csv,.xls,.xlsx,.pdf,.doc,.docx,.mp3,.wav,.ogg" />
+
                     <input 
                         onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} 
                         className="p-2 w-full font-medium focus:outline-none text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed bg-transparent" 
@@ -179,40 +234,26 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                         {isProcessing ? <Loader2 size={15} className="animate-spin" /> : <SendHorizontal size={15} />}
                     </button>
                 </div>
-
-            {/* <div 
-                className="relative w-fit text-[#1E40AF] mt-2" 
-                onMouseEnter={() => setUnavailable(true)} 
-                onMouseLeave={() => setUnavailable(false)}
-            >
-                <select 
-                    className="appearance-none w-full focus:outline-none bg-[#F2F3FB] px-6 py-2 rounded-full text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed" 
-                    onChange={(e) => setCompanyId(e.target.value)}
+                
+                <EmpresaSelector
+                    empresas={empresas}
+                    onChange={(id) => {
+                        setCompanyId(id);
+                        if (onCompanyChange) onCompanyChange(id);
+                    }}
                     disabled={enableCompany}
-                    value={companyId ?? undefined}
-                >
-                    <option value={undefined}>Sem contexto</option>
-                    {empresas.map((empresa) => (
-                       <option key={empresa.id} value={empresa.id}>{empresa.nome}</option> 
-                    ))}
-                </select>
-
-                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
-                    <ChevronDown size={14} className="" />
-                </div>
-            </div> */}
-
-            <EmpresaSelector
-                empresas={empresas}
-                onChange={(id) => {
-                    setCompanyId(id);
-                    if (onCompanyChange) onCompanyChange(id);
-                }}
-                disabled={enableCompany}
-                defaultCompanyId={companyId}
-            />
+                    defaultCompanyId={companyId}
+                    />
 
         </div>
+            {PopUp && (
+                <div className="fixed top-10 left-1/2 -translate-x-1/2 z-50 bg-[#ef4444] text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-4 animate-in fade-in slide-in-from-top-5 duration-300">
+                    <span className="font-semibold text-sm">{PopUp}</span>
+                    <button onClick={() => setPopUp(false)} className="text-white/80 hover:text-white transition-colors cursor-pointer">
+                        <X size={16} />
+                    </button>
+                </div>
+            )}
         </div>
     )
 }
