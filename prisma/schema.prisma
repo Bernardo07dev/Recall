@@ -31,8 +31,26 @@ model Empresas{
   relation  String?
   createdAt DateTime @default(now())
   status    String   @default("processing")
+  // isPublic Boolean
+  // Dono/criador da empresa
+  // - ownerId   String
+  // - owner     User     @relation("EmpresaOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  // shares    EmpresaShare[]
   conversations Conversations[]
 }
+
+// model EmpresaShare {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   empresaId String
+//   empresa   Empresas @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+//   userId    String
+//   user      User     @relation("SharedWithUser", fields: [userId], references: [id], onDelete: Cascade)
+//   sharedById String
+//   sharedBy   User     @relation("SharedByUser", fields: [sharedById], references: [id], onDelete: Cascade)
+//   permission String   @default("viewer")
+//   @@unique([empresaId, userId])
+// }
 
 model Conversations{
   id        String  @id @default(uuid())

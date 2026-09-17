@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Manrope, Inter } from "next/font/google";
+import { Manrope, Inter, Source_Serif_4 } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "Recall",
@@ -17,13 +17,18 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-source",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${manrope.className} ${inter.variable} scroll-smooth`} suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="pt-BR" className={`${manrope.className} ${inter.variable} ${sourceSerif.variable} scroll-smooth`} suppressHydrationWarning data-scroll-behavior="smooth">
       <body suppressHydrationWarning>{children}</body>
     </html>
   );
