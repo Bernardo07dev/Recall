@@ -25,19 +25,19 @@ function getChurnRisk(json: any) {
             return {
                 value: risk,
                 label: 'Crítico',
-                classes: 'text-red-700 bg-red-50 border-red-200/60'
+                classes: 'text-red-700 bg-red-50 border-red-200/20'
             };
         } else if (risk >= 40) {
             return {
                 value: risk,
                 label: 'Médio',
-                classes: 'text-amber-700 bg-amber-50 border-amber-200/60'
+                classes: 'text-amber-700 bg-amber-50 border-amber-200/20'
             };
         } else {
             return {
                 value: risk,
                 label: 'Bom',
-                classes: 'text-emerald-700 bg-emerald-50 border-emerald-200/60'
+                classes: 'text-emerald-700 bg-emerald-50 border-emerald-200/20'
             };
         }
     } catch {
@@ -95,8 +95,8 @@ export default async function Empresas(){
                 {business.map((empresa) => {
                     const churn = getChurnRisk(empresa.json);
                     return (
-                        <Link href={`/dashboard/${empresa.id}`} key={empresa.id} className="bg-white shadow-rainbow cursor-pointer p-4 h-full w-full rounded-2xl shadow-sm border border-transparent hover:border-[#1178df] hover:shadow-sm transition-all duration-300">
-                            <div className="flex flex-row items-center  gap-2 mb-5">
+                        <Link href={`/dashboard/${empresa.id}`} key={empresa.id} className={`relative overflow-hidden bg-white cursor-pointer p-4 h-full w-full rounded-2xl border transition-all duration-300 ${churn?.label === 'Crítico' ? 'shadow-red border border-rose-200 hover:border-rose-300' : 'shadow-rainbow border-transparent hover:border-[#1178df]'} hover:shadow-sm`}>
+                            <div className="flex flex-row items-center gap-2 mb-5">
                                 {empresa.logo ? (
                                     <div className="flex flex-row text-gray-700 inter w-full justify-between mb-4">
                                         <img src={empresa.logo} alt="Logo" className="w-10 h-10 object-contain rounded-xl border border-gray-100" />
@@ -106,30 +106,25 @@ export default async function Empresas(){
                                     <IndustryIcon empresa={empresa} />
                                 )}
 
-                                <div className="flex flex-row gap-1 justify-baseline items-end">
+                                <div className="flex flex-row justify-baseline items-end gap-2">
                                     <h2 className="font-bold text-[1rem]">{empresa.nome}</h2>
-                                    {/* <div className="inter"><IndustryText industria={empresa.industry} /></div> */}
+                                    {empresa.json && churn && (
+                                        <div className={`relative group flex items-center gap-1.5 font-semibold text-[10px] border w-fit px-1 py-1 rounded-lg ${churn.classes}`}>
+                                            <ShieldAlert size={13} className="opacity-70" />
+                                            <span className="absolute left-0 top-full mt-1 hidden whitespace-nowrap rounded bg-gray-800 text-white text-xs px-2 py-1 group-hover:block group-hover:visible group-hover:opacity-100 transition-opacity" >
+                                                {churn.label}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             
                             {empresa.json ? (
                                 <div className="flex flex-wrap w-full gap-2">
-                                    {/* <div className="flex items-center mb-2 gap-1.5 text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60 w-fit px-2.5 py-1 rounded-lg -mt-2">
-                                        <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                                        <span>Ativo</span>
-                                    </div> */}
-
-                                    <div className="flex items-center mb-2 gap-1.5 text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200/60 w-fit px-2.5 py-1 rounded-lg -mt-2">
-                                        <Sparkles className="text-blue-400 animate-pulse" size={9}/>
-                                        <p>Insights: <span className="font-semibold">{getInsightCount(empresa.json)}</span></p>
+                                    <div className="flex items-center gap-1.5 text-[10px] font-semibold bg-blue-50 text-blue-700 w-fit px-2.5 py-1 rounded-lg -mt-2">
+                                        <Sparkles className="text-blue-400" size={11} />
+                                        <p>Insights: <span className="">{getInsightCount(empresa.json)}</span></p>
                                     </div>
-
-                                    {churn && (
-                                        <div className={`flex items-center mb-2 gap-1.5 font-semibold text-[10px] border w-fit px-2.5 py-1 rounded-lg -mt-2 ${churn.classes}`}>
-                                            <ShieldAlert size={12} className="opacity-70" />
-                                            <p className="font-bold">{churn.label}</p>
-                                        </div>
-                                    )}
                                 </div>
                             ) : (
                                 <div className="flex items-center gap-1.5 text-[11px] font-medium text-amber-700 w-fit rounded-md -mt-2">
@@ -144,7 +139,6 @@ export default async function Empresas(){
                 <Link href="/context" className="cursor-pointer text-[#424752a5] py-4 border-dashed border-2 h-fill border-gray-300 text-center hover:border-[#1178df] transition-all p-4 w-full flex flex-col items-center justify-center rounded-2xl">
                     <Plus className="bg-[#F2F3FB] p-2 rounded-full mb-2" size={30}/>
                     <h1 className="font-bold text-sm">Adicionar novo contexto</h1>
-                    <p className="text-[11px] mx-2 text-gray-400 font-medium">Clique aqui para criar um novo contexto</p>
                 </Link>
             </section>
         </main>

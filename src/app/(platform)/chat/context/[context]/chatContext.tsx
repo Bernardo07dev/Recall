@@ -77,7 +77,7 @@ export default function ChatContext({ user, empresas, initialContext }: Props) {
                         <h1 className="text-4xl font-semibold">Olá, {nome}!</h1>
                         <p className="text-gray-500 font-medium text-[0.9375rem] mb-4 -mt-1">Como posso te ajudar hoje?</p>
                         <section className="flex flex-row gap-4">
-                        <div onClick={() => recebeMensagem(oportunidades, selectedCompanyId, "human")} className="bg-white shadow-rainbow p-4 w-[33%] rounded-3xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                        <div onClick={() => recebeMensagem(oportunidades, selectedCompanyId, "human")} className="bg-white shadow-rainbow p-6 w-[33%] justify-center rounded-3xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
                                 <div className='flex items-center gap-2 mb-2'>
                                     <ChartBar size={28} className="bg-[#EFF6FF] text-[#2563EB] p-[6px] rounded-lg " />
                                     <h1 className="text-[0.9rem] font-semibold">Oportunidades</h1>

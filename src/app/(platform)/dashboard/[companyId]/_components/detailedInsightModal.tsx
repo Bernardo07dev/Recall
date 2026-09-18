@@ -24,8 +24,8 @@ export function DetailedInsightModal({ activeInsight, setActiveInsight }: Detail
                 <div className="relative bg-white rounded-4xl w-full h-full flex flex-col overflow-hidden animate-in slide-in-from-right-12 duration-300">
                 <div className="flex justify-between items-start p-8 pb-3 border-b border-gray-100 shadow-md shadow-gray-100">
                     <div>
-                        <h2 className="text-2xl mb-2 font-bold text-gray-800 leading-tight">{activeInsight.title}</h2>
-                        <div className="flex items-center gap-3 font-medium">
+                        <h2 className="text-2xl mb-3 font-bold text-gray-800 leading-tight">{activeInsight.title}</h2>
+                        <div className="flex items-center gap-3 font-semibold">
                             {renderCriticality(activeInsight.criticality)}
                             {renderIcon(activeInsight.category)}
                         </div>
@@ -38,22 +38,22 @@ export function DetailedInsightModal({ activeInsight, setActiveInsight }: Detail
                     </button>
                 </div>
             
-                    <div className="p-8 overflow-y-auto flex-1 text-sm flex flex-col gap-8 inter bg-gray-50/30 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-200-200/60 hover:[&::-webkit-scrollbar-thumb]:bg-gray-200/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
-                    <div className="bg-blue-50/50 p-6 rounded-xl border border-blue-100/50">
+                <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-4 font-medium bg-gray-50/30 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-200-200/60 hover:[&::-webkit-scrollbar-thumb]:bg-gray-200/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+                        <div className="bg-blue-50/50 p-5 mt-2 text-[0.85rem] rounded-2xl border border-blue-100/50">
                         <p className="text-gray-800">
                             {activeInsight.description}
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="flex flex-col gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-4">
                             {activeInsight.recommended_action && (
                                 <div className="border border-green-100 bg-green-50/50 p-6 rounded-2xl shadow-sm shadow-green-100/20">
-                                    <div className="flex items-center gap-2 mb-3 text-green-700 font-semibold">
+                                    <div className="flex items-center gap-2 mb-2 text-green-700 font-semibold">
                                         <Lightbulb size={20} />
-                                        <h3 className="text-base">Ação Recomendada</h3>
+                                            <h3 className="text-[0.90rem]">Ação Recomendada</h3>
                                     </div>
-                                    <p className="text-gray-600 leading-relaxed">{activeInsight.recommended_action}</p>
+                                        <p className="text-gray-600 leading-relaxed text-[0.80rem]">{activeInsight.recommended_action}</p>
                                 </div>
                             )}
 
@@ -61,9 +61,9 @@ export function DetailedInsightModal({ activeInsight, setActiveInsight }: Detail
                                 <div className="border border-blue-100 bg-white p-6 rounded-2xl shadow-sm shadow-blue-100/20">
                                     <div className="flex items-center gap-2 mb-3 text-[#1565C0] font-semibold">
                                         <Target size={20} />
-                                        <h3 className="text-base">Produto Afetado</h3>
+                                            <h3 className="text-[0.90rem]">Produto Afetado</h3>
                                     </div>
-                                    <p className="text-gray-600 font-medium">{activeInsight.affected_totvs_product}</p>
+                                        <p className="text-gray-600 font-medium text-[0.80rem]">{activeInsight.affected_totvs_product}</p>
                                 </div>
                             )}
                         </div>
@@ -73,9 +73,9 @@ export function DetailedInsightModal({ activeInsight, setActiveInsight }: Detail
                                 <div className="border border-orange-100 bg-orange-50/30 p-6 rounded-2xl h-full shadow-sm shadow-orange-100/20">
                                     <div className="flex items-center gap-2 mb-3 text-orange-700 font-semibold">
                                         <AlertTriangle size={20} />
-                                        <h3 className="text-base">Trecho de Origem</h3>
+                                            <h3 className="text-[0.90rem]">Trecho de Origem</h3>
                                     </div>
-                                    <p className="text-gray-600 italic leading-relaxed">"{activeInsight.source_excerpt}"</p>
+                                        <p className="text-gray-600 italic leading-relaxed text-[0.80rem]">"{activeInsight.source_excerpt}"</p>
                                 </div>
                             )}
                         </div>

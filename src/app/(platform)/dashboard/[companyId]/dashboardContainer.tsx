@@ -62,7 +62,7 @@ export default function Container({ empresa } : Props ){
                         <h1 className='font-semibold text-gray-500'>{empresa && empresa.nome}</h1>
                     </div>
                     <p className='text-sm text-gray-400 mr-[5%] mb-2'>Métricas de conversação em tempo real e oportunidades estratégicas de IA em todo o ecossistema da sua empresa.</p>
-                    <Link href={`../chat/context/${empresa.id}`} className='text-xs cursor-pointer gap-1 items-center flex bg-[#1565C0] w-fit text-white/95 py-2 px-3 font-semibold rounded-lg'>
+                    <Link href={`../chat/context/${empresa.id}`} className='text-xs cursor-pointer gap-1 items-center flex rainbow-bg w-fit text-white/95 py-2 px-3 font-semibold rounded-lg'>
                         <p>Ir para chat</p>
                         <MessageCircleCode size={14}/>
                     </Link>
