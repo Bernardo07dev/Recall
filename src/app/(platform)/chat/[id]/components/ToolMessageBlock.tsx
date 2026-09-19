@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { getToolDisplayName } from '../toolsname';
@@ -9,7 +8,7 @@ export default function ToolMessageBlock({ msg, toolName }: { msg: any, toolName
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <span className="not-prose block my-1 mb-[-16px]">
+        <span className="not-prose block my-1 ">
             <span className="flex flex-col">
                 <span 
                     className="text-[11px] font-medium flex items-center gap-1 cursor-pointer group py-1 w-fit"

@@ -36,7 +36,7 @@ export default function IndicatorsContainer({ indicators }: Props) {
     return (
         <div className="grid grid-cols-3 gap-4">
             {/* Churn Risk */}
-            <div className={`bg-white border-l-3 ${churn.border} border-[0.5px] rounded-2xl p-4 inter`}>
+            <div className={`bg-white shadow-rainbow ${churn.border}  rounded-2xl p-5 inter`}>
                 <div className="flex items-center gap-2 mb-3">
                     <div className={`${churn.bg} p-1.5 rounded-lg`}>
                         <ShieldAlert size={14} className={churn.text} />
@@ -46,13 +46,13 @@ export default function IndicatorsContainer({ indicators }: Props) {
                     </span>
                 </div>
                 <div className='flex flex-row gap-2 items-end'>
-                    <p className={`text-3xl font-bold ${churn.text} tracking-tight`}>{indicators.churn_risk}</p>
+                    <p className={`text-2xl font-bold ${churn.text} tracking-tight`}>{indicators.churn_risk}</p>
                     <p className={`text-[11px] font-medium mb-1 ${churn.text} opacity-60`}>{churn.label}</p>
                 </div>
             </div>
 
             {/* Upsell Score */}
-            <div className={`bg-white border-l-3 border-[0.5px] ${upsell.border} rounded-2xl p-4 inter`}>
+            <div className={`bg-white shadow-rainbow  ${upsell.border} rounded-2xl p-4 inter`}>
                 <div className="flex items-center gap-2 mb-3">
                     <div className={`${upsell.bg} p-1.5 rounded-lg`}>
                         <TrendingUp size={14} className={upsell.text} />
@@ -62,13 +62,13 @@ export default function IndicatorsContainer({ indicators }: Props) {
                     </span>
                 </div>
                 <div className='flex flex-row gap-2 items-end'>
-                    <p className={`text-3xl font-bold ${upsell.text} tracking-tight`}>{indicators.upsell_score}</p>
+                    <p className={`text-2xl font-bold ${upsell.text} tracking-tight`}>{indicators.upsell_score}</p>
                     <p className={`text-[11px] mb-1 z-0 font-medium ${upsell.text} opacity-60`}>{upsell.label}</p>
                 </div>
             </div>
 
             {/* Competitor Threat */}
-            <div className={`bg-white border-l-3 border-[0.5px] ${threat.border} rounded-2xl p-4 inter`}>
+            <div className={`bg-white shadow-rainbow  ${threat.border} rounded-2xl p-4 inter`}>
                 <div className="flex items-center gap-2 mb-3">
                     <div className={`${threat.bg} p-1.5 rounded-lg`}>
                         <Swords size={14} className={threat.text} />
@@ -77,7 +77,7 @@ export default function IndicatorsContainer({ indicators }: Props) {
                         Competidores
                     </span>
                 </div>
-                <p className={`text-xl font-bold ${threat.text} tracking-tight`}>{indicators.competitor_threat}</p>
+                <p className={`text-lg font-bold ${threat.text} tracking-tight`}>{indicators.competitor_threat}</p>
             </div>
 
             {/* Sentiment Overall
