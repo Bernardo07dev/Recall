@@ -1,7 +1,7 @@
 import React from 'react';
 import GenericToolLoading from './generic/GenericToolLoading';
 import GenericToolFinish from './generic/GenericToolFinish';
-import ToolMessageBlock from '../components/ToolMessageBlock';
+import WebToolFinish from './WebSearch/WebToolFinish';
 import BuscaToolLoading from './BuscaEmpresa/BuscaToolLoading';
 import BuscaToolFinish from './BuscaEmpresa/BuscaToolFinish';
 import WebToolLading from './WebSearch/WebToolLading';
@@ -21,7 +21,7 @@ interface ToolRendererProps {
 const toolRegistry: Record<string, { Loading?: React.ComponentType<any>, Result?: React.ComponentType<any> }> = {
     "web_search_tool": {
         Loading: WebToolLading,
-        Result: ToolMessageBlock,
+        Result: WebToolFinish,
     },
     
     "buscar_dados_empresa": {
