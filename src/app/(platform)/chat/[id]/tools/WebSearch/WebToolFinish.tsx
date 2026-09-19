@@ -1,10 +1,10 @@
 "use client";
 import { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { getToolDisplayName } from '../toolsname';
-import ToolContent from './toolContent';
+import { getToolDisplayName } from '../../toolsname';
+import ToolContent from '../../components/toolContent';
 
-export default function ToolMessageBlock({ msg, toolName }: { msg: any, toolName?: string }) {
+export default function WebToolFinish({ msg, toolName }: { msg: any, toolName?: string }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (

@@ -31,7 +31,7 @@ export default async function PlatformLayout({
       <div className="flex flex-row">
         <SideBar userId={userId}/>
         <div className="w-full bg-[#fbfbff]">
-            <nav className="fixed bg-[#FBFBFF] w-full p-4 px-6 flex flex-row justify-between items-center">
+            <nav className="fixed z-5 w-full p-4 px-6 flex flex-row justify-between items-center" style={{ background: 'linear-gradient(to bottom, #fbfbff, transparent)' }}>
               <Image src={Logo} alt="Logo Totvs" width={70}></Image>
               {/* <SupportButton /> */}
           </nav>

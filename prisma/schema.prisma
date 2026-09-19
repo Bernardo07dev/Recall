@@ -16,10 +16,14 @@ model User {
   createdAt DateTime @default(now())
 
   conversations Conversations[]
+
+  ownedEmpresas Empresas[]      @relation("EmpresaOwner")
+  sharedWithMe  EmpresaShare[]  @relation("SharedWithUser")
+  sharedByMe    EmpresaShare[]  @relation("SharedByUser")
 }
 
-model Empresas{
-  id        String  @id @default(uuid())
+model Empresas {
+  id        String   @id @default(uuid())
   nome      String
   content   String
   json      Json?
@@ -31,26 +35,33 @@ model Empresas{
   relation  String?
   createdAt DateTime @default(now())
   status    String   @default("processing")
-  // isPublic Boolean
-  // Dono/criador da empresa
-  // - ownerId   String
-  // - owner     User     @relation("EmpresaOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  // shares    EmpresaShare[]
+
+  isPublic  Boolean  @default(false)
+
+  ownerId   String
+  owner     User     @relation("EmpresaOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  shares        EmpresaShare[]
   conversations Conversations[]
 }
 
-// model EmpresaShare {
-//   id        String   @id @default(uuid())
-//   createdAt DateTime @default(now())
-//   empresaId String
-//   empresa   Empresas @relation(fields: [empresaId], references: [id], onDelete: Cascade)
-//   userId    String
-//   user      User     @relation("SharedWithUser", fields: [userId], references: [id], onDelete: Cascade)
-//   sharedById String
-//   sharedBy   User     @relation("SharedByUser", fields: [sharedById], references: [id], onDelete: Cascade)
-//   permission String   @default("viewer")
-//   @@unique([empresaId, userId])
-// }
+model EmpresaShare {
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+
+  empresaId  String
+  empresa    Empresas @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+
+  userId     String
+  user       User     @relation("SharedWithUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  sharedById String
+  sharedBy   User     @relation("SharedByUser", fields: [sharedById], references: [id], onDelete: Cascade)
+
+  permission String   @default("viewer")
+
+  @@unique([empresaId, userId])
+}
 
 model Conversations{
   id        String  @id @default(uuid())
