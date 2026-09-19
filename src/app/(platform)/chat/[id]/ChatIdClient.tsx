@@ -5,9 +5,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { getToolDisplayName } from './toolsname';
-import ToolMessageBlock from './components/ToolMessageBlock';
-import { SquareCheck, SquareChartGantt, FileText } from 'lucide-react';
+import ToolRenderer from './tools/ToolRenderer';
 import LinkWithTooltip from './components/LinkWithTooltip';
 import CopyButton from './components/CopyButton';
 import DropZoneWrapper from "../components/DropZoneWrapper";
@@ -180,9 +178,15 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
             <div className="py-22 px-[13%] min-h-screen flex flex-col justify-end items-center">
                 <section className='mb-18 fade-in my-4 w-[80%] font-medium text-gray-500 text-[0.9375rem]'>
                     {messages?.map((msg, index) => (
-                        <div key={index} className={`flex items-center mb-1 text-[0.9375rem] ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
+                        <div key={index} className={`flex items-center ${msg.role === "Tool" ? "mb-0" : "mb-1"} text-[0.9375rem] ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
                         >
-                            <div className={`w-fit ${msg.role === "human" ? "flex flex-col items-end" : "p-4 py-3 rounded-2xl text-gray-800"}`}>
+                            <div className={`w-fit ${
+                                msg.role === "human" 
+                                    ? "flex flex-col items-end" 
+                                    : msg.role === "Tool"
+                                        ? "px-4 py-0 text-gray-800"
+                                        : "p-4 py-3 rounded-2xl text-gray-800"
+                            }`}>
                                 {msg.role === "AI" ? (
                                     <div className="prose prose-base max-w-none text-gray-800 text-[0.9375rem] leading-relaxed prose-h1:text-[1.4rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h2:text-[1.05rem] prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mb-2 prose-p:my-2">
                                         <ReactMarkdown
@@ -193,24 +197,8 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                                     if (href.startsWith("https://tool.start/") || href.startsWith("https://tool.end/")) {
                                                         const isStart = href.startsWith("https://tool.start/");
                                                         const toolName = isStart ? href.replace("https://tool.start/", "") : href.replace("https://tool.end/", "");
-                                                        const displayName = getToolDisplayName(toolName);
 
-                                                        if (isStart) {
-                                                            return (
-                                                                <span className="flex flex-col gap-1 my-1 w-fit">
-                                                                    <span className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
-                                                                        <SquareChartGantt className="text-[#0c3a6f71]/40" size={15} />
-                                                                        <span className="text-[11px] text-[#0c3a6f71]/40 font-medium">Iniciando {displayName}...</span>
-                                                                    </span>
-                                                                    <span className={`w-[1.5px] -mb-1.5 h-3 bg-gradient-to-b from-gray-100 to-[#1565C0]/40 rounded-full ml-[7px] animate-pulse`} />
-                                                                </span>
-                                                            );
-                                                        }
-                                                        if (!isStart) {
-                                                            return (
-                                                                <ToolMessageBlock msg={msg} toolName={toolName} />
-                                                            );
-                                                        }
+                                                        return <ToolRenderer toolName={toolName} isStart={isStart} showTool={showTool} msg={msg} />;
                                                     }
                                                     return <LinkWithTooltip href={props.href || ""}>{props.children}</LinkWithTooltip>
                                                 },
@@ -226,7 +214,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                                         return false;
                                                     });
                                                     if (hasOnlyToolLinks) {
-                                                        return <p {...props} className="!m-0 !p-0">{children}</p>;
+                                                        return <div {...props} className="!m-0 !p-0">{children}</div>;
                                                     }
                                                     return <p {...props}>{children}</p>;
                                                 }
@@ -247,7 +235,12 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                         )}
                                     </div>
                                 ) : msg.role === "Tool" ? (
-                                    <ToolMessageBlock msg={msg} />
+                                    <ToolRenderer 
+                                        toolName={msg.toolMetadata?.name || "unknown_tool"} 
+                                        isStart={false} 
+                                        showTool={false} 
+                                        msg={msg} 
+                                    />
                                 ) : (
                                     <HumanMessage content={msg.input} />
                                 )}

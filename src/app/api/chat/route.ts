@@ -1,5 +1,7 @@
 import { fetchCompany, fetchMessages } from "@/src/app/actions/fetchThings";
-import { agentOpenRouter } from "@/src/lib/langchain/llm";
+import { openRouterModel } from "@/src/lib/langchain/llm";
+import { webSearchTool, createBuscarJsonEmpresaTool } from "@/src/lib/langchain/tools";
+import { createAgent } from "langchain";
 import { BASE_PROMPT } from "@/src/lib/langchain/utils";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { saveMessages } from "@/src/app/actions/chat-action";
@@ -20,6 +22,7 @@ export async function POST(req: Request) {
   const combinedSystemPrompt = `
     ${BASE_PROMPT}
 
+
     [INFORMAÇÕES DE CONTEXTO]
     A data de hoje é: ${today}.
 
@@ -33,7 +36,7 @@ export async function POST(req: Request) {
   `;
 
   const SYSTEM = new SystemMessage(combinedSystemPrompt);
-  const userMessage = new HumanMessage(mensagem);
+  // const userMessage = new HumanMessage(mensagem);
 
   let messages = [SYSTEM, ...history];
 
@@ -42,7 +45,14 @@ export async function POST(req: Request) {
       messages.push(new HumanMessage(mensagem));
   }
 
-  const stream = await agentOpenRouter.streamEvents(
+  const buscarJsonEmpresaTool = createBuscarJsonEmpresaTool(id);
+
+  const agentDynamic = createAgent({
+    model: openRouterModel,
+    tools: [webSearchTool, buscarJsonEmpresaTool],
+  });
+
+  const stream = await agentDynamic.streamEvents(
     { messages },
     { version: "v2" }
   );
@@ -51,7 +61,6 @@ export async function POST(req: Request) {
   let fullResponse = "";
 
   const readableStream = new ReadableStream({
-
 
     async start(controller) {
       try {

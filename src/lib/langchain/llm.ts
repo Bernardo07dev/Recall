@@ -14,7 +14,7 @@ export const llmBruta = new ChatGoogleGenerativeAI({
     temperature: 0,
 })
 
-const openRouterModel = new ChatOpenAI({
+export const openRouterModel = new ChatOpenAI({
     model: "openai/gpt-4o-mini",
     temperature: 0,
     apiKey: process.env.OPENROUTER_API_KEY,
