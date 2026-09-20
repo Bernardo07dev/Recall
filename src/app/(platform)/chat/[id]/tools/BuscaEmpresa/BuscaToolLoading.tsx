@@ -13,7 +13,7 @@ export default function BuscaToolLoading({ toolName, showTool }: GenericToolLoad
         <span className="flex flex-col w-fit">
             <span className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
                 <Building2 className="text-[#0c3a6f71]/40" size={15} />
-                <span className="text-[11px] text-[#0c3a6f71]/40 font-medium">
+                <span className="text-[11px] text-[#0c3a6f71]/39 font-medium">
                     {showTool ? `Fazendo ${displayName}...` : `${displayName}`}
                 </span>
             </span>
