@@ -22,7 +22,6 @@ export async function POST(req: Request) {
   const combinedSystemPrompt = `
     ${BASE_PROMPT}
 
-
     [INFORMAÇÕES DE CONTEXTO]
     A data de hoje é: ${today}.
 

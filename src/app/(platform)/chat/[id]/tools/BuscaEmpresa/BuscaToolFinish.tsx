@@ -33,7 +33,7 @@ export default function BuscaToolFinish({ toolName, msg }: GenericToolFinishProp
     const companyData = parsedData?.dados_empresa;
 
     return (
-        <div className="flex flex-col gap-3 my-3 w-full animate-in fade-in slide-in-from-bottom-2">
+        <div className="flex flex-col w-full gap-3 animate-in fade-in slide-in-from-bottom-2">
             <span className={`flex items-center gap-1 text-sm no-underline mb-1`}>
                 <img src="/RECALL-logo.svg" className="w-10 mr-0.5 object-contain group-hover:opacity-100 transition-all" alt="Recall Logo" />
                 <span className="text-[11px] text-[#0c3a6f93] group-hover:text-[#1a3d65] transition-colors">{displayName}</span>
