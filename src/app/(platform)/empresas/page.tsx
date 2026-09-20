@@ -1,8 +1,7 @@
 import { prisma } from "@/src/lib/prisma"
-import { Plus, Loader2, Sparkles, ShieldAlert } from "lucide-react"
+import { Plus, Loader2, Sparkles, ShieldAlert, Globe, Lock } from "lucide-react"
 import Link from "next/link"
 import { sectorConfig, DefaultIconConfig } from '@/src/lib/sectorConfig'
-import RemoveBusiness from "./removeBusiness"
 
 function getInsightCount(json: any): number {
     if (!json) return 0;
@@ -25,7 +24,7 @@ function getChurnRisk(json: any) {
             return {
                 value: risk,
                 label: 'Crítico',
-                classes: 'text-red-700 bg-red-50 border-red-200/20'
+                classes: 'text-red-700 '
             };
         } else if (risk >= 40) {
             return {
@@ -58,6 +57,11 @@ interface empresa {
     relation?: string | null;
     createdAt: Date;
     status: string;
+    isPublic: boolean;
+    ownerId: string;
+    owner?: any;
+    shares?: any[];
+    conversations?: any[];
 }
 
 export default async function Empresas(){
@@ -74,19 +78,6 @@ export default async function Empresas(){
         )
     }
 
-    const IndustryText = ({ industria }: { industria: string }) => {
-        const config = sectorConfig[industria.toLowerCase()] || DefaultIconConfig;
-        const { textClass } = config;
-
-        return (
-            <div className={`flex flex-row inter w-full justify-between ${textClass}`}>
-                <p className={`h-fit text-[0.6rem] mb-0.5`}>
-                    {industria.charAt(0).toUpperCase() + industria.slice(1)}
-                </p>
-            </div>
-        )
-    }
-
     return(
         <main className="pt-22 pb-12 px-[5%]">
             <h1 className="text-2xl font-bold mb-1">Empresas</h1>
@@ -96,27 +87,46 @@ export default async function Empresas(){
                     const churn = getChurnRisk(empresa.json);
                     return (
                         <Link href={`/dashboard/${empresa.id}`} key={empresa.id} className={`relative overflow-hidden bg-white cursor-pointer p-4 h-full w-full rounded-2xl border transition-all duration-300 ${churn?.label === 'Crítico' ? 'shadow-red border border-rose-200 hover:border-rose-300' : 'shadow-rainbow border-transparent hover:border-[#1178df]'} hover:shadow-sm`}>
-                            <div className="flex flex-row items-center gap-2 mb-5">
-                                {empresa.logo ? (
-                                    <div className="flex flex-row text-gray-700 inter w-full justify-between mb-4">
-                                        <img src={empresa.logo} alt="Logo" className="w-10 h-10 object-contain rounded-xl border border-gray-100" />
-                                        <p className="bg-gray-100 h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{empresa.industry}</p>
+                            <div className="flex flex-row justify-between">
+                                <div className="flex flex-row items-center gap-2 mb-5">
+                                    {empresa.logo ? (
+                                        <div className="flex flex-row text-gray-700 inter w-full justify-between mb-4">
+                                            <img src={empresa.logo} alt="Logo" className="w-10 h-10 object-contain rounded-xl border border-gray-100" />
+                                            <p className="bg-gray-100 h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{empresa.industry}</p>
+                                        </div>
+                                    ) : (
+                                        <IndustryIcon empresa={empresa} />
+                                    )}
+
+                                    <div className="flex flex-row justify-baseline items-center gap-2">
+                                        <h2 className="font-bold text-[1rem]">{empresa.nome}</h2>
+                                        {empresa.json && churn && churn.label === 'Crítico' && (
+                                            <div className={`relative group flex items-center gap-1.5 font-semibold text-[10px] w-fit py-1 rounded-lg ${churn.classes}`}>
+                                                <ShieldAlert size={15} className="opacity-70" />
+                                                <span className="absolute left-0 top-full mt-1 hidden whitespace-nowrap rounded bg-gray-800 text-white text-xs px-2 py-1 group-hover:block group-hover:visible group-hover:opacity-100 transition-opacity" >
+                                                    {churn.label}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                {empresa.isPublic ? (
+                                    <div className="relative group bg-[#EFF6FF] p-1.5 rounded-full h-fit">
+                                        <Globe size={15} className="text-[#1565C0]" />
+                                        <span className="absolute font-semibold right-0 top-full mt-1 hidden whitespace-nowrap rounded bg-gray-800 text-white text-xs px-2 py-1 group-hover:block group-hover:visible group-hover:opacity-100 transition-opacity z-10">
+                                            Público
+                                        </span>
                                     </div>
                                 ) : (
-                                    <IndustryIcon empresa={empresa} />
+                                    <div className="relative group bg-gray-100 p-1.5 rounded-full h-fit">
+                                        <Lock size={14} className="text-gray-500" />
+                                            <span className="absolute right-0 font-semibold top-full mt-1 hidden whitespace-nowrap rounded bg-gray-800 text-white text-xs px-2 py-1 group-hover:block group-hover:visible group-hover:opacity-100 transition-opacity z-10">
+                                            Privado
+                                        </span>
+                                    </div>
                                 )}
 
-                                <div className="flex flex-row justify-baseline items-end gap-2">
-                                    <h2 className="font-bold text-[1rem]">{empresa.nome}</h2>
-                                    {empresa.json && churn && (
-                                        <div className={`relative group flex items-center gap-1.5 font-semibold text-[10px] border w-fit px-1 py-1 rounded-lg ${churn.classes}`}>
-                                            <ShieldAlert size={13} className="opacity-70" />
-                                            <span className="absolute left-0 top-full mt-1 hidden whitespace-nowrap rounded bg-gray-800 text-white text-xs px-2 py-1 group-hover:block group-hover:visible group-hover:opacity-100 transition-opacity" >
-                                                {churn.label}
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
+
                             </div>
                             
                             {empresa.json ? (

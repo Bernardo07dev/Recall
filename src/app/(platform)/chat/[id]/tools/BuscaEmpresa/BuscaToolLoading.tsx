@@ -9,6 +9,8 @@ interface GenericToolLoadingProps {
 export default function BuscaToolLoading({ toolName, showTool }: GenericToolLoadingProps) {
     const displayName = getToolDisplayName(toolName);
     
+    if (!showTool) return null;
+
     return (
         <span className="flex flex-col gap-1 my-1 w-fit">
             <span className={`flex items-center gap-2 text-sm no-underline ${showTool ? "animate-pulse" : ""}`}>
