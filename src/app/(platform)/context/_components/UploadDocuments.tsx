@@ -35,16 +35,16 @@ export default function UploadDocumentos({ onChange }: Props) {
                     setDragging(false)
                     handleFiles(e.dataTransfer.files)
                 }}
-                className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center gap-3 cursor-pointer transition-colors ${
-                    dragging ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-300'
+                className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 ${
+                    dragging ? 'border-blue-500 bg-blue-50 shadow-[0_0_20px_rgba(90,94,185,0.25)]' : 'border-gray-200 hover:border-[#5A5EB9]/40 hover:shadow-[0_0_24px_rgba(90,94,185,0.15)]'
                 }`}
             >
-                <Upload size={28} className="text-gray-400" />
+                <Upload size={24} className="text-[#1565C0]/75" />
                 <div className="text-center">
-                    <p className="font-semibold mb-1 text-gray-600">Enviar Arquivos</p>
-                    <p className="text-xs font-medium text-gray-400">Arraste transcrições, PDFs ou arquivos de texto</p>
+                    <p className="font-semibold text-[0.85rem] text-gray-600">Enviar Arquivos</p>
+                    {/* <p className="text-xs font-medium text-gray-400">Arraste transcrições, PDFs ou arquivos de texto</p> */}
                 </div>
-                <button className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg cursor-pointer text-gray-600 text-[13px] font-semibold transition-colors">
+                <button className="flex items shadow-rainbow-center gap-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg cursor-pointer text-gray-600 text-[0.70rem] font-semibold transition-colors">
                     Escolher Arquivos
                 </button>
             </div>
@@ -59,12 +59,12 @@ export default function UploadDocumentos({ onChange }: Props) {
             />
 
             {files.map((file, index) => (
-                <div key={index} className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl">
+                <div key={index} className="flex items-center justify-between bg-gray-50 px-4 py-2 rounded-xl">
                     <div className="flex items-center gap-3">
                         <FileText size={18} className="text-blue-500" />
                         <div>
-                            <p className="text-[14px] text-gray-700 font-medium">{file.name}</p>
-                            <p className="text-xs text-gray-400">{(file.size / 1024 / 1024).toFixed(1)} MB</p>
+                            <p className="text-[0.8rem] text-gray-700 font-medium">{file.name}</p>
+                            <p className="text-[0.7rem] text-gray-400">{(file.size / 1024 / 1024).toFixed(1)} MB</p>
                         </div>
                     </div>
                     <button onClick={() => removeFile(index)}>

@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
-import { encrypt } from "@/src/lib/auth";
+import { encrypt, decrypt } from "@/src/lib/auth";
 import { supabase } from "@/src/lib/supabase";
 import { executeGraph } from '@/src/lib/langchain/actionsAI';
 import { after } from "next/server";
@@ -77,11 +77,24 @@ export async function loginUser(prevState: any, formData: FormData) {
 
 export async function createEmpresa(prevState: any, form: FormData) {
   try {
+      const cookieStore = await cookies();
+      const session = cookieStore.get("recall-session")?.value;
+      
+      if (!session) {
+          return { success: false, error: "Usuário não autenticado." };
+      }
+      
+      const sessionData = await decrypt(session);
+      const ownerId = sessionData.userId;
+      const isPublic = form.get("isPublic") === "true";
+
       const newBusiness = await prisma.empresas.create({
           data: {
             nome: form.get("nome") as string,
             content: form.get("content") as string,
             industry: form.get("industria") as string,
+            isPublic: isPublic,
+            ownerId: ownerId,
         }
       });
     

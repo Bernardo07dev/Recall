@@ -70,7 +70,7 @@ export default function SelectIndustry({ value, onChange, name, empytyState }: S
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`w-full text-left flex items-center justify-between border-[1.6px] rounded-lg transition-all  py-[11px] px-3 bg-white cursor-pointer focus:outline-none ${
+        className={`w-full text-left flex items-center justify-between border-[1.55px] rounded-xl transition-all  py-[11px] px-3 bg-white cursor-pointer focus:outline-none ${
           empytyState
             ? 'border-red-400 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.15)]'
             : open

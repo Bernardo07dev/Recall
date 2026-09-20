@@ -27,7 +27,7 @@ export default function UploadLogo({ logo, setLogo }: Props) {
 
   return (
     <div 
-      className="w-full h-[46px] border-[1.6px] border-[#C2C6D4]/30 border-dashed rounded-lg hover:bg-[#f3f4fba1] transition-all cursor-pointer flex items-center justify-center relative overflow-hidden"
+      className="w-full h-[46px] border-[1.6px] border-[#C2C6D4]/30 border-dashed rounded-xl hover:bg-[#f3f4fba1] transition-all cursor-pointer flex items-center justify-center relative overflow-hidden"
       onClick={() => inputRef.current?.click()}
     >
       <input 
@@ -50,8 +50,8 @@ export default function UploadLogo({ logo, setLogo }: Props) {
         </div>
       ) : (
         <div className="flex flex-row items-center gap-2 text-gray-400">
-          <ImagePlus size={16} />
-          <span className="text-[13px]">Faça o upload do logo</span>
+          <ImagePlus size={15} />
+          <span className="text-[12px]">Faça o upload do logo</span>
         </div>
       )}
     </div>

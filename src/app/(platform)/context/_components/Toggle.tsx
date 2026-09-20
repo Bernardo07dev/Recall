@@ -1,29 +1,22 @@
-'use client'
-import { useState } from 'react'
+import { Globe, Lock } from "lucide-react";
 
-interface Props {
-    enabled?: boolean
-    onChange?: (value: boolean) => void
+interface ToggleProps {
+    isPublic: boolean;
+    onChange: (value: boolean) => void;
 }
 
-export default function Toggle({ enabled = false, onChange }: Props) {
-    const [active, setActive] = useState(enabled)
-
-    function handleToggle() {
-        setActive(prev => !prev)
-        onChange?.(!active)
-    }
-
+export default function Toggle({ isPublic, onChange }: ToggleProps) {
     return (
-        <button
-            onClick={handleToggle}
-            className={`w-11 h-6 cursor-pointer rounded-full transition-colors duration-300 relative ${
-                active ? 'bg-blue-600' : 'bg-gray-200'
-            }`}
-        >
-            <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-300 ${
-                active ? 'translate-x-5' : 'translate-x-0.5'
-            }`} />
-        </button>
+        <div onClick={() => onChange(!isPublic)} className="flex flex-row items-center gap-2 cursor-pointer select-none group">
+            <div className={`relative w-8 h-[18px] rounded-full transition-colors duration-200 ${isPublic ? 'bg-[#1565C0]' : 'bg-gray-300'}`}>
+                <div className={`absolute top-[3px] w-3 h-3 rounded-full bg-white shadow-sm transition-transform duration-200 ${isPublic ? 'translate-x-[17px]' : 'translate-x-[3px]'}`}></div>
+            </div>
+            <div className="flex flex-row items-center gap-1">
+                {isPublic ? <Globe size={14} className="text-[#1565C0]" /> : <Lock size={14} className="text-gray-400" />}
+                <span className={`text-[0.75rem] font-semibold ${isPublic ? 'text-[#1565C0]' : 'text-gray-400'}`}>
+                    {isPublic ? 'Público' : 'Privado'}
+                </span>
+            </div>
+        </div>
     )
 }
