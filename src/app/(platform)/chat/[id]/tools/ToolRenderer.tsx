@@ -5,6 +5,8 @@ import WebToolFinish from './WebSearch/WebToolFinish';
 import BuscaToolLoading from './BuscaEmpresa/BuscaToolLoading';
 import BuscaToolFinish from './BuscaEmpresa/BuscaToolFinish';
 import WebToolLading from './WebSearch/WebToolLading';
+import OpToolLoading from './GerarOportunidades/OpToolLoading';
+import OpToolFinish from './GerarOportunidades/OpToolFinish';
 
 interface ToolRendererProps {
     toolName: string;
@@ -13,11 +15,6 @@ interface ToolRendererProps {
     msg: any;
 }
 
-// Registro das tools específicas
-// Mapeie o toolName para seus respectivos componentes de Loading e Result
-// Exemplo:
-// import WebSearchLoading from './WebSearch/WebSearchLoading';
-// import WebSearchResult from './WebSearch/WebSearchResult';
 const toolRegistry: Record<string, { Loading?: React.ComponentType<any>, Result?: React.ComponentType<any> }> = {
     "web_search_tool": {
         Loading: WebToolLading,
@@ -27,6 +24,10 @@ const toolRegistry: Record<string, { Loading?: React.ComponentType<any>, Result?
     "buscar_dados_empresa": {
         Loading: BuscaToolLoading,
         Result: BuscaToolFinish,
+    },
+    "gerar_oportunidades": {
+        Loading: OpToolLoading,
+        Result: OpToolFinish,
     }
 };
 

@@ -36,7 +36,7 @@ export default function IndicatorsContainer({ indicators }: Props) {
     return (
         <div className="grid grid-cols-3 gap-4">
             {/* Churn Risk */}
-            <div className={`bg-white shadow-rainbow ${churn.border}  rounded-2xl p-5 inter`}>
+            <div className={`bg-white shadow-rainbow ${churn.border}  rounded-2xl p-4 inter`}>
                 <div className="flex items-center gap-2 mb-3">
                     <div className={`${churn.bg} p-1.5 rounded-lg`}>
                         <ShieldAlert size={14} className={churn.text} />

@@ -84,6 +84,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
             let fullText = ""
             let buffer = ""
             let currentToolMetadata: any = null
+            let isSilentToolActive = false;
 
             while (true) {
                 const { done, value } = await reader.read()
@@ -98,10 +99,18 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                     try {
                         const parsed = JSON.parse(line)
                         if (parsed.type === "text") {
-                            fullText += parsed.content
+                            if (!isSilentToolActive) {
+                                fullText += parsed.content
+                            }
                         } else if (parsed.type === "tool_start") {
+                            if (parsed.toolName === "buscar_dados_empresa" || parsed.toolName === "gerar_oportunidades") {
+                                isSilentToolActive = true;
+                            }
                             fullText += `\n\n[${parsed.toolName}](https://tool.start/${parsed.toolName})\n\n`
                         } else if (parsed.type === "tool_end") {
+                            if (parsed.toolName === "buscar_dados_empresa" || parsed.toolName === "gerar_oportunidades") {
+                                isSilentToolActive = false;
+                            }
                             fullText += `\n\n[${parsed.toolName}](https://tool.end/${parsed.toolName})\n\n`
                             if (parsed.toolMetadata) {
                                 currentToolMetadata = parsed.toolMetadata
@@ -280,7 +289,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                         attachments={attachments}
                         setAttachments={setAttachments}
                     />
-                    <div className='bg-[#FBFBFF] backdrop-blur-sm w-full h-8 z-999 '></div>
+                    <div className='bg-gradient-to-b from-transparent via-[#fbfbffd3] to-[#FBFBFF] w-full h-10 z-999 -mt-4'></div>
                 </div>
             </div> 
         </DropZoneWrapper>

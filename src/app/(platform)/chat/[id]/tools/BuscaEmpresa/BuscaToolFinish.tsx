@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { Bot, BarChart3, CircleArrowOutUpRight } from 'lucide-react';
 import { getToolDisplayName } from '../../toolsname';
-import IndicatorsContainer from '../../../../dashboard/[companyId]/_components/indicatorsContainer';
+import IndicatorsToolsContainer from './components/indicatorsToolsContainer';
 import { renderCriticality } from '../../../../dashboard/[companyId]/_components/renderCriticality';
 
 interface GenericToolFinishProps {
@@ -33,8 +33,8 @@ export default function BuscaToolFinish({ toolName, msg }: GenericToolFinishProp
     const companyData = parsedData?.dados_empresa;
 
     return (
-        <div className="flex flex-col w-full gap-3 animate-in fade-in slide-in-from-bottom-2">
-            <span className={`flex items-center gap-1 text-sm no-underline my-1 mt-2`}>
+        <div className="flex flex-col w-full gap-3 mb-4 animate-in fade-in slide-in-from-bottom-2">
+            <span className={`flex items-center gap-1 text-sm no-underline mb-1`}>
                 <img src="/RECALL-logo.svg" className="w-10 mr-0.5 object-contain group-hover:opacity-100 transition-all" alt="Recall Logo" />
                 <span className="text-[11px] text-[#0c3a6f93] group-hover:text-[#1a3d65] transition-colors">{displayName}</span>
             </span>
@@ -59,7 +59,7 @@ export default function BuscaToolFinish({ toolName, msg }: GenericToolFinishProp
                             {companyData.indicators && (
                                 <div>
                                     <h4 className="text-[0.7rem] font-bold text-gray-400 mb-3 uppercase tracking-widest">Indicadores Principais</h4>
-                                    <IndicatorsContainer indicators={companyData.indicators} />
+                                    <IndicatorsToolsContainer indicators={companyData.indicators} />
                                 </div>
                             )}
 
@@ -68,7 +68,7 @@ export default function BuscaToolFinish({ toolName, msg }: GenericToolFinishProp
                                     <h4 className="text-[0.7rem] font-bold text-gray-400 mb-3 uppercase tracking-widest">Top Insights</h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         {companyData.insights.prioritized.slice(0, 4).map((insight: any, idx: number) => (
-                                            <div key={idx} className="bg-blue-50/30 p-5 rounded-2xl border border-blue-100/50 flex flex-col gap-2 shadow-sm shadow-blue-100/10 hover:shadow-md transition-shadow">
+                                            <div key={idx} className="bg-blue-50/30 p-4 rounded-2xl border border-blue-100/50 flex flex-col gap-2 shadow-sm shadow-blue-100/10 hover:shadow-md transition-shadow">
                                                 <div className="flex justify-between items-start gap-2">
                                                     <h5 className="font-bold text-[0.85rem] text-gray-800 leading-tight">{insight.title}</h5>
                                                     <div className="flex-shrink-0 scale-90 origin-top-right -mt-1 -mr-1">

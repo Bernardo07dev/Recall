@@ -1,6 +1,6 @@
 import { fetchCompany, fetchMessages } from "@/src/app/actions/fetchThings";
 import { openRouterModel } from "@/src/lib/langchain/llm";
-import { webSearchTool, createBuscarJsonEmpresaTool } from "@/src/lib/langchain/tools";
+import { webSearchTool, createBuscarJsonEmpresaTool, createGerarOportunidadesTool } from "@/src/lib/langchain/tools";
 import { createAgent } from "langchain";
 import { BASE_PROMPT } from "@/src/lib/langchain/utils";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
@@ -45,10 +45,11 @@ export async function POST(req: Request) {
   }
 
   const buscarJsonEmpresaTool = createBuscarJsonEmpresaTool(id);
+  const gerarOportunidadesTool = createGerarOportunidadesTool(id);
 
   const agentDynamic = createAgent({
     model: openRouterModel,
-    tools: [webSearchTool, buscarJsonEmpresaTool],
+    tools: [webSearchTool, buscarJsonEmpresaTool, gerarOportunidadesTool],
   });
 
   const stream = await agentDynamic.streamEvents(
@@ -98,7 +99,7 @@ export async function POST(req: Request) {
           }
         }
 
-        if (chatId) {
+        if (chatId && fullResponse.trim() !== "") {
           await saveMessages(fullResponse, chatId, "AI");
         }
 
