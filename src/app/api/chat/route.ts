@@ -59,6 +59,8 @@ export async function POST(req: Request) {
 
   const encoder = new TextEncoder();
   let fullResponse = "";
+  const SILENT_TOOLS = new Set(["gerar_oportunidades", "buscar_dados_empresa"]);
+  let activeSilentTool: string | null = null;
 
   const readableStream = new ReadableStream({
 
@@ -66,6 +68,9 @@ export async function POST(req: Request) {
       try {
         for await (const event of stream) {
           if (event.event === "on_chat_model_stream" && event.data?.chunk?.content) {
+            // Suppress text emitted by LLMs running *inside* a silent tool
+            if (activeSilentTool) continue;
+
             const text = event.data.chunk.content;
             if (typeof text === "string") {
               fullResponse += text;
@@ -75,12 +80,14 @@ export async function POST(req: Request) {
             }
           } else if (event.event === "on_tool_start") {
             const toolName = event.name;
+            if (SILENT_TOOLS.has(toolName)) activeSilentTool = toolName;
             const toolInput = event.data?.input;
-            // console.log(`[Tool Start] ${toolName} | Input:`, toolInput);  
             const jsonChunk = JSON.stringify({ type: "tool_start", toolName, input: toolInput }) + "\n";
             controller.enqueue(encoder.encode(jsonChunk));
           } else if (event.event === "on_tool_end") {
             const toolName = event.name;
+            if (activeSilentTool === toolName) activeSilentTool = null;
+
             const toolOutput = event.data?.output;
             
             const toolJson = {

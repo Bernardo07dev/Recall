@@ -72,20 +72,19 @@ export default function OpToolFinish({ toolName, msg }: GenericToolFinishProps) 
                         </div>
                         
                         <div className="p-5 bg-white">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 {oportunidades.map((op: any, idx: number) => (
-                                    <div key={idx} className="bg-blue-50/30 p-4 rounded-2xl border border-blue-100/50 flex flex-col gap-3 shadow-sm shadow-blue-100/10 hover:shadow-md transition-shadow">
-                                        <div className="flex justify-between items-start gap-2">
+                                    <div key={idx} className="bg-blue-50/30 p-4 rounded-2xl border border-blue-100/50 flex flex-row items-baseline justify-between gap-2 shadow-sm shadow-blue-100/10 hover:shadow-md transition-shadow">
+                                        <div className="flex flex-col items-start gap-2">
                                             <h5 className="font-bold text-[0.85rem] text-gray-800 leading-tight">{op.titulo}</h5>
+                                            <span className="text-[0.65rem] font-bold text-[#1565C0] uppercase">{op.setor}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
                                             <span className={`text-[10px] font-bold px-2 py-1 rounded-full border whitespace-nowrap ${getPriorityColor(op.nivel_prioridade)}`}>
                                                 {op.nivel_prioridade}
                                             </span>
                                         </div>
-                                        <div className="flex items-center gap-1.5">
-                                            <Target size={12} className="text-[#1565C0] opacity-70" />
-                                            <span className="text-[10px] font-semibold text-[#1565C0] uppercase tracking-wider">{op.setor}</span>
-                                        </div>
-                                        <p className="text-gray-500 text-[0.75rem] leading-relaxed">{op.descricao}</p>
+                                        {/* <p className="text-gray-500 text-[0.75rem] leading-relaxed">{op.descricao}</p> */}
                                     </div>
                                 ))}
                             </div>

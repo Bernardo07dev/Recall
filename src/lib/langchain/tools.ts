@@ -37,7 +37,7 @@ export const createBuscarJsonEmpresaTool = (id: string | null) => new DynamicStr
         if (!company) return JSON.stringify({ avisoSistema: "Empresa não encontrada.", dados_empresa: null });
 
         const respostaParaLLM = {
-            avisoSistema: "A UI do usuário já renderizou os dados ou deu um erro em um elemento visual na tela. Por favor, encerre sua resposta com uma frase curta confirmando a exibição ou se deu erro falando que deu erro na exibição",
+            _INSTRUCAO_CRITICA_PARA_A_IA_: "PARE! NÃO REPITA, NÃO RESUMA E NÃO IMPRIMA O JSON ABAIXO. O frontend já desenhou esses dados na tela para o usuário! Apenas responda com uma frase muito curta confirmando que os dados estão na tela.",
             dados_empresa: {
                 id: company.id,
                 nome: company.nome,
@@ -93,7 +93,7 @@ export const createGerarOportunidadesTool = (id: string | null) => new DynamicSt
         try {
             const result = await llmWithStructuredOutput.invoke(prompt);
             return JSON.stringify({
-                avisoSistema: "A UI do usuário já renderizou as oportunidades na tela. Por favor, encerre sua resposta com uma frase curta confirmando a exibição das oportunidades. NÃO IMPRIMA O JSON.",
+                _INSTRUCAO_CRITICA_PARA_A_IA_: "PARE! NÃO REPITA, NÃO RESUMA E NÃO IMPRIMA O JSON ABAIXO. O frontend já desenhou esses dados na tela em formato de cards! Apenas responda com: 'As oportunidades foram geradas e estão na tela.'",
                 oportunidades: result.oportunidades
             });
         } catch (error) {

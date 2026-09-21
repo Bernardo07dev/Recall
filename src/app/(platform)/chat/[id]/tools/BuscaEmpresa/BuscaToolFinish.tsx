@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Bot, BarChart3, CircleArrowOutUpRight } from 'lucide-react';
+import { Bot, BarChart3, ArrowUpRight } from 'lucide-react';
 import { getToolDisplayName } from '../../toolsname';
 import IndicatorsToolsContainer from './components/indicatorsToolsContainer';
 import { renderCriticality } from '../../../../dashboard/[companyId]/_components/renderCriticality';
@@ -44,15 +44,17 @@ export default function BuscaToolFinish({ toolName, msg }: GenericToolFinishProp
                     <div className="absolute -inset-0.5 rainbow-shadow rounded-3xl opacity-10"></div>
                     
                     <div className="relative bg-white rounded-3xl w-full flex flex-col overflow-hidden ">
-                        <div className="flex justify-between items-center p-5 pb-4 border-b border-gray-50 bg-gray-50/50">
-                            <div className="flex items-center gap-3 justify-between">
-                                <div>
-                                    <h3 className="font-bold text-gray-800 text-[1.2rem]">{companyData.nome || 'Relatório de Inteligência da Empresa'}</h3>
-                                </div>
-                                <div className='bg-[#1565C0] p-1.5 cursor-pointer rounded-md hover:bg-[#1255a0] transition-colors' onClick={() => router.push(`/dashboard/${companyData.id}`)}>
-                                    <CircleArrowOutUpRight className=' text-white' size={14} />
-                                </div>
-                            </div>
+                        <div className="flex justify-between items-center p-5 pb-4 border-b border-gray-100/80 bg-gray-50/40">
+                            <h3 className="font-semibold text-gray-800 text-[1.15rem] tracking-tight">
+                                {companyData.nome || 'Relatório de Inteligência da Empresa'}
+                            </h3>
+                            <button
+                                onClick={() => router.push(`/dashboard/${companyData.id}`)}
+                                className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200/80 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 text-xs font-medium shadow-rainbow hover:border-gray-300 transition-all duration-150 cursor-pointer"
+                            >
+                                <span>Ver Dashboard</span>
+                                <ArrowUpRight size={13} className="text-gray-400 group-hover:text-gray-700 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </button>
                         </div>
                         
                         <div className="p-5 flex flex-col gap-6 bg-white">
