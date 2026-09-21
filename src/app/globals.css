@@ -54,3 +54,39 @@
 @utility shadow-yellow {
   box-shadow: 0 2px 12px 0px rgba(234, 179, 8, 0.10), 0 0 18px 0px rgba(251, 146, 60, 0.06);
 }
+
+.recall-stream {
+  transform-origin: 50% 60%;
+  animation: recall-breathe 1.8s ease-in-out infinite;
+}
+.recall-fill {
+  fill: currentColor;
+  animation: recall-fill 1.8s ease-in-out infinite;
+}
+.recall-trace {
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 0.22 0.78;
+  animation: recall-chase 1.4s linear infinite;
+  filter: drop-shadow(0 0 1.5px currentColor);
+}
+
+@keyframes recall-chase {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes recall-fill {
+  0%, 100% { fill-opacity: 0.12; }
+  50%      { fill-opacity: 0.85; }
+}
+@keyframes recall-breathe {
+  0%, 100% { transform: scale(0.92); }
+  50%      { transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .recall-stream, .recall-fill, .recall-trace { animation: none; }
+  .recall-fill { fill-opacity: 0.7; }
+  .recall-trace { display: none; }
+}
