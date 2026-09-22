@@ -1,5 +1,5 @@
 'use client';
-import { Lightbulb, Target } from 'lucide-react';
+import { Lightbulb, Target, ChartBar } from 'lucide-react';
 import { getToolDisplayName } from '../../toolsname';
 
 interface GenericToolFinishProps {
@@ -48,36 +48,51 @@ export default function OpToolFinish({ toolName, msg }: GenericToolFinishProps) 
 
     const getPriorityColor = (priority: string) => {
         const p = priority?.toLowerCase() || '';
-        if (p === 'alta') return 'bg-red-50 text-red-600 border-red-100';
-        if (p === 'média' || p === 'media') return 'bg-amber-50 text-amber-600 border-amber-100';
+        if (p.includes('alta')) return 'bg-red-50 text-red-600 border-red-100';
+        if (p.includes('méd') || p.includes('med')) return 'bg-amber-50 text-amber-600 border-amber-100';
         return 'bg-emerald-50 text-emerald-600 border-emerald-100';
     };
 
+    const getPriorityBorder = (priority: string) => {
+        const p = priority?.toLowerCase() || '';
+        if (p.includes('alta')) return 'border-red-200 hover:border-red-300';
+        if (p.includes('méd') || p.includes('med')) return 'border-amber-200 hover:border-amber-300';
+        return 'border-emerald-200 hover:border-emerald-300';
+    };
+
+    const getPriorityShadow = (priority: string) => {
+        const p = priority?.toLowerCase() || '';
+        if (p.includes('alta')) return 'shadow-red';
+        if (p.includes('méd') || p.includes('med')) return 'shadow-yellow';
+        return 'shadow-green';
+    };
+
     return (
-        <div className="flex flex-col w-full gap-3 mb-4 animate-in fade-in slide-in-from-bottom-2">
+        <div className="flex flex-col w-[830px] max-w-full gap-3 mb-4 animate-in fade-in slide-in-from-bottom-2">
             <span className={`flex items-center gap-1 text-sm no-underline mb-1`}>
                 <img src="/RECALL-logo.svg" className="w-10 mr-0.5 object-contain group-hover:opacity-100 transition-all" alt="Recall Logo" />
                 <span className="text-[11px] text-[#0c3a6f93] group-hover:text-[#1a3d65] transition-colors">{displayName}</span>
             </span>
             
             {oportunidades.length > 0 ? (
-                <div className="relative w-full">
+                <div className="relative w-[830px] max-w-full">
                     <div className="absolute -inset-0.5 rainbow-shadow rounded-3xl opacity-10"></div>
                     
-                    <div className="relative bg-white rounded-3xl w-full flex flex-col overflow-hidden ">
+                    <div className="relative bg-white/60 rounded-3xl w-full flex flex-col overflow-hidden ">
                         <div className="flex justify-between items-center p-5 pb-4 border-b border-gray-50 bg-gray-50/50">
                             <div className="flex items-center gap-3">
-                                <h3 className="font-bold text-gray-800 text-[1.2rem]">Oportunidades Comerciais</h3>
+                                <ChartBar size={28} className="bg-[#EFF6FF] text-[#2563EB] p-[6px] rounded-lg " />
+                                <h3 className="font-bold text-gray-800 text-[1rem]">Oportunidades Comerciais</h3>
                             </div>
                         </div>
                         
-                        <div className="p-5 bg-white">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="p-4 bg-white/100 ">
+                            <div className="flex flex-col gap-3">
                                 {oportunidades.map((op: any, idx: number) => (
-                                    <div key={idx} className="bg-blue-50/30 p-4 rounded-2xl border border-blue-100/50 flex flex-row items-baseline justify-between gap-2 shadow-sm shadow-blue-100/10 hover:shadow-md transition-shadow">
-                                        <div className="flex flex-col items-start gap-2">
-                                            <h5 className="font-bold text-[0.85rem] text-gray-800 leading-tight">{op.titulo}</h5>
-                                            <span className="text-[0.65rem] font-bold text-[#1565C0] uppercase">{op.setor}</span>
+                                    <div key={idx} className={`bg-blue-50/30 p-3 px-4 w-full rounded-xl  ${getPriorityBorder(op.nivel_prioridade)} ${getPriorityShadow(op.nivel_prioridade)} flex flex-row items-baseline justify-between gap-2 transition-all`}>
+                                        <div className="flex flex-row items-end gap-2">
+                                            <h5 className="font-semibold text-[0.80rem] text-gray-800 leading-tight">{op.titulo}</h5>
+                                            <span className="text-[0.60rem] font-bold text-[#1565C0]/80 uppercase">{op.setor}</span>
                                         </div>
                                         <div className="flex items-center gap-1.5">
                                             <span className={`text-[10px] font-bold px-2 py-1 rounded-full border whitespace-nowrap ${getPriorityColor(op.nivel_prioridade)}`}>

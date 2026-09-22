@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
 import Logo from "../../../../public/RECALL-logo.svg";
-import { CirclePlus, MessageSquare, Building2, Settings, MessageCirclePlus, PanelRight, PanelLeft, Trash } from "lucide-react";
+import { CirclePlus, MessageSquare, Building2, Settings, MessageCirclePlus, PanelRight, PanelLeft, Trash, TvMinimal, LayoutList } from "lucide-react";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import { getChats } from "@/src/app/actions/chat-action";
 import { useEffect, useState } from "react";
 import { deleteChat } from "@/src/app/actions/user-actions";
+import { size } from "zod/v4";
 
 export default function SideBar({ userId }: { userId: string }){
     const pathname = usePathname();
@@ -75,6 +76,15 @@ export default function SideBar({ userId }: { userId: string }){
             </div>
 
             <section className="flex flex-col mt-5 text-gray-500 font-medium">
+                <div
+                    onClick={() => router.push("/visaogeral")}
+                    title="Chat"
+                    className={`cursor-pointer flex flex-row text-[0.8rem] gap-2 font-semibold items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("geral") ? `text-[#1565C0]` : `text-gray-500`}`}
+                >
+                    <LayoutList size={18} className="shrink-0" />
+                    {!collapsed && <p>Visão Geral</p>}
+                </div>        
+
                 <div
                     onClick={() => router.push("/chat")}
                     title="Chat"

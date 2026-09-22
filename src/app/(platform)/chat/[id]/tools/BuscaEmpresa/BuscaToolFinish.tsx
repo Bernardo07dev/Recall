@@ -50,7 +50,7 @@ export default function BuscaToolFinish({ toolName, msg }: GenericToolFinishProp
                             </h3>
                             <button
                                 onClick={() => router.push(`/dashboard/${companyData.id}`)}
-                                className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200/80 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 text-xs font-medium shadow-rainbow hover:border-gray-300 transition-all duration-150 cursor-pointer"
+                                className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-100 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 text-xs font-semibold shadow-rainbow hover:border-gray-200 transition-all duration-150 cursor-pointer"
                             >
                                 <span>Ver Dashboard</span>
                                 <ArrowUpRight size={13} className="text-gray-400 group-hover:text-gray-700 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

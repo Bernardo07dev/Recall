@@ -2,6 +2,9 @@ import { prisma } from "@/src/lib/prisma"
 import { Plus, Loader2, Sparkles, ShieldAlert, Globe, Lock } from "lucide-react"
 import Link from "next/link"
 import { sectorConfig, DefaultIconConfig } from '@/src/lib/sectorConfig'
+import { cookies } from "next/headers"
+import { decrypt } from "@/src/lib/auth"
+import { redirect } from "next/navigation"
 
 function getInsightCount(json: any): number {
     if (!json) return 0;
@@ -65,9 +68,38 @@ interface empresa {
 }
 
 export default async function Empresas(){
+    const cookieStore = await cookies();
+    const token = cookieStore.get("recall-session")?.value;
+
+    if (!token) {
+        redirect("/log-in");
+    }
+
+    let userId = "";
+    try {
+        const session = await decrypt(token);
+        userId = session.userId as string;
+    } catch {
+        redirect("/api/logout");
+    }
+
     const business = await prisma.empresas.findMany({
+        where: {
+            OR: [
+                { ownerId: userId },
+                { isPublic: true },
+                { shares: { some: { userId: userId } } },
+            ],
+        },
+        include: {
+            owner: { select: { id: true, nome: true } },
+            shares: {
+                where: { userId: userId },
+                select: { sharedBy: { select: { id: true, nome: true } } },
+            },
+        },
         orderBy: { createdAt: 'desc' }
-    })
+    });
 
     const IndustryIcon = ({ empresa }: { empresa: empresa }) => {
         const config = sectorConfig[empresa.industry.toLowerCase()] || DefaultIconConfig;
