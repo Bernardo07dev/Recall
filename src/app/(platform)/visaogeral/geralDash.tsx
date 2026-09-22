@@ -1,14 +1,14 @@
 'use client'
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-    Calendar,
+import { Calendar,
     TableOfContents,
     ShieldAlert,
     Layers,
     ArrowRight,
 } from "lucide-react";
 import EmpresasCriticalidade, { getChurnRisk } from "./components/EmpresasCriticalidade";
+import PrioridadesIA from "./components/PrioridadesIA";
 
 interface UserType {
     id: string;
@@ -63,60 +63,69 @@ export default function GeralDash({ user, business }: GeralDashProps) {
                 </div>
             </section>
 
-            <section className="mt-6">
-                <div className="flex items-center gap-2 mb-3">
-                    <h1 className="text-[0.7rem] font-semibold text-gray-500 uppercase tracking-wider">SEUS CONTEXTOS</h1>
-                    <span className="text-[0.7rem] font-semibold text-[#1565C0] bg-[#EFF6FF] px-2 py-0.5 rounded-full">
-                        {totalContextos}
-                    </span>
-                </div>
 
-                <div className="flex flex-row flex-wrap gap-4">
-                    <div className="bg-white shadow-rainbow rounded-2xl p-4 border border-gray-100/80 w-fit min-w-[220px] flex items-center gap-3.5">
-                        <div className="bg-[#EFF6FF] text-[#1565C0] p-2.5 rounded-xl">
-                            <TableOfContents size={18} />
+        <div className="flex flex-row">
+            <div className="flex flex-col gap-6">
+                <section className="mt-6">
+                    <div className="flex items-center gap-2 mb-3">
+                        <h1 className="text-[0.7rem] font-semibold text-gray-500 uppercase tracking-wider">SEUS CONTEXTOS</h1>
+                        <span className="text-[0.7rem] font-semibold text-[#1565C0] bg-[#EFF6FF] px-2 py-0.5 rounded-full">
+                            {totalContextos}
+                        </span>
+                    </div>
+
+                    <div className="flex flex-row flex-wrap gap-4">
+                        <div className="bg-white shadow-rainbow rounded-2xl p-4 border border-gray-100/80 w-fit min-w-[220px] flex items-center gap-3.5">
+                            <div className="bg-[#EFF6FF] text-[#1565C0] p-2.5 rounded-xl">
+                                <TableOfContents size={18} />
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-semibold uppercase text-gray-400 tracking-wider">total</p>
+                                <div className="flex items-baseline gap-1.5">
+                                    <p className="text-xl font-bold text-gray-800 tracking-tight">{totalContextos}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <p className="text-[10px] font-semibold uppercase text-gray-400 tracking-wider">total</p>
-                            <div className="flex items-baseline gap-1.5">
-                                <p className="text-xl font-bold text-gray-800 tracking-tight">{totalContextos}</p>
+
+                        <div className="bg-white shadow-rainbow rounded-2xl shadow-red p-4 border border-gray-100/80 w-fit min-w-[220px] flex items-center gap-3.5">
+                            <div className="bg-red-50 text-red-600 p-2 rounded-xl">
+                                <ShieldAlert size={18} />
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-semibold uppercase text-gray-400 tracking-wider">Churn crítico</p>
+                                <div className="flex items-baseline gap-1.5">
+                                    <p className="text-xl font-bold text-gray-800 tracking-tight">{contextosCriticos}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <div className="bg-white shadow-rainbow rounded-2xl shadow-red p-4 border border-gray-100/80 w-fit min-w-[220px] flex items-center gap-3.5">
-                        <div className="bg-red-50 text-red-600 p-2 rounded-xl">
-                            <ShieldAlert size={18} />
+                <section className="mt-10">
+                    <div className="flex items-center gap-4 mb-4">
+                        <div className="flex items-center gap-2">
+                            <Layers size={14} className="text-gray-400" />
+                            <h2 className="text-[0.7rem] font-semibold text-gray-500 uppercase tracking-wider">
+                                EMPRESAS & CRITICALIDADE • INSIGHTS PRIORIZADOS ({business?.length || 0})
+                            </h2>
                         </div>
-                        <div>
-                            <p className="text-[10px] font-semibold uppercase text-gray-400 tracking-wider">Churn crítico</p>
-                            <div className="flex items-baseline gap-1.5">
-                                <p className="text-xl font-bold text-gray-800 tracking-tight">{contextosCriticos}</p>
-                            </div>
-                        </div>
+                        <Link
+                            href="/empresas"
+                            className="text-xs font-semibold text-[#1565C0] hover:text-[#0d47a1] flex items-center gap-1 transition-colors"
+                        >
+                            <span>Ver todas as {business?.length || 0} contas</span>
+                            <ArrowRight size={13} />
+                        </Link>
                     </div>
-                </div>
-            </section>
 
-            <section className="mt-10">
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                        <Layers size={14} className="text-gray-400" />
-                        <h2 className="text-[0.7rem] font-semibold text-gray-500 uppercase tracking-wider">
-                            EMPRESAS & CRITICALIDADE • INSIGHTS PRIORIZADOS ({business?.length || 0})
-                        </h2>
-                    </div>
-                    <Link
-                        href="/empresas"
-                        className="text-xs font-semibold text-[#1565C0] hover:text-[#0d47a1] flex items-center gap-1 transition-colors"
-                    >
-                        <span>Ver todas as {business?.length || 0} contas</span>
-                        <ArrowRight size={13} />
-                    </Link>
-                </div>
+                    <EmpresasCriticalidade business={business} />
+                </section>
+            </div>
 
-                <EmpresasCriticalidade business={business} />
+            <section className="mt-10 w-full">
+                <PrioridadesIA business={business} />
             </section>
+        </div>
         </main>
     );
 }
