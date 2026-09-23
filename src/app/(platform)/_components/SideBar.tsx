@@ -6,7 +6,6 @@ import { redirect, usePathname, useRouter } from "next/navigation";
 import { getChats } from "@/src/app/actions/chat-action";
 import { useEffect, useState } from "react";
 import { deleteChat } from "@/src/app/actions/user-actions";
-import { size } from "zod/v4";
 
 export default function SideBar({ userId }: { userId: string }){
     const pathname = usePathname();
@@ -81,7 +80,7 @@ export default function SideBar({ userId }: { userId: string }){
                     title="Chat"
                     className={`cursor-pointer flex flex-row text-[0.8rem] gap-2 font-semibold items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("geral") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
-                    <LayoutList size={18} className="shrink-0" />
+                    <LayoutList size={!collapsed ? 16 : 18} className="shrink-0" />
                     {!collapsed && <p>Visão Geral</p>}
                 </div>        
 
@@ -90,7 +89,7 @@ export default function SideBar({ userId }: { userId: string }){
                     title="Chat"
                     className={`cursor-pointer flex flex-row text-[0.8rem] gap-2 font-semibold items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("chat") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
-                    <MessageSquare size={18} className="shrink-0"/>
+                    <MessageSquare size={!collapsed ? 16 : 18} className="shrink-0"/>
                     {!collapsed && <p>Chat</p>}
                 </div>
 
@@ -99,7 +98,7 @@ export default function SideBar({ userId }: { userId: string }){
                     title="Empresas"
                             className={`cursor-pointer flex flex-row text-[0.8rem] gap-2 font-semibold items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("empresas") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
-                    <Building2 size={18} className="shrink-0"/>
+                    <Building2 size={!collapsed ? 16 : 18}  className="shrink-0"/>
                     {!collapsed && <p>Empresas</p>}
                 </div>
 
@@ -107,7 +106,7 @@ export default function SideBar({ userId }: { userId: string }){
                     title="Configurações"
                             className={`cursor-pointer flex flex-row text-[0.8rem] gap-2 font-semibold items-center p-1.5 rounded-xl ${collapsed ? 'justify-center' : ''} ${pathname.includes("config") ? `text-[#1565C0]` : `text-gray-500`}`}
                 >
-                    <Settings size={18} className="shrink-0"/>
+                    <Settings size={!collapsed ? 16 : 18} className="shrink-0"/>
                     {!collapsed && <p>Configurações</p>}
                 </div>
             </section>
@@ -117,7 +116,7 @@ export default function SideBar({ userId }: { userId: string }){
                     <p className="text-left text-xs pb-1.5 px-1 text-gray-400">Conversas</p>
                     {chats.map((conversa) => (
                         <div onClick={() => router.push(`/chat/${conversa.id}`)} key={conversa.id} className={`p-1.75 px-1 text-[0.8rem] flex gap-1 items-center justify-between rounded-lg font-medium cursor-pointer hover:text-[#1565C0] ${pathname.includes(conversa.id) ? "text-[#1565C0] px-2 bg-[#e7eff872]" : "text-gray-500"}`}>
-                            <p>{conversa.title.length > 30 ? conversa.title.substring(0, 34) + "..." : conversa.title}</p>
+                            <p>{conversa.title.length > 30 ? conversa.title.substring(0, 28) + "..." : conversa.title}</p>
                             <Trash onClick={(e) => { e.stopPropagation(); deleteChatUI(conversa.id); }} size={13} className="hover:text-red-500"/>
                         </div>
                     ))}

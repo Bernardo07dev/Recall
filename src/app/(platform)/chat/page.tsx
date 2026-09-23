@@ -15,7 +15,23 @@ export default async function ChatPage() {
   const session = await decrypt(token);
   const userId = session.userId;
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  const empresas = await prisma.empresas.findMany({ orderBy: { createdAt: 'desc' } });
+  const empresas = await prisma.empresas.findMany({
+    where: {
+      OR: [
+        { ownerId: userId },
+        { isPublic: true },
+        { shares: { some: { userId: userId } } },
+      ],
+    },
+    include: {
+      owner: { select: { id: true, nome: true } },
+      shares: {
+        where: { userId: userId },
+        select: { sharedBy: { select: { id: true, nome: true } } },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
 
   if (!user) {
     redirect("/api/logout");

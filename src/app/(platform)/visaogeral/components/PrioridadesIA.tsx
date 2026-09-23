@@ -264,7 +264,7 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
     };
 
     return (
-        <div>
+        <div className="w-full">
             {/* Header da seção */}
             <div className="flex items-center justify-between mb-4 w-full">
                 <div className="flex items-center gap-2">
@@ -279,7 +279,7 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
                         onClick={handleToggleAllRead}
                         className="text-xs font-semibold text-[#1565C0] hover:text-[#0d47a1] flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
-                        <span>{isAllRead ? "Desmarcar lidas" : "Marcar todas lidas"}</span>
+                        <span>{isAllRead ? "Desmarcar lidas" : "Marcar Todas"}</span>
                         <CheckCheck size={14} />
                     </button>
                 )}
@@ -307,74 +307,70 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
                         return (
                             <div
                                 key={action.id}
-                                className={`bg-white rounded-2xl md:rounded-[1.35rem] p-4 sm:px-5 sm:py-4 border border-gray-100/90 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:border-gray-200/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-                                    isRead ? "opacity-60 bg-gray-50/50" : ""
+                                className={`bg-white cursor-pointer rounded-2xl md:rounded-[1.35rem] p-4 sm:px-5 sm:py-4 border border-gray-100/90 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:border-gray-200/80 transition-all flex flex-row items-start gap-3 w-full ${
+                                    isRead ? "opacity-50 bg-gray-50/50 border-green-500" : ""
                                 }`}
                             >
-                                {/* Lado Esquerdo: Ícone + Detalhes */}
-                                <div className="flex items-start sm:items-center gap-3.5 flex-1 min-w-0">
-                                    {/* Caixa do Ícone */}
-                                    <div
-                                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shrink-0 ${action.iconBgClass}`}
-                                    >
-                                        <IconComponent size={18} className={action.iconColorClass} />
-                                    </div>
+                                {/* Ícone */}
+                                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl -mb-2 flex items-center justify-center shrink-0 ${action.iconBgClass}`}>
+                                    <IconComponent size={15} className={action.iconColorClass} />
+                                </div>
 
-                                    {/* Linhas de Texto */}
-                                    <div className="flex-1 min-w-0">
-                                        {/* Linha Superior: Badge + Empresa + Tag */}
-                                        <div className="flex items-center gap-2 flex-wrap mb-1">
-                                            <span
-                                                className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider border ${action.badgeClass}`}
-                                            >
-                                                {action.badgeLabel}
-                                            </span>
+                                {/* Resto do conteúdo (flex-col) */}
+                                <div className="flex flex-col w-full min-w-0">
+                                    {/* Linha 1: flex-row com width full */}
+                                    <div className="flex flex-row items-start sm:items-center justify-between flex-wrap w-full gap-1">
+                                        <div className="flex flex-row items-center gap-2 flex-wrap flex-1">
+                                            {/* <span
+                                                    className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider border ${action.badgeClass}`}
+                                                >
+                                                    {action.badgeLabel}
+                                                </span> */}
 
-                                            <span className="font-bold text-gray-900 text-sm tracking-tight">
-                                                {action.companyName}
-                                            </span>
-
-                                            <span className="text-gray-300 text-xs">•</span>
-
-                                            <span className={`text-xs ${action.tagClass}`}>
-                                                {action.tagLabel}
-                                            </span>
-
-                                            {isRead && (
-                                                <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-                                                    <CheckCircle2 size={10} />
-                                                    Lida
+                                                <span className="font-bold text-gray-900 text-sm tracking-tight">
+                                                    {action.companyName}
                                                 </span>
+
+                                                <span className={`text-xs ${action.tagClass}`}>
+                                                    {action.tagLabel}
+                                                </span>
+
+                                                {isRead && (
+                                                    <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                                                        <CheckCircle2 size={10} />
+                                                        Lida
+                                                    </span>
                                             )}
+                                            
+                                            <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+                                                <button
+                                                    onClick={(e) => handleToggleSingleRead(action.id, e)}
+                                                    title={isRead ? "Marcar como não lida" : "Marcar como lida"}
+                                                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer hidden sm:flex"
+                                                >
+                                                    <CheckCheck size={18} className={isRead ? "text-emerald-500" : ""} />
+                                                </button>
+                                            </div>
                                         </div>
 
-                                        {/* Linha Inferior: Descrição da Ação Recomendada */}
-                                        <p className="text-xs sm:text-[13px] text-gray-600 leading-relaxed font-normal">
+                                        <Link
+                                            href={`/dashboard/${action.companyId}`}
+                                            title={action.buttonLabel}
+                                            className="p-2 bg-white border border-gray-200/90 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-rainbow shrink-0"
+                                        >
+                                            <ArrowUpRight
+                                                size={13}
+                                                className="text-gray-600 hover:text-gray-900 transition-colors"
+                                            />
+                                        </Link>
+                                    </div>
+
+                                    {/* Linha 2: row com actionText e botões */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full -mt-1">
+                                        <p className="md:text-[0.85rem] sm:text-[0.7rem] text-gray-600 leading-relaxed font-medium flex-1">
                                             {action.actionText}
                                         </p>
                                     </div>
-                                </div>
-
-                                {/* Lado Direito: Botão de Ação */}
-                                <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
-                                    <button
-                                        onClick={(e) => handleToggleSingleRead(action.id, e)}
-                                        title={isRead ? "Marcar como não lida" : "Marcar como lida"}
-                                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer hidden sm:flex"
-                                    >
-                                        <CheckCheck size={16} className={isRead ? "text-emerald-500" : ""} />
-                                    </button>
-
-                                    <Link
-                                        href={`/dashboard/${action.companyId}`}
-                                        className="px-4 py-2 bg-white hover:bg-gray-50/80 border border-gray-200/90 hover:border-gray-300 text-xs font-semibold text-gray-700 rounded-xl flex items-center gap-1.5 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)] cursor-pointer group"
-                                    >
-                                        <span>{action.buttonLabel}</span>
-                                        <ArrowUpRight
-                                            size={13}
-                                            className="text-gray-400 group-hover:text-gray-700 transition-colors"
-                                        />
-                                    </Link>
                                 </div>
                             </div>
                         );

@@ -143,17 +143,17 @@ export default function EmpresasCriticalidade({ business }: EmpresasCriticalidad
                     <div
                         key={empresa.id}
                         onClick={() => router.push(`/dashboard/${empresa.id}`)}
-                        className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#1565C0]/60 transition-all flex flex-col justify-between cursor-pointer"
+                        className="bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#1565C0]/60 transition-all flex flex-col justify-between cursor-pointer"
                     >
                         <div>
                             {/* Top row: Badge and Time */}
                             <div className="flex items-center justify-between">
                                 <span
-                                    className={`text-[0.6rem] font-bold px-[0.55rem] py-[0.15rem] rounded-full uppercase tracking-wider border ${statusBadge.classes}`}
+                                    className={`text-[0.55rem] font-bold px-[0.55rem] py-[0.15rem] rounded-full uppercase tracking-wider border ${statusBadge.classes}`}
                                 >
                                     {statusBadge.label}
                                 </span>
-                                <div className="flex items-center gap-[0.3rem] text-[0.68rem] text-gray-400 font-medium">
+                                <div className="flex items-center gap-[0.3rem] text-[0.65rem] text-gray-400 font-medium">
                                     <Clock size={12} className="text-gray-400" />
                                     <span>{getRelativeTime(empresa.createdAt)}</span>
                                 </div>
@@ -161,7 +161,7 @@ export default function EmpresasCriticalidade({ business }: EmpresasCriticalidad
 
                             {/* Company Name & Industry */}
                             <div className="mt-[0.65rem] mb-[0.5rem]">
-                                <h3 className="text-[1.05rem] font-bold text-gray-900 tracking-tight line-clamp-1">
+                                <h3 className="text-[1rem] font-bold text-gray-900 tracking-tight line-clamp-1">
                                     {empresa.nome}
                                 </h3>
                                 <p className="text-[0.68rem] text-gray-400 font-medium line-clamp-1 mt-[0.1rem]">
@@ -173,7 +173,7 @@ export default function EmpresasCriticalidade({ business }: EmpresasCriticalidad
                             <div className="grid grid-cols-2 gap-[0.5rem] my-[0.75rem]">
                                 <div>
                                     <span className="text-[0.6rem] font-bold uppercase text-gray-400 tracking-wider">
-                                        RISCO DE CHURN
+                                        CHURN
                                     </span>
                                     <p
                                         className={`text-[1.35rem] font-extrabold tracking-tight mt-[0.1rem] ${
@@ -201,14 +201,11 @@ export default function EmpresasCriticalidade({ business }: EmpresasCriticalidad
                             </div>
 
                             {/* Highlighted Insight Box */}
-                            <div className={`p-[0.75rem] rounded-xl border mb-[0.75rem] ${insightStyle.bg}`}>
-                                <div className="flex items-center gap-[0.35rem] font-bold text-[0.72rem] mb-[0.25rem]">
-                                    <InsightIcon size={13} className="shrink-0" />
-                                    <span className="line-clamp-1">{insightStyle.title}</span>
-                                </div>
-                                <p className="text-[0.68rem] text-gray-600 leading-relaxed line-clamp-3">
+                            <div className={`p-[0.75rem] text-[0.68rem] font-medium rounded-xl border ${insightStyle.bg}`}>
+                                    <span className="">{insightStyle.title}</span>
+                                {/* <p className="text-[0.68rem] text-gray-600 leading-relaxed line-clamp-3">
                                     {insightStyle.desc}
-                                </p>
+                                </p> */}
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,9 @@
 import { prisma } from "@/src/lib/prisma";
 import ChatIdClient from "./ChatIdClient";
 import { Suspense } from "react";
+import { cookies } from 'next/headers'
+import { redirect } from "next/navigation";
+import { decrypt } from '@/src/lib/auth';
 
 interface Props {
     params: Promise<{ id: string }>
@@ -8,7 +11,34 @@ interface Props {
 
 export default async function ChatPage({ params }: Props){
     const { id } = await params
-    const empresas = await prisma.empresas.findMany({ orderBy: { createdAt: 'desc' } });
+    
+    const cookieStore = await cookies()
+    const token = cookieStore.get('recall-session')?.value
+
+    if (!token) {
+        redirect("/log-in");
+    }
+
+    const session = await decrypt(token);
+    const userId = session.userId as string;
+
+    const empresas = await prisma.empresas.findMany({
+        where: {
+            OR: [
+                { ownerId: userId },
+                { isPublic: true },
+                { shares: { some: { userId: userId } } },
+            ],
+        },
+        include: {
+            owner: { select: { id: true, nome: true } },
+            shares: {
+                where: { userId: userId },
+                select: { sharedBy: { select: { id: true, nome: true } } },
+            },
+        },
+        orderBy: { createdAt: 'desc' }
+    });
     const conversation = await prisma.conversations.findUnique({ where: { id } });
 
     return (

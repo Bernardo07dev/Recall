@@ -64,8 +64,8 @@ export default function GeralDash({ user, business }: GeralDashProps) {
             </section>
 
 
-        <div className="flex flex-row">
-            <div className="flex flex-col gap-6">
+        <div className="flex flex-col lg:flex-row gap-8 w-full">
+            <div className="flex flex-col gap-6 lg:w-[55%]">
                 <section className="mt-6">
                     <div className="flex items-center gap-2 mb-3">
                         <h1 className="text-[0.7rem] font-semibold text-gray-500 uppercase tracking-wider">SEUS CONTEXTOS</h1>
@@ -101,7 +101,7 @@ export default function GeralDash({ user, business }: GeralDashProps) {
                     </div>
                 </section>
 
-                <section className="mt-10">
+                <section className="mt-10 w-full">
                     <div className="flex items-center gap-4 mb-4">
                         <div className="flex items-center gap-2">
                             <Layers size={14} className="text-gray-400" />
@@ -122,7 +122,7 @@ export default function GeralDash({ user, business }: GeralDashProps) {
                 </section>
             </div>
 
-            <section className="mt-10 w-full">
+            <section className="mt-6 lg:mt-10 lg:w-[45%] w-full">
                 <PrioridadesIA business={business} />
             </section>
         </div>
