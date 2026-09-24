@@ -149,11 +149,11 @@ export default function EmpresasCriticalidade({ business }: EmpresasCriticalidad
                             {/* Top row: Badge and Time */}
                             <div className="flex items-center justify-between">
                                 <span
-                                    className={`text-[0.55rem] font-bold px-[0.55rem] py-[0.15rem] rounded-full uppercase tracking-wider border ${statusBadge.classes}`}
+                                    className={`text-[0.55rem] sm:text-[0.5rem] font-bold px-[0.55rem] py-[0.15rem] rounded-full uppercase tracking-wider border ${statusBadge.classes}`}
                                 >
                                     {statusBadge.label}
                                 </span>
-                                <div className="flex items-center gap-[0.3rem] text-[0.65rem] text-gray-400 font-medium">
+                                <div className="flex items-center gap-[0.3rem] text-[0.65rem] md:text-[0.5rem] text-gray-400 font-medium">
                                     <Clock size={12} className="text-gray-400" />
                                     <span>{getRelativeTime(empresa.createdAt)}</span>
                                 </div>
@@ -172,7 +172,7 @@ export default function EmpresasCriticalidade({ business }: EmpresasCriticalidad
                             {/* Metrics Row */}
                             <div className="grid grid-cols-2 gap-[0.5rem] my-[0.75rem]">
                                 <div>
-                                    <span className="text-[0.6rem] font-bold uppercase text-gray-400 tracking-wider">
+                                    <span className="text-[0.6rem] sm:text-[0.5rem] font-bold uppercase text-gray-400 tracking-wider">
                                         CHURN
                                     </span>
                                     <p
@@ -188,7 +188,7 @@ export default function EmpresasCriticalidade({ business }: EmpresasCriticalidad
                                     </p>
                                 </div>
                                 <div>
-                                    <span className="text-[0.6rem] font-bold uppercase text-gray-400 tracking-wider">
+                                    <span className="text-[0.6rem] sm:text-[0.5rem] font-bold uppercase text-gray-400 tracking-wider">
                                         OPORTUNIDADES
                                     </span>
                                     <p className="text-[1.1rem] font-bold text-gray-800 tracking-tight mt-[0.1rem]">

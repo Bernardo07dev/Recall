@@ -256,7 +256,7 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
         }
     };
 
-    const handleToggleSingleRead = (id: string, e: React.MouseEvent) => {
+    const handleToggleSingleRead = (id: string, e: React.SyntheticEvent) => {
         e.stopPropagation();
         setReadActionIds((prev) =>
             prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
@@ -305,7 +305,8 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
                         const IconComponent = action.icon;
 
                         return (
-                            <div
+                            <Link
+                                href={`/dashboard/${action.companyId}`}
                                 key={action.id}
                                 className={`bg-white cursor-pointer rounded-2xl md:rounded-[1.35rem] p-4 sm:px-5 sm:py-4 border border-gray-100/90 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:border-gray-200/80 transition-all flex flex-row items-start gap-3 w-full ${
                                     isRead ? "opacity-50 bg-gray-50/50 border-green-500" : ""
@@ -319,7 +320,7 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
                                 {/* Resto do conteúdo (flex-col) */}
                                 <div className="flex flex-col w-full min-w-0">
                                     {/* Linha 1: flex-row com width full */}
-                                    <div className="flex flex-row items-start sm:items-center justify-between flex-wrap w-full gap-1">
+                                    <div className="flex flex-row items-start sm:items-center justify-between flex-wrap mb-1  w-full gap-1">
                                         <div className="flex flex-row items-center gap-2 flex-wrap flex-1">
                                             {/* <span
                                                     className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider border ${action.badgeClass}`}
@@ -327,11 +328,11 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
                                                     {action.badgeLabel}
                                                 </span> */}
 
-                                                <span className="font-bold text-gray-900 text-sm tracking-tight">
+                                            <span className="font-bold text-gray-900 text-[0.8rem] text-sm tracking-tight">
                                                     {action.companyName}
                                                 </span>
 
-                                                <span className={`text-xs ${action.tagClass}`}>
+                                                <span className={`text-[0.7rem] ${action.tagClass}`}>
                                                     {action.tagLabel}
                                                 </span>
 
@@ -342,37 +343,34 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
                                                     </span>
                                             )}
                                             
-                                            <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-                                                <button
-                                                    onClick={(e) => handleToggleSingleRead(action.id, e)}
-                                                    title={isRead ? "Marcar como não lida" : "Marcar como lida"}
-                                                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer hidden sm:flex"
-                                                >
-                                                    <CheckCheck size={18} className={isRead ? "text-emerald-500" : ""} />
-                                                </button>
-                                            </div>
                                         </div>
 
-                                        <Link
-                                            href={`/dashboard/${action.companyId}`}
-                                            title={action.buttonLabel}
-                                            className="p-2 bg-white border border-gray-200/90 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-rainbow shrink-0"
+                                        <div
+                                            className="border border-gray-200/90 rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-rainbow shrink-0 ml-1"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                handleToggleSingleRead(action.id, e);
+                                            }}
+                                            title={isRead ? "Desmarcar" : "Marcar como lido"}
                                         >
-                                            <ArrowUpRight
-                                                size={13}
-                                                className="text-gray-600 hover:text-gray-900 transition-colors"
+                                            <input
+                                                type="checkbox"
+                                                checked={isRead}
+                                                readOnly
+                                                className="w-3.5 h-3.5 sm:w-[1.125rem] sm:h-[1.125rem] accent-emerald-600 cursor-pointer pointer-events-none"
                                             />
-                                        </Link>
+                                        </div>
                                     </div>
 
                                     {/* Linha 2: row com actionText e botões */}
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full -mt-1">
-                                        <p className="md:text-[0.85rem] sm:text-[0.7rem] text-gray-600 leading-relaxed font-medium flex-1">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full -mt-1 pr-12">
+                                        <p className="md:text-[0.8rem] sm:text-[0.7rem] text-gray-600 leading-relaxed font-medium flex-1">
                                             {action.actionText}
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         );
                     })}
                 </div>

@@ -122,9 +122,9 @@ export default async function Empresas(){
                             <div className="flex flex-row justify-between">
                                 <div className="flex flex-row items-center gap-2 mb-5">
                                     {empresa.logo ? (
-                                        <div className="flex flex-row text-gray-700 inter w-full justify-between mb-4">
-                                            <img src={empresa.logo} alt="Logo" className="w-10 h-10 object-contain rounded-xl border border-gray-100" />
-                                            <p className="bg-gray-100 h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{empresa.industry}</p>
+                                        <div className="flex flex-row text-gray-700 inter w-full justify-between">
+                                            <img src={empresa.logo} alt="Logo" className="w-8 h-8 object-contain rounded-xl border border-gray-100" />
+                                            {/* <p className="bg-gray-100 h-fit text-xs font-semibold p-1 px-2 rounded-2xl">{empresa.industry}</p> */}
                                         </div>
                                     ) : (
                                         <IndustryIcon empresa={empresa} />

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Calendar,
     TableOfContents,
     ShieldAlert,
+    AlertTriangle,
+    CheckCircle2,
     Layers,
     ArrowRight,
 } from "lucide-react";
@@ -46,6 +48,16 @@ export default function GeralDash({ user, business }: GeralDashProps) {
         return empresa.json && churn && churn.label === "Crítico";
     }).length || 0;
 
+    const contextosAlerta = business?.filter((empresa) => {
+        const churn = getChurnRisk(empresa.json);
+        return empresa.json && churn && churn.label === "Médio";
+    }).length || 0;
+
+    const contextosEstabilizados = business?.filter((empresa) => {
+        const churn = getChurnRisk(empresa.json);
+        return empresa.json && (!churn || churn.label === "Bom");
+    }).length || 0;
+
     useEffect(() => {
         setCurrentDate(getTodayFormatted());
     }, []);
@@ -54,7 +66,7 @@ export default function GeralDash({ user, business }: GeralDashProps) {
         <main className="pt-18 pb-12 px-[5%]">
             <section className="flex flex-row justify-between items-start">
                 <div>
-                    <h1 className="text-4xl font-bold mb-1">Bem vindo {nome}!</h1>
+                    <h1 className="text-4xl font-bold mb-1">Bem vindo {nome}</h1>
                     <p className="text-gray-500 font-medium text-sm mb-4">Veja a visão geral do seu espaço de trabalho</p>
                 </div>
                 <div className="flex items-center text-[0.8rem] gap-2.5 px-4 py-2 bg-white rounded-xl shadow-rainbow text-slate-700/80 font-semibold">
@@ -64,37 +76,49 @@ export default function GeralDash({ user, business }: GeralDashProps) {
             </section>
 
 
-        <div className="flex flex-col lg:flex-row gap-8 w-full">
-            <div className="flex flex-col gap-6 lg:w-[55%]">
-                <section className="mt-6">
+        <div className="flex flex-col lg:flex-row gap-6 w-full">
+            <div className="flex flex-col gap-6 lg:w-[60%]">
+                <section className="mt-6 w-[80%]">
                     <div className="flex items-center gap-2 mb-3">
                         <h1 className="text-[0.7rem] font-semibold text-gray-500 uppercase tracking-wider">SEUS CONTEXTOS</h1>
-                        <span className="text-[0.7rem] font-semibold text-[#1565C0] bg-[#EFF6FF] px-2 py-0.5 rounded-full">
+                        <span className="text-[0.6rem] font-bold text-[#1565C0] bg-[#EFF6FF] px-2 py-0.5 rounded-full">
                             {totalContextos}
                         </span>
                     </div>
 
-                    <div className="flex flex-row flex-wrap gap-4">
-                        <div className="bg-white shadow-rainbow rounded-2xl p-4 border border-gray-100/80 w-fit min-w-[220px] flex items-center gap-3.5">
-                            <div className="bg-[#EFF6FF] text-[#1565C0] p-2.5 rounded-xl">
-                                <TableOfContents size={18} />
+                    <div className="flex flex-row flex-wrap gap-3">
+                        <div className="bg-white rounded-2xl shadow-red p-4 border border-rose-400/30 min-w-[140px] flex-1 flex items-center gap-3.5">
+                            <div className="bg-red-50 text-red-600 p-2 rounded-xl">
+                                <ShieldAlert size={16} />
                             </div>
                             <div>
-                                <p className="text-[10px] font-semibold uppercase text-gray-400 tracking-wider">total</p>
+                                <p className="text-[0.55rem] font-bold uppercase text-gray-600 tracking-wider">Crítico</p>
                                 <div className="flex items-baseline gap-1.5">
-                                    <p className="text-xl font-bold text-gray-800 tracking-tight">{totalContextos}</p>
+                                    <p className="text-xl font-bold text-gray-800 tracking-tight">{contextosCriticos}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bg-white shadow-rainbow rounded-2xl shadow-red p-4 border border-gray-100/80 w-fit min-w-[220px] flex items-center gap-3.5">
-                            <div className="bg-red-50 text-red-600 p-2 rounded-xl">
-                                <ShieldAlert size={18} />
+                        <div className="bg-white rounded-2xl shadow-[0_2px_12px_rgba(245,158,11,0.1)] p-4 border border-amber-400/30 min-w-[140px] flex-1 flex items-center gap-3.5">
+                            <div className="bg-amber-50 text-amber-500 p-2 rounded-xl">
+                                <AlertTriangle size={16} />
                             </div>
                             <div>
-                                <p className="text-[10px] font-semibold uppercase text-gray-400 tracking-wider">Churn crítico</p>
+                                <p className="text-[0.55rem] font-bold uppercase text-gray-600 tracking-wider">Em Alerta</p>
                                 <div className="flex items-baseline gap-1.5">
-                                    <p className="text-xl font-bold text-gray-800 tracking-tight">{contextosCriticos}</p>
+                                    <p className="text-xl font-bold text-gray-800 tracking-tight">{contextosAlerta}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white shadow-rainbow rounded-2xl p-4 border border-emerald-400/30 min-w-[140px] flex-1 flex items-center gap-3.5">
+                            <div className="bg-emerald-50 text-emerald-600 p-2 rounded-xl">
+                                <CheckCircle2 size={16} />
+                            </div>
+                            <div>
+                                    <p className="text-[0.55rem] font-bold uppercase text-gray-600 tracking-wider">Estabilizados</p>
+                                <div className="flex items-baseline gap-1.5">
+                                    <p className="text-xl font-bold text-gray-800 tracking-tight">{contextosEstabilizados}</p>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +146,7 @@ export default function GeralDash({ user, business }: GeralDashProps) {
                 </section>
             </div>
 
-            <section className="mt-6 lg:mt-10 lg:w-[45%] w-full">
+            <section className="mt-6 lg:mt-10 lg:w-[40%] w-full">
                 <PrioridadesIA business={business} />
             </section>
         </div>
