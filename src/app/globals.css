@@ -77,6 +77,27 @@
   filter: drop-shadow(0 0 1.5px currentColor);
 }
 
+.pondering-text {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.96rem;
+  font-weight: 200;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  padding: 0.05em 0;
+  background: linear-gradient(90deg, #1565c070 0%, #599be795 30%, #9c59b685 60%, #599be795 80%, #1565c070 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pondering-shimmer 2.5s linear infinite;
+}
+
+@keyframes pondering-shimmer {
+  to {
+    background-position: -250% center;
+  }
+}
+
 @keyframes recall-chase {
   from { stroke-dashoffset: 1; }
   to   { stroke-dashoffset: 0; }
@@ -90,9 +111,14 @@
   50%      { transform: scale(1.06); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .recall-stream, .recall-fill, .recall-trace { animation: none; }
+  .recall-stream, .recall-fill, .recall-trace, .pondering-text { animation: none; }
   .recall-fill { fill-opacity: 0.7; }
   .recall-trace { display: none; }
+  .pondering-text {
+    -webkit-text-fill-color: #6b7280;
+    color: #6b7280;
+    background: none;
+  }
 }
 
 /* Custom Scrollbar Branco e Azul */

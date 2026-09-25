@@ -8,8 +8,12 @@ import remarkGfm from 'remark-gfm';
 import ToolRenderer from './tools/ToolRenderer';
 import LinkWithTooltip from './components/LinkWithTooltip';
 import CopyButton from './components/CopyButton';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Code } from 'lucide-react';
 import DropZoneWrapper from "../components/DropZoneWrapper";
 import HumanMessage from "../components/HumanMessage";
+import { PONDERING_PHRASES } from './loadingNames';
 
 interface Message {
     input: string;
@@ -34,6 +38,18 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
     const searchParams = useSearchParams()
     const router = useRouter()
     const [attachments, setAttachments] = useState<File[]>([])
+    const [ponderingIndex, setPonderingIndex] = useState(0)
+
+    useEffect(() => {
+        if (!isStreaming) {
+            setPonderingIndex(0);
+            return;
+        }
+        const interval = setInterval(() => {
+            setPonderingIndex(i => (i + 1) % PONDERING_PHRASES.length);
+        }, 2500);
+        return () => clearInterval(interval);
+    }, [isStreaming]);
 
     useEffect(() => {
         getMessages(id).then((result) => {
@@ -198,10 +214,60 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                         : `px-4 ${hasText || msg.input === "" ? "py-3" : "py-0"} rounded-2xl text-gray-800`
                             }`}>
                                 {msg.role === "AI" ? (
-                                    <div className="prose prose-base max-w-none text-gray-800 text-[0.9375rem] leading-relaxed prose-h1:text-[1.4rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h1:mt-2 prose-h2:text-[1.05rem] prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mb-2 prose-h2:mt-2 prose-h3:mt-2 prose-p:my-2">
+                                     <div className="prose prose-base max-w-none text-gray-800 text-[0.9375rem] leading-relaxed prose-h1:text-[1.4rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h1:mt-2 prose-h2:text-[1.05rem] prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mb-2 prose-h2:mt-2 prose-h3:mt-2 prose-p:my-2 prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0">
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm]}
                                             components={{
+                                                pre({ children }) {
+                                                    return <>{children}</>;
+                                                },
+                                                code({ node, className, children, ...props }) {
+                                                    const match = /language-(\w+)/.exec(className || '');
+                                                    const isBlock = Boolean(match || (className && className.includes('language-')) || String(children).includes('\n'));
+                                                    if (isBlock) {
+                                                        const lang = match ? match[1] : 'text';
+                                                        const codeString = String(children).replace(/\n$/, '');
+                                                        return (
+                                                            <div className="not-prose flex flex-col w-full my-4 rounded-xl border border-gray-200/80 overflow-hidden bg-[#fbfbffd3] shadow-sm">
+                                                                <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-b border-gray-100">
+                                                                    <div className="flex items-center gap-2 text-gray-700 font-semibold text-[0.85rem]">
+                                                                        <Code size={16} className="text-gray-700" />
+                                                                        <span className="capitalize">{lang}</span>
+                                                                    </div>
+                                                                    <div className="flex gap-2 items-center">
+                                                                        <CopyButton text={codeString} />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="p-1">
+                                                                    <SyntaxHighlighter
+                                                                        {...(props as any)}
+                                                                        PreTag="div"
+                                                                        CodeTag="div"
+                                                                        children={codeString}
+                                                                        language={lang}
+                                                                        style={oneLight}
+                                                                        customStyle={{
+                                                                            background: 'transparent',
+                                                                            margin: 0,
+                                                                            padding: '1rem',
+                                                                            fontSize: '0.85rem'
+                                                                        }}
+                                                                        codeTagProps={{
+                                                                            style: {
+                                                                                background: 'transparent'
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return (
+                                                        <code {...props} className="bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded-md text-[0.8rem] font-mono border border-gray-200">
+                                                            {children}
+                                                        </code>
+                                                    );
+                                                },
                                                 a: ({ node, ...props }) => {
                                                     const href = props.href || "";
                                                     if (href.startsWith("https://tool.start/") || href.startsWith("https://tool.end/")) {
@@ -238,25 +304,28 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
 
                                         </ReactMarkdown>
                                         {msg.input === "" && isStreaming && (
-                                            <svg
-                                                    className="recall-stream inline-block ml-1 w-5 h-5 overflow-visible text-[#1565C0]"
-                                                viewBox="-3 -3 22 25"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                role="status"
-                                                aria-label="Gerando resposta"
-                                            >
-                                                <path
-                                                    className="recall-fill"
-                                                    d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z"
-                                                />
-                                                <path
-                                                    className="recall-trace"
-                                                    pathLength={1}
-                                                    d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z"
-                                                />
-                                            </svg>
-                                            )}
+                                            <div className="flex flex-row gap-2 items-center py-0.5">        
+                                                <svg
+                                                    className="recall-stream inline-block ml-1 w-4.5 h-4.5 overflow-visible text-[#1565C0] flex-shrink-0"
+                                                    viewBox="-3 -3 22 25"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    role="status"
+                                                    aria-label="Gerando resposta"
+                                                >
+                                                    <path
+                                                        className="recall-fill"
+                                                        d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z"
+                                                    />
+                                                    <path
+                                                        className="recall-trace"
+                                                        pathLength={1}
+                                                        d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z"
+                                                    />
+                                                </svg>
+                                                <span className="pondering-text select-none">{PONDERING_PHRASES[ponderingIndex]}</span>
+                                            </div>
+                                        )}
                                         {hasText && !(isStreaming && index === messages.length - 1) && (
                                             <div className="flex justify-start mt-3">
                                                 <CopyButton text={msg.input} />
@@ -280,6 +349,27 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                 </section>
                 <div ref={bottomRef} />
                 <div className="w-full max-w-[830px] fixed bottom-0">
+                    {/* <div className="flex flex-row gap-2 items-center py-0.5">
+                        <svg
+                            className="recall-stream inline-block ml-1 w-4 h-4 overflow-visible text-[#1565C0] flex-shrink-0"
+                            viewBox="-3 -3 22 25"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            role="status"
+                            aria-label="Gerando resposta"
+                        >
+                            <path
+                                className="recall-fill"
+                                d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z"
+                            />
+                            <path
+                                className="recall-trace"
+                                pathLength={1}
+                                d="M0 18.8262V0H8.56934C12.4189 0 14.3438 1.68311 14.3438 5.04932C14.3438 7.32568 12.8452 9.21094 9.84814 10.7051L15.8203 18.8525H11.417L5.68213 10.6392V9.04395C9.02197 8.47266 10.6919 7.17627 10.6919 5.15479C10.6919 3.76611 9.90967 3.07178 8.34521 3.07178H3.55957V18.8262H0Z"
+                            />
+                        </svg>
+                        <span className="pondering-text select-none">{PONDERING_PHRASES[ponderingIndex]}</span>
+                    </div> */}
                     <ChatContainer 
                         empresas={empresas} 
                         onEnviar={handleEnviar} 

@@ -78,7 +78,7 @@ export default function GeralDash({ user, business }: GeralDashProps) {
 
         <div className="flex flex-col lg:flex-row gap-6 w-full">
             <div className="flex flex-col gap-6 lg:w-[60%]">
-                <section className="mt-6 w-[80%]">
+                <section className="mt-6">
                     <div className="flex items-center gap-2 mb-3">
                         <h1 className="text-[0.7rem] font-semibold text-gray-500 uppercase tracking-wider">SEUS CONTEXTOS</h1>
                         <span className="text-[0.6rem] font-bold text-[#1565C0] bg-[#EFF6FF] px-2 py-0.5 rounded-full">
@@ -99,7 +99,7 @@ export default function GeralDash({ user, business }: GeralDashProps) {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-2xl shadow-[0_2px_12px_rgba(245,158,11,0.1)] p-4 border border-amber-400/30 min-w-[140px] flex-1 flex items-center gap-3.5">
+                        <div className="bg-white rounded-2xl shadow-[0_2px_12px_rgba(245,158,11,0.1)] p-4 border border-amber-500/30 min-w-[140px] flex-1 flex items-center gap-3.5">
                             <div className="bg-amber-50 text-amber-500 p-2 rounded-xl">
                                 <AlertTriangle size={16} />
                             </div>

@@ -29,6 +29,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${manrope.className} ${inter.variable} ${sourceSerif.variable} scroll-smooth`} suppressHydrationWarning data-scroll-behavior="smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet" />
+      </head>
       <body suppressHydrationWarning>{children}</body>
     </html>
   );
