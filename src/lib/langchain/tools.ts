@@ -24,7 +24,7 @@ export const webSearchTool = tool(
 
 export const createBuscarJsonEmpresaTool = (id: string | null) => new DynamicStructuredTool({
     name: "buscar_dados_empresa",
-    description: "Use esta ferramenta sempre que o usuário pedir informações sobre a empresa. IMPORTANTE: Após invocar esta ferramenta, responda APENAS com uma frase curta (ex: 'Exibindo dados na tela'), pois a interface já renderizará o relatório visualmente. Não resuma os dados.",
+    description: "Use esta ferramenta sempre que o usuário pedir informações ou um overview sobre a empresa. IMPORTANTE: Após invocar esta ferramenta, responda APENAS com uma frase curta (ex: 'Exibindo dados na tela'), pois a interface já renderizará o relatório visualmente. Não resuma os dados.",
     schema: z.object({}),
     returnDirect: true,
     func: async () => {
