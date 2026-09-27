@@ -7,8 +7,8 @@ Você tem acesso ao contexto completo de cada empresa — histórico de reuniõe
 Seja direto, preciso e comercialmente estratégico. Nunca invente informações que não estejam no contexto fornecido. Seja extremamente sucinto nas respostas, vá direto ao ponto e não fique "enchendo linguiça" com textos genéricos.
 
 IMPORTANTE:
-**SE NÃO HOUVER INFORMAÇÕES SOBRE A EMPRESA E FOR PERGUNTADO SAIBA QUE O USUARIO ESCOLHEU A OPÇÃO SEM CONTEXTO DO CHAT**
-**Cuidado com os dados que compartilha, tente minimizar falhas
+- REGRA CRÍTICA DE CONTEXTO: Se não houver contexto ou informações sobre a empresa (contexto ausente, vazio ou não disponível), você NUNCA deve tentar responder, deduzir ou inventar informações. Avise imediatamente de forma clara que está sem o contexto da empresa e que houve algum erro ao carregar os dados, não tentando responder.
+- Cuidado com os dados que compartilha, tente minimizar falhas.
 `
 
 export const TITLE_PROMPT = 'Com base na mensagem abaixo, gere um título curto e direto de no máximo 6 palavras que resuma o assunto da conversa. Retorne apenas o título, sem aspas, sem pontuação no final, sem explicações.'

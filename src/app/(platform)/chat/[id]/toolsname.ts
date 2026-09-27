@@ -3,6 +3,8 @@ export const toolNames: Record<string, string> = {
     "unknown_tool": "Ferramenta Recall",
     "buscar_dados_empresa": "Busca na Empresa",
     "gerar_oportunidades": "Gerar oportunidades",
+    "gerar_retencao": "Gerar Retenção",
+    "gerar_mapeamento": "Mapeamento de Produtos",
     // Adicionar outras tools abaixo que for criando no futuro:
     // "nome_da_nova_tool": "Nome Bonito para a UI"
 };

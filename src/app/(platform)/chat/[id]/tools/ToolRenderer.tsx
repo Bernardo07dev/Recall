@@ -7,6 +7,10 @@ import BuscaToolFinish from './BuscaEmpresa/BuscaToolFinish';
 import WebToolLading from './WebSearch/WebToolLading';
 import OpToolLoading from './GerarOportunidades/OpToolLoading';
 import OpToolFinish from './GerarOportunidades/OpToolFinish';
+import RetencaoToolLoading from './GerarRetencao/RetencaoToolLoading';
+import RetencaoToolFinish from './GerarRetencao/RetencaoToolFinish';
+import MapeamentoToolLoading from './GerarMapeamento/MapeamentoToolLoading';
+import MapeamentoToolFinish from './GerarMapeamento/MapeamentoToolFinish';
 
 interface ToolRendererProps {
     toolName: string;
@@ -28,6 +32,14 @@ const toolRegistry: Record<string, { Loading?: React.ComponentType<any>, Result?
     "gerar_oportunidades": {
         Loading: OpToolLoading,
         Result: OpToolFinish,
+    },
+    "gerar_retencao": {
+        Loading: RetencaoToolLoading,
+        Result: RetencaoToolFinish,
+    },
+    "gerar_mapeamento": {
+        Loading: MapeamentoToolLoading,
+        Result: MapeamentoToolFinish,
     }
 };
 

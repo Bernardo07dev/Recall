@@ -1,10 +1,11 @@
 import { fetchCompany, fetchMessages } from "@/src/app/actions/fetchThings";
 import { openRouterModel } from "@/src/lib/langchain/llm";
-import { webSearchTool, createBuscarJsonEmpresaTool, createGerarOportunidadesTool } from "@/src/lib/langchain/tools";
+import { webSearchTool, createBuscarJsonEmpresaTool, createGerarOportunidadesTool, createGerarRetencaoTool, createGerarMapeamentoTool } from "@/src/lib/langchain/tools";
 import { createAgent } from "langchain";
 import { BASE_PROMPT } from "@/src/lib/langchain/utils";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { saveMessages } from "@/src/app/actions/chat-action";
+import { SILENT_TOOLS } from "@/src/app/(platform)/chat/[id]/silentTools";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -32,6 +33,9 @@ export async function POST(req: Request) {
 
     [DADOS DA EMPRESA (JSON)]
     ${res?.json ? JSON.stringify(res.json) : "Sem dados disponíveis"}
+
+    [REGRA OBRIGATÓRIA DE ERRO E CONTEXTO]
+    Se o [CONTEXTO DA EMPRESA] for "Sem contexto disponível" ou estiver ausente, e a pergunta/solicitação for sobre a empresa ou dependa de seus dados, NÃO TENTE RESPONDER NEM ESPECULAR. Apenas responda informando que está sem o contexto da empresa e que houve algum erro ao carregar os dados.
   `;
 
   const SYSTEM = new SystemMessage(combinedSystemPrompt);
@@ -46,10 +50,12 @@ export async function POST(req: Request) {
 
   const buscarJsonEmpresaTool = createBuscarJsonEmpresaTool(id);
   const gerarOportunidadesTool = createGerarOportunidadesTool(id);
+  const gerarRetencaoTool = createGerarRetencaoTool(id);
+  const gerarMapeamentoTool = createGerarMapeamentoTool(id);
 
   const agentDynamic = createAgent({
     model: openRouterModel,
-    tools: [webSearchTool, buscarJsonEmpresaTool, gerarOportunidadesTool],
+    tools: [webSearchTool, buscarJsonEmpresaTool, gerarOportunidadesTool, gerarRetencaoTool, gerarMapeamentoTool],
   });
 
   const stream = await agentDynamic.streamEvents(
@@ -60,7 +66,6 @@ export async function POST(req: Request) {
   const encoder = new TextEncoder();
   let fullResponse = "";
   let isReasoning = false;
-  const SILENT_TOOLS = new Set(["gerar_oportunidades", "buscar_dados_empresa"]);
   let activeSilentTool: string | null = null;
 
   const readableStream = new ReadableStream({

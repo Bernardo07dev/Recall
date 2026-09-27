@@ -11,6 +11,8 @@ import {
     DollarSign,
     ShieldAlert,
     Swords,
+    NotebookText,
+    Map,
     type LucideIcon 
 } from 'lucide-react';
 
@@ -30,6 +32,8 @@ const MENTION_ICONS: Record<string, LucideIcon> = {
     DollarSign,
     ShieldAlert,
     Swords,
+    NotebookText,
+    Map,
 };
 
 const renderFormattedText = (text: string) => {

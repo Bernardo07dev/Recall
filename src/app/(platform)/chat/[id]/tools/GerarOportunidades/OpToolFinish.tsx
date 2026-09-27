@@ -77,14 +77,14 @@ export default function OpToolFinish({ toolName, msg }: GenericToolFinishProps) 
         return 'shadow-green';
     };
     return (
-        <div className="flex flex-col w-[830px] max-w-full gap-3 mb-4 animate-in fade-in slide-in-from-bottom-2">
+        <div className="flex flex-col w-full gap-3 mb-4 animate-in fade-in slide-in-from-bottom-2">
             <span className={`flex items-center gap-1 text-sm no-underline mb-1`}>
                 <img src="/RECALL-logo.svg" className="w-10 mr-0.5 object-contain group-hover:opacity-100 transition-all" alt="Recall Logo" />
                 <span className="text-[11px] text-[#0c3a6f93] group-hover:text-[#1a3d65] transition-colors">{displayName}</span>
             </span>
             
             {oportunidades.length > 0 ? (
-                <div className="relative w-[830px] max-w-full">
+                <div className="relative w-full">
                     <div className="absolute -inset-0.5 rainbow-shadow rounded-3xl opacity-10"></div>
                     
                     <div className="relative bg-white/60 rounded-3xl w-full flex flex-col overflow-hidden ">

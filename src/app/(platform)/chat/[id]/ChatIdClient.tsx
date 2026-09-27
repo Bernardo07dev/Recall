@@ -14,6 +14,7 @@ import { Code } from 'lucide-react';
 import DropZoneWrapper from "../components/DropZoneWrapper";
 import HumanMessage from "../components/HumanMessage";
 import { PONDERING_PHRASES } from './loadingNames';
+import { isSilentTool } from './silentTools';
 
 interface Message {
     input: string;
@@ -119,12 +120,12 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                 fullText += parsed.content
                             }
                         } else if (parsed.type === "tool_start") {
-                            if (parsed.toolName === "buscar_dados_empresa" || parsed.toolName === "gerar_oportunidades") {
+                            if (isSilentTool(parsed.toolName)) {
                                 isSilentToolActive = true;
                             }
                             fullText += `\n\n[${parsed.toolName}](https://tool.start/${parsed.toolName})\n\n`
                         } else if (parsed.type === "tool_end") {
-                            if (parsed.toolName === "buscar_dados_empresa" || parsed.toolName === "gerar_oportunidades") {
+                            if (isSilentTool(parsed.toolName)) {
                                 isSilentToolActive = false;
                             }
                             fullText += `\n\n[${parsed.toolName}](https://tool.end/${parsed.toolName})\n\n`
@@ -206,12 +207,12 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                         return (
                         <div key={index} className={`flex items-center ${msg.role === "Tool" ? "mb-0" : "mb-1"} text-[0.9375rem] ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
                         >
-                            <div className={`w-fit ${
+                            <div className={`${
                                 msg.role === "human" 
-                                    ? "flex flex-col items-end" 
-                                    : msg.role === "Tool"
-                                        ? "px-4 py-0 text-gray-800"
-                                        : `px-4 ${hasText || msg.input === "" ? "py-3" : "py-0"} rounded-2xl text-gray-800`
+                                    ? "w-fit flex flex-col items-end" 
+                                    : msg.role === "Tool" || !hasText
+                                        ? "w-full px-0 py-0 text-gray-800"
+                                        : `w-full px-4 ${hasText || msg.input === "" ? "py-3" : "py-0"} rounded-2xl text-gray-800`
                             }`}>
                                 {msg.role === "AI" ? (
                                      <div className="prose prose-base max-w-none text-gray-800 text-[0.9375rem] leading-relaxed prose-h1:text-[1.4rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h1:mt-2 prose-h2:text-[1.05rem] prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mb-2 prose-h2:mt-2 prose-h3:mt-2 prose-p:my-2 prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0">
