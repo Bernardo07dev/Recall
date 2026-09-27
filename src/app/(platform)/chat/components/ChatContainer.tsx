@@ -52,12 +52,272 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
     const [companyId, setCompanyId] = useState<string | null>(defaultCompanyId ?? null)
     const [unavailable, setUnavailable] = useState<boolean>(false)
     const [isProcessing, setIsProcessing] = useState<boolean>(false)
+    const editorRef = useRef<HTMLDivElement>(null)
+    const lastRangeRef = useRef<Range | null>(null)
+
+    const saveSelection = () => {
+        const editor = editorRef.current;
+        if (!editor) return;
+        const sel = window.getSelection();
+        if (sel && sel.rangeCount > 0) {
+            const range = sel.getRangeAt(0);
+            if (editor.contains(range.commonAncestorContainer)) {
+                lastRangeRef.current = range.cloneRange();
+            }
+        }
+    };
+
+    useEffect(() => {
+        const handleSelectionChange = () => {
+            if (document.activeElement === editorRef.current || editorRef.current?.contains(document.activeElement)) {
+                saveSelection();
+            }
+        };
+        document.addEventListener('selectionchange', handleSelectionChange);
+        return () => document.removeEventListener('selectionchange', handleSelectionChange);
+    }, []);
 
     useEffect(() => {
         if (defaultCompanyId !== undefined) {
             setCompanyId(defaultCompanyId)
         }
     }, [defaultCompanyId])
+
+    const MENTION_ICON_SVGS: Record<string, string> = {
+        ChartNoAxesCombined: `<path d="M12 16v5"/><path d="M16 14v7"/><path d="M20 10v11"/><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path d="M4 18v3"/><path d="M8 14v7"/>`,
+        ChartBar: `<path d="M3 3v18h18"/><path d="M7 16v1"/><path d="M11 11v6"/><path d="M15 7v10"/><path d="M19 12v5"/>`,
+        Lightbulb: `<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>`,
+        Target: `<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>`,
+        FileText: `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>`,
+        TrendingUp: `<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>`,
+        Sparkles: `<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>`,
+        Briefcase: `<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>`,
+        DollarSign: `<line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
+        ShieldAlert: `<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/>`,
+        Swords: `<polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/>`,
+    };
+
+    const getMentionIconSvg = (iconName?: string): string => {
+        const path = (iconName && MENTION_ICON_SVGS[iconName]) || MENTION_ICON_SVGS['ChartNoAxesCombined'];
+        return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+    };
+
+    const getTextWithMentions = (root: HTMLElement): string => {
+        let result = '';
+        const traverse = (node: Node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                result += (node.nodeValue || '').replace(/\u00A0/g, ' ');
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                const el = node as HTMLElement;
+                const mention = el.getAttribute('data-mention');
+                const icon = el.getAttribute('data-icon');
+                if (mention !== null) {
+                    if (icon) {
+                        result += `<mention icon="${icon}">${mention}</mention>`;
+                    } else {
+                        result += `<mention>${mention}</mention>`;
+                    }
+                } else if (el.tagName === 'BR') {
+                    result += '\n';
+                } else {
+                    for (let i = 0; i < el.childNodes.length; i++) {
+                        traverse(el.childNodes[i]);
+                    }
+                    if (el.tagName === 'DIV' && el !== root) {
+                        result += '\n';
+                    }
+                }
+            }
+        };
+        traverse(root);
+        return result;
+    };
+
+    const updateValue = () => {
+        if (!editorRef.current) return;
+        const text = getTextWithMentions(editorRef.current);
+        setInput(text);
+    };
+
+    const createMentionElement = (title: string, icon = 'ChartNoAxesCombined'): HTMLElement => {
+        const span = document.createElement('span');
+        span.setAttribute('data-mention', title);
+        span.setAttribute('data-icon', icon);
+        span.contentEditable = 'false';
+        span.className = 'mention-pin';
+        
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'mention-icon';
+        iconSpan.innerHTML = getMentionIconSvg(icon);
+        
+        const textSpan = document.createElement('span');
+        textSpan.className = 'mention-text';
+        textSpan.textContent = title;
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'mention-close';
+        closeBtn.title = 'Remover menção';
+        closeBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+        
+        closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            span.remove();
+            updateValue();
+        });
+
+        span.appendChild(iconSpan);
+        span.appendChild(textSpan);
+        span.appendChild(closeBtn);
+        return span;
+    };
+
+    const scanAndReplaceAllMentions = (root: HTMLElement): boolean => {
+        const regex = /<mention(?: icon="([^"]+)")?>([\s\S]*?)<\/mention>/i;
+        let replacedAny = false;
+        let found = true;
+        
+        while (found) {
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+            let targetNode: Text | null = null;
+            let match: RegExpExecArray | null = null;
+            let current = walker.nextNode();
+            
+            while (current) {
+                const parentMention = (current.parentElement as HTMLElement)?.closest('[data-mention]');
+                if (!parentMention) {
+                    const m = regex.exec(current.nodeValue || '');
+                    if (m) {
+                        targetNode = current as Text;
+                        match = m;
+                        break;
+                    }
+                }
+                current = walker.nextNode();
+            }
+
+            if (!targetNode || !match) {
+                found = false;
+                break;
+            }
+
+            replacedAny = true;
+            const fullMatch = match[0];
+            const icon = match[1] || 'ChartNoAxesCombined';
+            const mentionContent = match[2];
+            const startIndex = match.index;
+            const endIndex = startIndex + fullMatch.length;
+            const textBefore = (targetNode.nodeValue || '').substring(0, startIndex);
+            const textAfter = (targetNode.nodeValue || '').substring(endIndex);
+
+            const parent = targetNode.parentNode;
+            if (!parent) break;
+
+            const beforeNode = textBefore ? document.createTextNode(textBefore) : null;
+            const mentionEl = createMentionElement(mentionContent, icon);
+            const afterNode = document.createTextNode(textAfter.length > 0 ? textAfter : '\u00A0');
+
+            if (beforeNode) {
+                parent.insertBefore(beforeNode, targetNode);
+            }
+            parent.insertBefore(mentionEl, targetNode);
+            parent.insertBefore(afterNode, targetNode);
+            parent.removeChild(targetNode);
+
+            const sel = window.getSelection();
+            if (sel) {
+                const range = document.createRange();
+                range.setStart(afterNode, textAfter.length > 0 ? 0 : 1);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+
+        return replacedAny;
+    };
+
+    const insertMention = (title: string, icon = 'ChartNoAxesCombined') => {
+        const editor = editorRef.current;
+        if (!editor) return;
+
+        let range = lastRangeRef.current;
+        if (range && !editor.contains(range.commonAncestorContainer)) {
+            range = null;
+        }
+
+        if (!range) {
+            range = document.createRange();
+            range.selectNodeContents(editor);
+            range.collapse(false);
+        }
+
+        const sel = window.getSelection();
+        if (sel) {
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+
+        const mentionEl = createMentionElement(title, icon);
+        const spaceNode = document.createTextNode('\u00A0');
+
+        range.deleteContents();
+        range.insertNode(spaceNode);
+        range.insertNode(mentionEl);
+
+        const newRange = document.createRange();
+        newRange.setStart(spaceNode, 1);
+        newRange.collapse(true);
+        sel?.removeAllRanges();
+        sel?.addRange(newRange);
+
+        lastRangeRef.current = newRange.cloneRange();
+        editor.focus();
+
+        updateValue();
+    };
+
+    const handleInput = () => {
+        if (!editorRef.current) return;
+        scanAndReplaceAllMentions(editorRef.current);
+        saveSelection();
+        updateValue();
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleEnviar();
+            return;
+        }
+
+        if (e.key === 'Backspace') {
+            const sel = window.getSelection();
+            if (sel && sel.isCollapsed && sel.rangeCount > 0) {
+                const range = sel.getRangeAt(0);
+                if (range.startOffset === 0) {
+                    const prevNode = range.startContainer.previousSibling;
+                    if (prevNode && (prevNode as HTMLElement).getAttribute?.('data-mention')) {
+                        e.preventDefault();
+                        prevNode.parentNode?.removeChild(prevNode);
+                        updateValue();
+                        return;
+                    }
+                }
+            }
+        }
+    };
+
+    useEffect(() => {
+        const handleAddInsight = (e: any) => {
+            if (e.detail?.title) {
+                insertMention(e.detail.title, e.detail.icon || 'ChartNoAxesCombined');
+            }
+        };
+        window.addEventListener('add-insight', handleAddInsight);
+        return () => window.removeEventListener('add-insight', handleAddInsight);
+    }, []);
 
     const [PopUp, setPopUp] = useState<string | false>(false);
 
@@ -105,9 +365,10 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
 
     const handleEnviar = async () => {
         const hasAttachments = attachments && attachments.length > 0;
-        if ((!input && !hasAttachments) || isStreaming || isProcessing) { return; }
+        const currentInput = editorRef.current ? getTextWithMentions(editorRef.current) : input;
+        if ((!currentInput.trim() && !hasAttachments) || isStreaming || isProcessing) { return; }
         
-        let finalInput = input;
+        let finalInput = currentInput.trim();
 
         if (hasAttachments) {
             setIsProcessing(true);
@@ -117,7 +378,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                     `<file-attachment name="${attachments[index].name}">\n${content}\n</file-attachment>`
                 ).join('\n\n');
                 
-                finalInput = `${input}\n\n${filesText}`;
+                finalInput = finalInput ? `${finalInput}\n\n${filesText}` : filesText;
             } catch (error) {
                 console.error("Erro ao ler arquivos", error);
                 setIsProcessing(false);
@@ -129,6 +390,10 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
 
         onEnviar(finalInput, companyId, "human");
         setInput("");
+        lastRangeRef.current = null;
+        if (editorRef.current) {
+            editorRef.current.innerHTML = "";
+        }
     }
 
     const removeAttachment = (index: number) => {
@@ -185,7 +450,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                             }
 
                             return (
-                                <div key={idx} className="relative flex items-center gap-4 bg-white border border-[#EBEBEB] px-5 py-4 rounded-[1.25rem] w-[280px]">
+                                <div key={`file-${idx}`} className="relative flex items-center gap-4 bg-white border border-[#EBEBEB] px-5 py-4 rounded-[1.25rem] w-[280px]">
                                     <div className={`flex-shrink-0 ${iconColor}`}>
                                         <Icon size={18} strokeWidth={2} />
                                     </div>
@@ -205,11 +470,11 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                     </div>
                 )}
 
-                <div className="w-full pb-3 flex flex-row items-center">
+                <div className="w-full pb-3 flex flex-row items-center gap-2">
                     <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={disableInput}
-                        className="p-2 ml-1 cursor-pointer text-gray-300 hover:text-gray-600 transition-colors disabled:opacity-50"
+                        className="p-2 ml-1 cursor-pointer text-gray-300 hover:text-gray-600 transition-colors disabled:opacity-50 flex-shrink-0"
                         title="Anexar arquivo"
                     >
                         <Paperclip size={15} strokeWidth={2.5} />
@@ -217,17 +482,28 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
 
                     <input type="file" multiple className="hidden" ref={fileInputRef} onChange={handleFileSelect} accept=".txt,.csv,.xls,.xlsx,.pdf,.doc,.docx,.mp3,.wav,.ogg" />
 
-                    <input 
-                        onKeyDown={(e) => e.key === 'Enter' && handleEnviar()} 
-                        className="p-2 w-full font-medium focus:outline-none text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed bg-transparent" 
-                        value={input} 
-                        placeholder={isProcessing ? "Lendo arquivos..." : isStreaming ? "Aguarde a resposta..." : "Pergunte Algo..."} 
-                        onChange={(e) => setInput(e.target.value)} 
-                        disabled={disableInput}
-                    />
+                    <div className="relative flex-1 min-w-[200px] flex items-center">
+                        {isInputEmpty && (
+                            <span className="absolute left-2 text-gray-400 font-medium pointer-events-none select-none text-sm">
+                                {isProcessing ? "Lendo arquivos..." : isStreaming ? "Aguarde a resposta..." : "Pergunte Algo..."}
+                            </span>
+                        )}
+                        <div
+                            ref={editorRef}
+                            contentEditable={!disableInput}
+                            onInput={handleInput}
+                            onKeyDown={handleKeyDown}
+                            onKeyUp={saveSelection}
+                            onMouseUp={saveSelection}
+                            onBlur={saveSelection}
+                            className="p-2 w-full font-medium focus:outline-none text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed bg-transparent min-h-[38px] max-h-32 overflow-y-auto break-words whitespace-pre-wrap text-sm leading-relaxed"
+                            role="textbox"
+                            aria-multiline="true"
+                        />
+                    </div>
 
                     <button 
-                        className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 ${isInputEmpty ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#004D99] text-white cursor-pointer hover:bg-[#003d7a]'} ${disableInput ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${isInputEmpty ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#004D99] text-white cursor-pointer hover:bg-[#003d7a]'} ${disableInput ? 'opacity-50 cursor-not-allowed' : ''}`}
                         onClick={handleEnviar}
                         disabled={disableInput || isInputEmpty}
                     >

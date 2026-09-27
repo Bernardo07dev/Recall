@@ -59,6 +59,7 @@ export async function POST(req: Request) {
 
   const encoder = new TextEncoder();
   let fullResponse = "";
+  let isReasoning = false;
   const SILENT_TOOLS = new Set(["gerar_oportunidades", "buscar_dados_empresa"]);
   let activeSilentTool: string | null = null;
 
@@ -67,18 +68,40 @@ export async function POST(req: Request) {
     async start(controller) {
       try {
         for await (const event of stream) {
-          if (event.event === "on_chat_model_stream" && event.data?.chunk?.content) {
-            // Suppress text emitted by LLMs running *inside* a silent tool
-            if (activeSilentTool) continue;
+          if (event.event === "on_chat_model_stream") {
+            const chunk = event.data?.chunk;
+            const reasoning = (chunk?.additional_kwargs?.reasoning ?? chunk?.additional_kwargs?.reasoning_content ?? "") as string;
 
-            const text = event.data.chunk.content;
-            if (typeof text === "string") {
-              fullResponse += text;
-              
-              const jsonChunk = JSON.stringify({ type: "text", content: text }) + "\n";
-              controller.enqueue(encoder.encode(jsonChunk));
+            if (reasoning) {
+              if (!isReasoning) {
+                console.log("\n--- [REASONING] ---");
+                isReasoning = true;
+              }
+              process.stdout.write(reasoning);
+            }
+
+            if (chunk?.content) {
+              if (isReasoning) {
+                console.log("\n--- [FIM REASONING] ---\n");
+                isReasoning = false;
+              }
+
+              // Suppress text emitted by LLMs running *inside* a silent tool
+              if (activeSilentTool) continue;
+
+              const text = chunk.content;
+              if (typeof text === "string") {
+                fullResponse += text;
+                
+                const jsonChunk = JSON.stringify({ type: "text", content: text }) + "\n";
+                controller.enqueue(encoder.encode(jsonChunk));
+              }
             }
           } else if (event.event === "on_tool_start") {
+            if (isReasoning) {
+              console.log("\n--- [FIM REASONING] ---\n");
+              isReasoning = false;
+            }
             const toolName = event.name;
             if (SILENT_TOOLS.has(toolName)) activeSilentTool = toolName;
             const toolInput = event.data?.input;
@@ -104,6 +127,11 @@ export async function POST(req: Request) {
               await saveMessages(`Resultado da ferramenta: ${toolName}`, chatId, "Tool", toolJson);
             }
           }
+        }
+
+        if (isReasoning) {
+          console.log("\n--- [FIM REASONING] ---\n");
+          isReasoning = false;
         }
 
         if (chatId && fullResponse.trim() !== "") {

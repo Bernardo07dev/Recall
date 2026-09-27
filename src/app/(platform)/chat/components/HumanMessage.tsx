@@ -1,8 +1,69 @@
 import { getFileIcon } from '../[id]/components/FileIcons';
+import { 
+    ChartNoAxesCombined, 
+    ChartBar, 
+    Lightbulb, 
+    Target, 
+    FileText, 
+    TrendingUp, 
+    Sparkles, 
+    Briefcase, 
+    DollarSign,
+    ShieldAlert,
+    Swords,
+    type LucideIcon 
+} from 'lucide-react';
 
 interface Props {
     content: string;
 }
+
+const MENTION_ICONS: Record<string, LucideIcon> = {
+    ChartNoAxesCombined,
+    ChartBar,
+    Lightbulb,
+    Target,
+    FileText,
+    TrendingUp,
+    Sparkles,
+    Briefcase,
+    DollarSign,
+    ShieldAlert,
+    Swords,
+};
+
+const renderFormattedText = (text: string) => {
+    const mentionRegex = /<mention(?: icon="([^"]+)")?>([\s\S]*?)<\/mention>/g;
+    const segments: React.ReactNode[] = [];
+    let last = 0;
+    let m;
+    let key = 0;
+    
+    while ((m = mentionRegex.exec(text)) !== null) {
+        if (m.index > last) {
+            segments.push(text.substring(last, m.index));
+        }
+        const iconName = m[1] || 'ChartNoAxesCombined';
+        const IconComponent = MENTION_ICONS[iconName] || ChartNoAxesCombined;
+        const mentionText = m[2];
+
+        segments.push(
+            <span key={`mention-${key++}`} className="mention-pin">
+                <span className="mention-icon">
+                    <IconComponent size={13} strokeWidth={2.2} />
+                </span>
+                <span className="mention-text">{mentionText}</span>
+            </span>
+        );
+        last = m.index + m[0].length;
+    }
+    
+    if (last < text.length) {
+        segments.push(text.substring(last));
+    }
+    
+    return segments;
+};
 
 export default function HumanMessage({ content }: Props) {
     if (!content) return null;
@@ -27,7 +88,7 @@ export default function HumanMessage({ content }: Props) {
     }
 
     if (parts.length === 0 || (parts.length === 1 && parts[0].type === 'text')) {
-        return <p className="whitespace-pre-wrap bg-[#F2F3FB] text-gray-800 p-4 py-3 rounded-2xl w-fit ml-auto">{content.trim()}</p>;
+        return <p className="whitespace-pre-wrap bg-[#F2F3FB] text-gray-800 p-4 py-3 rounded-2xl w-fit ml-auto">{renderFormattedText(content.trim())}</p>;
     }
 
     const fileParts = parts.filter((p): p is { type: 'file'; name: string } => p.type === 'file');
@@ -74,7 +135,7 @@ export default function HumanMessage({ content }: Props) {
                 </div>
             )}
             {textParts.map((part, idx) => (
-                <p key={`text-${idx}`} className="whitespace-pre-wrap bg-[#F2F3FB] text-gray-800 p-4 py-3 rounded-2xl w-fit ml-auto">{part.content.trim()}</p>
+                <p key={`text-${idx}`} className="whitespace-pre-wrap bg-[#F2F3FB] text-gray-800 p-4 py-3 rounded-2xl w-fit ml-auto">{renderFormattedText(part.content.trim())}</p>
             ))}
         </div>
     );

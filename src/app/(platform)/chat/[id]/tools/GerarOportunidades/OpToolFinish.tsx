@@ -1,5 +1,5 @@
 'use client';
-import { Lightbulb, Target, ChartBar } from 'lucide-react';
+import { Lightbulb, ChartBar, Target } from 'lucide-react';
 import { getToolDisplayName } from '../../toolsname';
 
 interface GenericToolFinishProps {
@@ -9,6 +9,16 @@ interface GenericToolFinishProps {
 
 export default function OpToolFinish({ toolName, msg }: GenericToolFinishProps) {
     const displayName = getToolDisplayName(toolName);
+
+    const handleAdicionarInsight = (title: string, text?: string, icon: string = 'ChartBar') => {
+        window.dispatchEvent(new CustomEvent('add-insight', {
+            detail: {
+                title: title,
+                text: text,
+                icon: icon
+            }
+        }));
+    };
     
     let parsedData: any = null;
     try {
@@ -66,7 +76,6 @@ export default function OpToolFinish({ toolName, msg }: GenericToolFinishProps) 
         if (p.includes('méd') || p.includes('med')) return 'shadow-yellow';
         return 'shadow-green';
     };
-
     return (
         <div className="flex flex-col w-[830px] max-w-full gap-3 mb-4 animate-in fade-in slide-in-from-bottom-2">
             <span className={`flex items-center gap-1 text-sm no-underline mb-1`}>
@@ -89,7 +98,7 @@ export default function OpToolFinish({ toolName, msg }: GenericToolFinishProps) 
                         <div className="p-4 bg-white/100 ">
                             <div className="flex flex-col gap-3">
                                 {oportunidades.map((op: any, idx: number) => (
-                                    <div key={idx} className={`bg-blue-50/30 p-3 px-4 w-full rounded-xl  ${getPriorityBorder(op.nivel_prioridade)} ${getPriorityShadow(op.nivel_prioridade)} flex flex-row items-baseline justify-between gap-2 transition-all`}>
+                                    <div onClick={() => handleAdicionarInsight(op.titulo, op.descricao, op.icon || op.icone)} key={idx} className={`bg-blue-50/30 cursor-pointer p-3 px-4 w-full rounded-xl  ${getPriorityBorder(op.nivel_prioridade)} ${getPriorityShadow(op.nivel_prioridade)} flex flex-row items-baseline justify-between gap-2 transition-all`}>
                                         <div className="flex flex-row items-end gap-2">
                                             <h5 className="font-semibold text-[0.80rem] text-gray-800 leading-tight">{op.titulo}</h5>
                                             <span className="text-[0.60rem] font-bold text-[#1565C0]/80 uppercase">{op.setor}</span>

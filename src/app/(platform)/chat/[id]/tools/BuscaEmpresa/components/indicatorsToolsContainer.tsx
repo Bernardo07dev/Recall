@@ -33,10 +33,20 @@ export default function IndicatorsContainer({ indicators }: Props) {
     const upsell = getUpsellColor(indicators.upsell_score)
     const threat = getThreatColor(indicators.competitor_threat)
 
+    const handleAdicionarInsight = (title: string, text?: string, icon: string = 'ChartBar') => {
+        window.dispatchEvent(new CustomEvent('add-insight', {
+            detail: {
+                title: title,
+                text: text,
+                icon: icon
+            }
+        }));
+    };
+
     return (
         <div className="grid grid-cols-3 gap-4">
             {/* Churn Risk */}
-            <div className={`bg-white shadow-rainbow ${churn.border}  rounded-2xl p-3 px-5 inter`}>
+            <div onClick={() => handleAdicionarInsight("Churn", churn.text, "ShieldAlert")} className={`bg-white cursor-pointer shadow-rainbow ${churn.border}  rounded-2xl p-3 px-5 inter`}>
                 <span className="text-[0.60rem] font-semibold uppercase text-gray-400">
                     Churn Risk
                 </span>
@@ -54,7 +64,7 @@ export default function IndicatorsContainer({ indicators }: Props) {
             </div>
 
             {/* Upsell Score */}
-            <div className={`bg-white shadow-rainbow ${upsell.border}  rounded-2xl p-3 px-5 inter`}>
+            <div onClick={() => handleAdicionarInsight("Upsell", upsell.text, "TrendingUp")} className={`bg-white cursor-pointer shadow-rainbow ${upsell.border}  rounded-2xl p-3 px-5 inter`}>
                 <span className="text-[0.60rem] font-semibold uppercase text-gray-400">
                     Upsell Score
                 </span>
@@ -72,7 +82,7 @@ export default function IndicatorsContainer({ indicators }: Props) {
             </div>
 
             {/* Competitor Threat */}
-            <div className={`bg-white shadow-rainbow ${threat.border}  rounded-2xl p-3 px-5 inter`}>
+            <div onClick={() => handleAdicionarInsight("Competidores", threat.text, "Swords")} className={`bg-white cursor-pointer shadow-rainbow ${threat.border}  rounded-2xl p-3 px-5 inter`}>
                 <span className="text-[0.60rem] font-semibold uppercase text-gray-400">
                     Competidores
                 </span>
