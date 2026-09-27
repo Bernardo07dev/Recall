@@ -11,6 +11,8 @@ import RetencaoToolLoading from './GerarRetencao/RetencaoToolLoading';
 import RetencaoToolFinish from './GerarRetencao/RetencaoToolFinish';
 import MapeamentoToolLoading from './GerarMapeamento/MapeamentoToolLoading';
 import MapeamentoToolFinish from './GerarMapeamento/MapeamentoToolFinish';
+import PlanToolLoading from './PlanExecution/PlanToolLoading';
+import PlanToolFinish from './PlanExecution/PlanToolFinish';
 
 interface ToolRendererProps {
     toolName: string;
@@ -40,6 +42,14 @@ const toolRegistry: Record<string, { Loading?: React.ComponentType<any>, Result?
     "gerar_mapeamento": {
         Loading: MapeamentoToolLoading,
         Result: MapeamentoToolFinish,
+    },
+    "plan_execution": {
+        Loading: PlanToolLoading,
+        Result: PlanToolFinish,
+    },
+    "plan_executionn": {
+        Loading: PlanToolLoading,
+        Result: PlanToolFinish,
     }
 };
 

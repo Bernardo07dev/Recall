@@ -5,6 +5,8 @@ export const toolNames: Record<string, string> = {
     "gerar_oportunidades": "Gerar oportunidades",
     "gerar_retencao": "Gerar Retenção",
     "gerar_mapeamento": "Mapeamento de Produtos",
+    "plan_execution": "Plano de Execução",
+    "planExecution": "Plano de Execução",
     // Adicionar outras tools abaixo que for criando no futuro:
     // "nome_da_nova_tool": "Nome Bonito para a UI"
 };

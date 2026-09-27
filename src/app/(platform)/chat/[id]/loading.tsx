@@ -40,7 +40,7 @@ export default function Loading() {
 
             </section>
 
-            <div className="w-full max-w-[830px] fixed bottom-0">
+            <div className="w-full max-w-[830px] fixed bottom-0 z-30">
                 <div className="w-full relative flex flex-col text-sm bg-white rounded-3xl p-3 border border-[#544a972b] animate-pulse">
                      <div className="w-full pb-3 flex flex-row items-center">
                          <div className="p-2 ml-1 text-gray-300 flex items-center justify-center">

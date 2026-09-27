@@ -349,7 +349,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                     })}
                 </section>
                 <div ref={bottomRef} />
-                <div className="w-full max-w-[830px] fixed bottom-0">
+                <div className="w-full max-w-[830px] fixed bottom-0 z-30">
                     {/* <div className="flex flex-row gap-2 items-center py-0.5">
                         <svg
                             className="recall-stream inline-block ml-1 w-4 h-4 overflow-visible text-[#1565C0] flex-shrink-0"

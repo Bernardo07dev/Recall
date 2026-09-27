@@ -13,6 +13,7 @@ import {
     Swords,
     NotebookText,
     Map,
+    ListTodo,
     type LucideIcon 
 } from 'lucide-react';
 
@@ -34,6 +35,7 @@ const MENTION_ICONS: Record<string, LucideIcon> = {
     Swords,
     NotebookText,
     Map,
+    ListTodo,
 };
 
 const renderFormattedText = (text: string) => {

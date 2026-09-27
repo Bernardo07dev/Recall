@@ -1,6 +1,6 @@
 import { fetchCompany, fetchMessages } from "@/src/app/actions/fetchThings";
 import { openRouterModel } from "@/src/lib/langchain/llm";
-import { webSearchTool, createBuscarJsonEmpresaTool, createGerarOportunidadesTool, createGerarRetencaoTool, createGerarMapeamentoTool } from "@/src/lib/langchain/tools";
+import { webSearchTool, createBuscarJsonEmpresaTool, createGerarOportunidadesTool, createGerarRetencaoTool, createGerarMapeamentoTool, createPlanExecutionTool } from "@/src/lib/langchain/tools";
 import { createAgent } from "langchain";
 import { BASE_PROMPT } from "@/src/lib/langchain/utils";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
@@ -52,10 +52,11 @@ export async function POST(req: Request) {
   const gerarOportunidadesTool = createGerarOportunidadesTool(id);
   const gerarRetencaoTool = createGerarRetencaoTool(id);
   const gerarMapeamentoTool = createGerarMapeamentoTool(id);
+  const planExecutionTool = createPlanExecutionTool(id);
 
   const agentDynamic = createAgent({
     model: openRouterModel,
-    tools: [webSearchTool, buscarJsonEmpresaTool, gerarOportunidadesTool, gerarRetencaoTool, gerarMapeamentoTool],
+    tools: [webSearchTool, buscarJsonEmpresaTool, gerarOportunidadesTool, gerarRetencaoTool, gerarMapeamentoTool, planExecutionTool],
   });
 
   const stream = await agentDynamic.streamEvents(

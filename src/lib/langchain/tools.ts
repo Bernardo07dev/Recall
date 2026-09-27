@@ -198,3 +198,62 @@ export const createGerarMapeamentoTool = (id: string | null) => new DynamicStruc
         }
     },
 });
+
+export const createPlanExecutionTool = (id: string | null) => new DynamicStructuredTool({
+    name: "plan_execution",
+    description: "Use esta ferramenta quando o usuário pedir um plano de ação, passos de execução, planejamento estratégico ou perguntar 'como posso executar' ou 'como executar' ações para esta empresa. IMPORTANTE: Após invocar esta ferramenta, responda APENAS com uma frase curta confirmando a geração, pois a interface já renderizará o plano visualmente. Não resuma ou mostre os dados brutos ou o JSON retornado.",
+    schema: z.object({}),
+    returnDirect: true,
+    func: async () => {
+        if (!id) return JSON.stringify({ avisoSistema: "Nenhuma empresa selecionada.", plano: [] });
+
+        const company = await prisma.empresas.findUnique({
+            where: { id: id }
+        });
+
+        if (!company) return JSON.stringify({ avisoSistema: "Empresa não encontrada.", plano: [] });
+
+        const StepSchema = z.object({
+            stepnumber: z.number().describe("Número sequencial da etapa de execução (ex: 1, 2, 3...)"),
+            tittle: z.string().describe("Título claro e direto da etapa do plano"),
+            action: z.string().describe("Ação prática e objetiva a ser realizada nesta etapa"),
+            description: z.string().describe("Descrição detalhada de como executar a ação, contexto e recomendações práticas")
+        });
+
+        const schema = z.object({
+            plano: z.array(StepSchema).describe("Lista ordenada de passos e ações do plano de execução para a empresa")
+        });
+
+        const llmWithStructuredOutput = openRouterModel.withStructuredOutput(schema);
+
+        const prompt = `Analise os dados e o contexto da empresa a seguir e elabore um plano de ação estratégico e executável passo a passo (de 3 a 6 etapas prioritárias), indicando o número da etapa (stepnumber), título (tittle), a ação prática imediata (action) e a descrição detalhada (description).\n\nDados da Empresa:\n${JSON.stringify({
+            nome: company.nome,
+            industry: company.industry,
+            resume: company.resume,
+            context: company.context,
+            relation: company.relation,
+            ...(company.json as Record<string, any> || {})
+        })}`;
+
+        try {
+            const result = await llmWithStructuredOutput.invoke(prompt);
+            const planoFormatado = result.plano.map((step: any, idx: number) => ({
+                stepnumber: step.stepnumber ?? (idx + 1),
+                tittle: step.tittle || step.title || `Etapa ${idx + 1}`,
+                title: step.tittle || step.title || `Etapa ${idx + 1}`,
+                action: step.action,
+                description: step.description
+            }));
+
+            return JSON.stringify({
+                _INSTRUCAO_CRITICA_PARA_A_IA_: "PARE! NÃO REPITA, NÃO RESUMA E NÃO IMPRIMA O JSON ABAIXO. O frontend já desenhou esses dados na tela em formato de cards! Apenas responda com: 'O plano de execução foi gerado e está na tela.'",
+                plano: planoFormatado,
+                planExecution: planoFormatado,
+                steps: planoFormatado
+            });
+        } catch (error) {
+            console.error("Erro ao gerar plano de execução:", error);
+            return JSON.stringify({ avisoSistema: "Erro ao tentar gerar plano de execução com a IA.", plano: [] });
+        }
+    },
+});
