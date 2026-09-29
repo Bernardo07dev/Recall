@@ -10,12 +10,13 @@ import LinkWithTooltip from './components/LinkWithTooltip';
 import CopyButton from './components/CopyButton';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Code } from 'lucide-react';
+import { Code, ChevronRight } from 'lucide-react';
 import DropZoneWrapper from "../components/DropZoneWrapper";
 import HumanMessage from "../components/HumanMessage";
 import { PONDERING_PHRASES } from './loadingNames';
 import { isSilentTool } from './silentTools';
 import ToolsHistorySidebar from './components/ToolsHistorySidebar';
+import { ThinkingOrb } from 'thinking-orbs';
 
 interface Message {
     input: string;
@@ -31,6 +32,46 @@ interface Props {
     companyId: string | null;
     userId: string;
 }
+
+const extractReasoning = (text: string) => {
+    if (!text) return { reasoning: null, content: text };
+    
+    let reasoning = "";
+    let content = text;
+
+    // Extrair blocos completos <think>...</think>
+    const thinkRegex = /<think>([\s\S]*?)<\/think>/g;
+    let match;
+    while ((match = thinkRegex.exec(content)) !== null) {
+        reasoning += match[1].trim() + "\n\n";
+    }
+    
+    if (reasoning) {
+        content = content.replace(/<think>([\s\S]*?)<\/think>/g, '');
+    } else {
+        // Se a tag <think> nunca foi fechada (ex: streaming)
+        const openThinkIndex = content.lastIndexOf('<think>');
+        if (openThinkIndex !== -1 && content.indexOf('</think>', openThinkIndex) === -1) {
+            reasoning = content.substring(openThinkIndex + 7).trim();
+            content = content.substring(0, openThinkIndex);
+        }
+    }
+
+    // Remover tag de fechamento órfã se existir, e extrair o raciocínio dela
+    // Isso acontece se o Langchain engolir a tag <think> inicial
+    const closeIndex = content.indexOf('</think>');
+    if (closeIndex !== -1) {
+        if (!reasoning) {
+            reasoning = content.substring(0, closeIndex).trim();
+        }
+        content = content.substring(closeIndex + 8).trim();
+    }
+
+    return { 
+        reasoning: reasoning ? reasoning.trim() : null, 
+        content: content.trim() 
+    };
+};
 
 export default function ChatIdClient({ id, empresas, companyId, userId }: Props) {
     const [messages, setMessages] = useState<Message[]>([])
@@ -211,19 +252,38 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
             <div className="py-22 px-6 min-h-screen flex flex-col justify-end items-center">
                 <section className='mb-18 fade-in my-4 w-full max-w-[830px] font-medium text-gray-500 text-[0.9375rem]'>
                     {messages?.map((msg, index) => {
-                        const hasText = msg.role === "AI" && msg.input.replace(TOOL_LINK_REGEX, "").trim() !== "";
+                        const { reasoning, content: mainContent } = extractReasoning(msg.input || "");
+                        const hasText = msg.role === "AI" && mainContent.replace(TOOL_LINK_REGEX, "").trim() !== "";
+                        const hasToolCall = msg.role === "AI" && mainContent.includes("https://tool.start/");
                         return (
                         <div key={index} className={`flex items-center ${msg.role === "Tool" ? "mb-0" : "mb-1"} text-[0.9375rem] ${msg.role === "human" ? "justify-end ml-[40%]" : "justify-start w-full"}`}
                         >
                             <div className={`${
                                 msg.role === "human" 
                                     ? "w-fit flex flex-col items-end" 
-                                    : msg.role === "Tool" || !hasText
+                                    : msg.role === "Tool" || !hasText && (!reasoning || hasToolCall)
                                         ? "w-full px-0 py-0 text-gray-800"
-                                        : `w-full px-4 ${hasText || msg.input === "" ? "py-3" : "py-0"} rounded-2xl text-gray-800`
+                                        : `w-full px-4 ${hasText || (reasoning && !hasToolCall) || msg.input === "" ? "py-3" : "py-0"} rounded-2xl text-gray-800`
                             }`}>
                                 {msg.role === "AI" ? (
                                      <div className="prose prose-base max-w-none text-gray-800 text-[0.9375rem] leading-relaxed prose-h1:text-[1.4rem] prose-h1:tracking-tight prose-h1:font-bold prose-h1:text-gray-800 prose-h1:mt-2 prose-h2:text-[1.05rem] prose-h2:font-bold prose-h2:text-gray-800 prose-h2:mb-2 prose-h2:mt-2 prose-h3:mt-2 prose-p:my-2 prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0">
+                                        {reasoning && !hasToolCall && (
+                                            <details 
+                                                className="mb-3 rounded-xl overflow-hidden group"
+                                                open={isStreaming && index === messages.length - 1}
+                                            >
+                                                <summary className="cursor-pointer text-gray-500 transition-colors select-none flex items-center gap-1 list-none [&::-webkit-details-marker]:hidden">
+                                                    {isStreaming && index === messages.length - 1 && mainContent === "" && (
+                                                        <ThinkingOrb state="breathing" size={20} className="mr-1"/>
+                                                    )}
+                                                    <span className="text-[0.8rem] font-medium">Processo de raciocínio</span>
+                                                    <ChevronRight size={14} className="transition-transform duration-200 group-open:rotate-90" />
+                                                </summary>
+                                                    <div className="py-2 text-[0.8rem] font-source font-light text-gray-500  ">
+                                                    {reasoning}
+                                                </div>
+                                            </details>
+                                        )}
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm]}
                                             components={{
@@ -309,10 +369,10 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                                 }
                                             }}
                                         >
-                                            {msg.input}
+                                            {mainContent}
 
                                         </ReactMarkdown>
-                                        {msg.input === "" && isStreaming && (
+                                        {mainContent === "" && !reasoning && isStreaming && (
                                             <div className="flex flex-row gap-2 items-center py-0.5">        
                                                 <svg
                                                     className="recall-stream inline-block ml-1 w-4.5 h-4.5 overflow-visible text-[#1565C0] flex-shrink-0"
@@ -337,7 +397,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
                                         )}
                                         {hasText && !(isStreaming && index === messages.length - 1) && (
                                             <div className="flex justify-start mt-3">
-                                                <CopyButton text={msg.input} />
+                                                <CopyButton text={mainContent} />
                                             </div>
                                         )}
                                     </div>

@@ -156,7 +156,7 @@
   gap: 0.375rem;
   background-color: #f9fafb; /* bg-gray-50 */
   color: #111827;            /* text-gray-900 */
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 500;
   padding: 9px 14px;
   border-radius: 10px;
@@ -176,11 +176,11 @@
 }
 
 .mention-pin .mention-text, [data-mention] .mention-text {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #111827bc;
-  font-weight: 500;
-  line-height: 1.25;
-  max-width: 260px;
+  font-weight: 600;
+  line-height: 1;
+  max-width: 240px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

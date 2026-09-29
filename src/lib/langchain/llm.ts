@@ -16,13 +16,17 @@ export const llmBruta = new ChatGoogleGenerativeAI({
 })
 
 export const openRouterModel = new ChatOpenRouter({
-    model: "openai/gpt-5-mini",
-    temperature: 0.1,
+    model: "anthropic/claude-sonnet-4.5",
+    temperature: 1,
+    maxTokens: 8192,
     apiKey: process.env.OPENROUTER_API_KEY,
     siteUrl: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000",
     siteName: "Recall",
     modelKwargs: {
         include_reasoning: true,
+        reasoning: {
+            max_tokens: 4000
+        }
     }
 })
 

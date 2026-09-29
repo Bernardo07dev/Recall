@@ -90,14 +90,25 @@ export async function POST(req: Request) {
               if (!isReasoning) {
                 console.log("\n--- [REASONING] ---");
                 isReasoning = true;
+                const jsonChunk = JSON.stringify({ type: "text", content: "<think>\n" }) + "\n";
+                controller.enqueue(encoder.encode(jsonChunk));
+                fullResponse += "<think>\n";
               }
               process.stdout.write(reasoning);
+              const jsonChunk = JSON.stringify({ type: "text", content: reasoning }) + "\n";
+              controller.enqueue(encoder.encode(jsonChunk));
+              
+              // We append to fullResponse so it's saved in the DB
+              fullResponse += reasoning;
             }
 
             if (chunk?.content) {
               if (isReasoning) {
                 console.log("\n--- [FIM REASONING] ---\n");
                 isReasoning = false;
+                const jsonChunk = JSON.stringify({ type: "text", content: "\n</think>\n\n" }) + "\n";
+                controller.enqueue(encoder.encode(jsonChunk));
+                fullResponse += "\n</think>\n\n";
               }
 
               // Suppress text emitted by LLMs running *inside* a silent tool
@@ -115,6 +126,9 @@ export async function POST(req: Request) {
             if (isReasoning) {
               console.log("\n--- [FIM REASONING] ---\n");
               isReasoning = false;
+              const jsonChunk = JSON.stringify({ type: "text", content: "\n</think>\n\n" }) + "\n";
+              controller.enqueue(encoder.encode(jsonChunk));
+              fullResponse += "\n</think>\n\n";
             }
             const toolName = event.name;
             if (SILENT_TOOLS.has(toolName)) activeSilentTool = toolName;
@@ -146,6 +160,9 @@ export async function POST(req: Request) {
         if (isReasoning) {
           console.log("\n--- [FIM REASONING] ---\n");
           isReasoning = false;
+          const jsonChunk = JSON.stringify({ type: "text", content: "\n</think>\n\n" }) + "\n";
+          controller.enqueue(encoder.encode(jsonChunk));
+          fullResponse += "\n</think>\n\n";
         }
 
         if (chatId && fullResponse.trim() !== "") {
