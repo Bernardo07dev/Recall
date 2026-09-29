@@ -6,7 +6,7 @@ import * as XLSX from 'xlsx';
 import { getFileIcon } from '../[id]/components/FileIcons';
 import { getMentionIconSvg } from "./mentionIcons";
 import { BorderBeam } from 'border-beam';
-
+import { ThinkingOrb } from 'thinking-orbs';
 interface Props {
     onEnviar: (input: string, companyId: string | null, role: "human" | "AI") => void;
     enableCompany?: boolean;
@@ -487,13 +487,15 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                         />
                     </div>
 
-                    <button 
+                        {isProcessing || isStreaming ? <ThinkingOrb state="composing" size={20} className="mr-4"/> :
+                            <button 
                         className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${isInputEmpty ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#004D99] text-white cursor-pointer hover:bg-[#003d7a]'} ${disableInput ? 'opacity-50 cursor-not-allowed' : ''}`}
                         onClick={handleEnviar}
                         disabled={disableInput || isInputEmpty}
-                    >
-                            {isProcessing || isStreaming ? <Loader2 size={15} className="animate-spin" /> : <SendHorizontal size={15} />}
-                    </button>
+                        >
+                            <SendHorizontal size={15} />
+                            
+                        </button>}
                 </div>
                 
                 <EmpresaSelector

@@ -5,6 +5,18 @@ import { DynamicTool, DynamicStructuredTool } from "@langchain/core/tools";
 import { prisma } from "@/src/lib/prisma";
 import { openRouterModel } from "@/src/lib/langchain/llm";
 
+async function saveToolHistory(chatId: string | null, title: string, type: string) {
+    if (!chatId) return null;
+    try {
+        const savedTool = await prisma.conversationTool.create({
+            data: { title, type, conversationId: chatId }
+        });
+        return savedTool.id;
+    } catch (e) {
+        console.error("Erro ao salvar tool history:", e);
+        return null;
+    }
+}
 export const webSearchTool = tool(
     async ({ query }) => {    
         const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY })
@@ -22,7 +34,7 @@ export const webSearchTool = tool(
     }
 )
 
-export const createBuscarJsonEmpresaTool = (id: string | null) => new DynamicStructuredTool({
+export const createBuscarJsonEmpresaTool = (id: string | null, chatId: string | null) => new DynamicStructuredTool({
     name: "buscar_dados_empresa",
     description: "Use esta ferramenta sempre que o usuário pedir informações ou um overview ou visão geral sobre a empresa.",
     schema: z.object({}),
@@ -35,6 +47,8 @@ export const createBuscarJsonEmpresaTool = (id: string | null) => new DynamicStr
         });
 
         if (!company) return JSON.stringify({ avisoSistema: "Empresa não encontrada.", dados_empresa: null });
+
+        const htmlId = await saveToolHistory(chatId, "Dados da Empresa", "buscar_dados_empresa");
 
         const respostaParaLLM = {
             _INSTRUCAO_CRITICA_PARA_A_IA_: "PARE! NÃO REPITA, NÃO RESUMA E NÃO IMPRIMA O JSON ABAIXO. O frontend já desenhou esses dados na tela para o usuário! Apenas responda com uma frase muito curta confirmando que os dados estão na tela.",
@@ -49,14 +63,15 @@ export const createBuscarJsonEmpresaTool = (id: string | null) => new DynamicStr
                 status: company.status,
                 createdAt: company.createdAt,
                 ...(company.json as Record<string, any> || {}),
-            }
+            },
+            htmlId
         };
 
         return JSON.stringify(respostaParaLLM);
     },
 });
 
-export const createGerarOportunidadesTool = (id: string | null) => new DynamicStructuredTool({
+export const createGerarOportunidadesTool = (id: string | null, chatId: string | null) => new DynamicStructuredTool({
     name: "gerar_oportunidades",
     description: "Use esta ferramenta quando o usuario digitar exatamente isso: Analise o contexto desta empresa e me mostre todas as oportunidades de upsell e cross-sell identificadas, com nível de prioridade e ação recomendada",
     schema: z.object({}),
@@ -92,9 +107,11 @@ export const createGerarOportunidadesTool = (id: string | null) => new DynamicSt
 
         try {
             const result = await llmWithStructuredOutput.invoke(prompt);
+            const htmlId = await saveToolHistory(chatId, "Oportunidades Comerciais", "gerar_oportunidades");
             return JSON.stringify({
                 _INSTRUCAO_CRITICA_PARA_A_IA_: "As oportunidades foram geradas e estão na tela",
-                oportunidades: result.oportunidades
+                oportunidades: result.oportunidades,
+                htmlId
             });
         } catch (error) {
             console.error("Erro ao gerar oportunidades:", error);
@@ -103,7 +120,7 @@ export const createGerarOportunidadesTool = (id: string | null) => new DynamicSt
     },
 });
 
-export const createGerarRetencaoTool = (id: string | null) => new DynamicStructuredTool({
+export const createGerarRetencaoTool = (id: string | null, chatId: string | null) => new DynamicStructuredTool({
     name: "gerar_retencao",
     description: "Use esta ferramenta quando o usuario digitar exatamente isso: Existe algum sinal de insatisfação ou risco de churn nesta empresa? Me mostre os alertas encontrados e o que deve ser feito para reter esse cliente.",
     schema: z.object({}),
@@ -139,10 +156,12 @@ export const createGerarRetencaoTool = (id: string | null) => new DynamicStructu
 
         try {
             const result = await llmWithStructuredOutput.invoke(prompt);
+            const htmlId = await saveToolHistory(chatId, "Alertas de Retenção", "gerar_retencao");
             return JSON.stringify({
                 _INSTRUCAO_CRITICA_PARA_A_IA_: "O frontend já desenhou esses dados na tela em formato de cards! Os alertas de retenção foram gerados e estão na tela",
                 alertas: result.alertas,
-                retencao: result.alertas
+                retencao: result.alertas,
+                htmlId
             });
         } catch (error) {
             console.error("Erro ao gerar alertas de retenção:", error);
@@ -151,7 +170,7 @@ export const createGerarRetencaoTool = (id: string | null) => new DynamicStructu
     },
 });
 
-export const createGerarMapeamentoTool = (id: string | null) => new DynamicStructuredTool({
+export const createGerarMapeamentoTool = (id: string | null, chatId: string | null) => new DynamicStructuredTool({
     name: "gerar_mapeamento",
     description: "Use esta ferramenta quando o usuario digitar exatamente isso: Quais produtos da TOTVS estão sendo mencionados nas conversas desta empresa? Faça um mapeamento total dos produtos. ",
     schema: z.object({}),
@@ -187,10 +206,12 @@ export const createGerarMapeamentoTool = (id: string | null) => new DynamicStruc
 
         try {
             const result = await llmWithStructuredOutput.invoke(prompt);
+            const htmlId = await saveToolHistory(chatId, "Mapeamento de Produtos TOTVS", "gerar_mapeamento");
             return JSON.stringify({
                 _INSTRUCAO_CRITICA_PARA_A_IA_: "PARE! NÃO REPITA, NÃO RESUMA E NÃO IMPRIMA O JSON ABAIXO. O frontend já desenhou esses dados na tela em formato de cards! Apenas responda com: 'O mapeamento de produtos foi gerado e está na tela.'",
                 produtos: result.produtos,
-                mapeamento: result.produtos
+                mapeamento: result.produtos,
+                htmlId
             });
         } catch (error) {
             console.error("Erro ao gerar mapeamento de produtos:", error);
@@ -199,7 +220,7 @@ export const createGerarMapeamentoTool = (id: string | null) => new DynamicStruc
     },
 });
 
-export const createPlanExecutionTool = (id: string | null) => new DynamicStructuredTool({
+export const createPlanExecutionTool = (id: string | null, chatId: string | null) => new DynamicStructuredTool({
     name: "plan_execution",
     description: "Use esta ferramenta quando o usuário pedir um plano de ação, passos de execução, planejamento estratégico ou perguntar 'como posso executar' ou 'como executar' ações para esta empresa. IMPORTANTE: Após invocar esta ferramenta, responda APENAS com uma frase curta confirmando a geração, pois a interface já renderizará o plano visualmente. Não resuma ou mostre os dados brutos ou o JSON retornado.",
     schema: z.object({}),
@@ -245,11 +266,14 @@ export const createPlanExecutionTool = (id: string | null) => new DynamicStructu
                 description: step.description
             }));
 
+            const htmlId = await saveToolHistory(chatId, "Plano de Execução", "plan_execution");
+
             return JSON.stringify({
                 _INSTRUCAO_CRITICA_PARA_A_IA_: "PARE! NÃO REPITA, NÃO RESUMA E NÃO IMPRIMA O JSON ABAIXO. O frontend já desenhou esses dados na tela em formato de cards! Apenas responda com: 'O plano de execução foi gerado e está na tela.'",
                 plano: planoFormatado,
                 planExecution: planoFormatado,
-                steps: planoFormatado
+                steps: planoFormatado,
+                htmlId
             });
         } catch (error) {
             console.error("Erro ao gerar plano de execução:", error);

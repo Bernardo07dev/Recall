@@ -15,6 +15,7 @@ import DropZoneWrapper from "../components/DropZoneWrapper";
 import HumanMessage from "../components/HumanMessage";
 import { PONDERING_PHRASES } from './loadingNames';
 import { isSilentTool } from './silentTools';
+import ToolsHistorySidebar from './components/ToolsHistorySidebar';
 
 interface Message {
     input: string;
@@ -206,6 +207,7 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
 
     return (
         <DropZoneWrapper onFilesDropped={(files) => setAttachments(prev => [...prev, ...files])}>
+            <ToolsHistorySidebar chatId={id} />
             <div className="py-22 px-6 min-h-screen flex flex-col justify-end items-center">
                 <section className='mb-18 fade-in my-4 w-full max-w-[830px] font-medium text-gray-500 text-[0.9375rem]'>
                     {messages?.map((msg, index) => {

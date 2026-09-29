@@ -73,6 +73,17 @@ model Conversations{
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   company   Empresas? @relation(fields: [companyId], references: [id], onDelete: Cascade)
   messages  Messages[]
+  tools     ConversationTool[]
+}
+
+model ConversationTool {
+  id             String        @id @default(uuid())
+  title          String
+  type           String
+  createdAt      DateTime      @default(now())
+  
+  conversationId String
+  conversation   Conversations @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
 
 enum Role {

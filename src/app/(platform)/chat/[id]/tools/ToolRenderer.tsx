@@ -62,5 +62,37 @@ export default function ToolRenderer({ toolName, isStart, showTool, msg }: ToolR
     }
 
     const ResultComponent = ToolConfig?.Result || GenericToolFinish;
-    return <ResultComponent msg={msg} toolName={toolName} />;
+
+    let htmlId = null;
+    try {
+        let rawOutput = msg?.toolMetadata?.output;
+        if (rawOutput && typeof rawOutput === 'object' && rawOutput.kwargs?.content) {
+            rawOutput = rawOutput.kwargs.content;
+        }
+        if (typeof rawOutput === 'string') {
+            let current: any = rawOutput;
+            while (typeof current === 'string') {
+                try {
+                    const parsed = JSON.parse(current);
+                    if (parsed === current) break;
+                    current = parsed;
+                } catch (e) {
+                    break;
+                }
+            }
+            if (typeof current === 'object' && current !== null && 'htmlId' in current) {
+                htmlId = current.htmlId;
+            }
+        } else if (rawOutput && typeof rawOutput === 'object' && 'htmlId' in rawOutput) {
+            htmlId = rawOutput.htmlId;
+        }
+    } catch (e) {
+        console.error("Erro extraindo htmlId no ToolRenderer", e);
+    }
+
+    return (
+        <div id={htmlId ? `tool-anchor-${htmlId}` : undefined} className="w-full relative scroll-mt-20">
+            <ResultComponent msg={msg} toolName={toolName} />
+        </div>
+    );
 }

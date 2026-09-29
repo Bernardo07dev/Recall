@@ -54,11 +54,11 @@ export async function POST(req: Request) {
       messages.push(new HumanMessage(mensagem));
   }
 
-  const buscarJsonEmpresaTool = createBuscarJsonEmpresaTool(id);
-  const gerarOportunidadesTool = createGerarOportunidadesTool(id);
-  const gerarRetencaoTool = createGerarRetencaoTool(id);
-  const gerarMapeamentoTool = createGerarMapeamentoTool(id);
-  const planExecutionTool = createPlanExecutionTool(id);
+  const buscarJsonEmpresaTool = createBuscarJsonEmpresaTool(id, chatId);
+  const gerarOportunidadesTool = createGerarOportunidadesTool(id, chatId);
+  const gerarRetencaoTool = createGerarRetencaoTool(id, chatId);
+  const gerarMapeamentoTool = createGerarMapeamentoTool(id, chatId);
+  const planExecutionTool = createPlanExecutionTool(id, chatId);
 
   const agentDynamic = createAgent({
     model: openRouterModel,
