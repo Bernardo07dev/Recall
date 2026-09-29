@@ -24,7 +24,7 @@ export const webSearchTool = tool(
 
 export const createBuscarJsonEmpresaTool = (id: string | null) => new DynamicStructuredTool({
     name: "buscar_dados_empresa",
-    description: "Use esta ferramenta sempre que o usuário pedir informações ou um overview sobre a empresa. IMPORTANTE: Após invocar esta ferramenta, responda APENAS com uma frase curta (ex: 'Exibindo dados na tela'), pois a interface já renderizará o relatório visualmente. Não resuma os dados.",
+    description: "Use esta ferramenta sempre que o usuário pedir informações ou um overview ou visão geral sobre a empresa.",
     schema: z.object({}),
     returnDirect: true,
     func: async () => {
@@ -58,7 +58,7 @@ export const createBuscarJsonEmpresaTool = (id: string | null) => new DynamicStr
 
 export const createGerarOportunidadesTool = (id: string | null) => new DynamicStructuredTool({
     name: "gerar_oportunidades",
-    description: "Use esta ferramenta quando o usuario digitar exatamente isso: Analise o contexto desta empresa e me mostre todas as oportunidades de upsell e cross-sell identificadas, com nível de prioridade e ação recomendada. IMPORTANTE: Após invocar esta ferramenta, responda APENAS com uma frase curta confirmando a geração, pois a interface já renderizará as oportunidades visualmente. Não resuma ou mostre os dados brutos ou o JSON retornado.",
+    description: "Use esta ferramenta quando o usuario digitar exatamente isso: Analise o contexto desta empresa e me mostre todas as oportunidades de upsell e cross-sell identificadas, com nível de prioridade e ação recomendada",
     schema: z.object({}),
     returnDirect: true,
     func: async () => {
@@ -93,7 +93,7 @@ export const createGerarOportunidadesTool = (id: string | null) => new DynamicSt
         try {
             const result = await llmWithStructuredOutput.invoke(prompt);
             return JSON.stringify({
-                _INSTRUCAO_CRITICA_PARA_A_IA_: "PARE! NÃO REPITA, NÃO RESUMA E NÃO IMPRIMA O JSON ABAIXO. O frontend já desenhou esses dados na tela em formato de cards! Apenas responda com: 'As oportunidades foram geradas e estão na tela.'",
+                _INSTRUCAO_CRITICA_PARA_A_IA_: "As oportunidades foram geradas e estão na tela",
                 oportunidades: result.oportunidades
             });
         } catch (error) {
@@ -140,7 +140,7 @@ export const createGerarRetencaoTool = (id: string | null) => new DynamicStructu
         try {
             const result = await llmWithStructuredOutput.invoke(prompt);
             return JSON.stringify({
-                _INSTRUCAO_CRITICA_PARA_A_IA_: "PARE! NÃO REPITA, NÃO RESUMA E NÃO IMPRIMA O JSON ABAIXO. O frontend já desenhou esses dados na tela em formato de cards! Apenas responda com: 'Os alertas de retenção foram gerados e estão na tela.'",
+                _INSTRUCAO_CRITICA_PARA_A_IA_: "O frontend já desenhou esses dados na tela em formato de cards! Os alertas de retenção foram gerados e estão na tela",
                 alertas: result.alertas,
                 retencao: result.alertas
             });
@@ -153,7 +153,7 @@ export const createGerarRetencaoTool = (id: string | null) => new DynamicStructu
 
 export const createGerarMapeamentoTool = (id: string | null) => new DynamicStructuredTool({
     name: "gerar_mapeamento",
-    description: "Use esta ferramenta quando o usuario digitar exatamente isso: Quais produtos da TOTVS estão sendo mencionados nas conversas desta empresa? Faça um mapeamento total dos produtos. IMPORTANTE: Após invocar esta ferramenta, responda APENAS com uma frase curta confirmando a geração, pois a interface já renderizará o mapeamento visualmente. Não resuma ou mostre os dados brutos ou o JSON retornado.",
+    description: "Use esta ferramenta quando o usuario digitar exatamente isso: Quais produtos da TOTVS estão sendo mencionados nas conversas desta empresa? Faça um mapeamento total dos produtos. ",
     schema: z.object({}),
     returnDirect: true,
     func: async () => {

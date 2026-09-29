@@ -32,7 +32,7 @@ export default function SideBar({ userId }: { userId: string }){
 
     return(
         <div 
-            style={{ width: collapsed ? '4.5rem' : '28%', transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
+            style={{ width: collapsed ? '4.5rem' : 'clamp(280px, 35%, 400px)', transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
             className="sticky top-0 h-screen p-3 z-20 transition-all bg-[#FBFBFF]"
         >
 

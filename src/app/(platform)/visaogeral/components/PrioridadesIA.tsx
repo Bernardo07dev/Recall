@@ -18,6 +18,7 @@ export interface PrioridadeItem {
     id: string;
     companyId: string;
     companyName: string;
+    insightId?: string;
     actionText: string;
     badgeLabel: "URGENTE" | "ALTA PRIORIDADE" | "MÉDIA PRIORIDADE" | "ROTINA";
     badgeClass: string;
@@ -166,6 +167,7 @@ export function extractRecommendedActions(business: any[]): PrioridadeItem[] {
                     id: `${empresa.id}-insight-${ins.id || idx}`,
                     companyId: empresa.id,
                     companyName: empresa.nome,
+                    insightId: ins.id || undefined,
                     actionText: actionText.trim(),
                     badgeLabel,
                     badgeClass,
@@ -306,7 +308,7 @@ export default function PrioridadesIA({ business }: PrioridadesIAProps) {
 
                         return (
                             <Link
-                                href={`/dashboard/${action.companyId}`}
+                                href={`/dashboard/${action.companyId}${action.insightId ? `?insight=${action.insightId}` : ''}`}
                                 key={action.id}
                                 className={`bg-white cursor-pointer rounded-2xl md:rounded-[1.35rem] p-4 sm:px-5 sm:py-4 border border-gray-100/90 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:border-gray-200/80 transition-all flex flex-row items-start gap-3 w-full ${
                                     isRead ? "opacity-50 bg-gray-50/50 border-green-500" : ""

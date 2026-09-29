@@ -17,7 +17,9 @@ export default function MapeamentoToolLoading({ toolName, showTool }: GenericToo
                     Mapeando Produtos TOTVS na Empresa
                 </span>
             </span>
-            <span className={`w-[1.5px] h-3 my-1 bg-gradient-to-b from-gray-100 to-[#1565C0]/40 rounded-full ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
+            {!showTool && (
+                <span className="w-[1.5px] h-3 my-1 bg-gradient-to-b from-gray-100 to-[#1565C0]/40 rounded-full ml-[7px]" />
+            )}
         </span>
     );
 }

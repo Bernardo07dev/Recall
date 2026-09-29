@@ -21,6 +21,9 @@ export const openRouterModel = new ChatOpenRouter({
     apiKey: process.env.OPENROUTER_API_KEY,
     siteUrl: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000",
     siteName: "Recall",
+    modelKwargs: {
+        include_reasoning: true,
+    }
 })
 
 export const agentOpenRouter = createAgent({

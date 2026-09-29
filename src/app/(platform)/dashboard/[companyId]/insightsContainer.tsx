@@ -5,7 +5,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { renderIcon } from './_components/renderIcon'
 import { renderCriticality } from './_components/renderCriticality'
 import { JiraTaskSuggestion } from './_components/jiraTaskSuggestion'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { DetailedInsightModal } from './_components/detailedInsightModal';
 
 interface Props {
@@ -13,11 +14,30 @@ interface Props {
 }
 
 export default function InsightsContainer({ insights }: Props) {
+    const searchParams = useSearchParams();
+    const router = useRouter();
     const [emblaRef, emblaApi] = useEmblaCarousel({ 
         loop: false,
         align: 'start'
     })
     const [activeInsight, setActiveInsight] = useState<any>(null);
+
+    // Auto-open insight from query param (e.g. ?insight=ins_001)
+    useEffect(() => {
+        const insightParam = searchParams.get('insight');
+        if (insightParam && !activeInsight) {
+            const found = insights.insights.prioritized.find(
+                (ins) => ins.id === insightParam
+            );
+            if (found) {
+                setActiveInsight(found);
+                // Clean the query param from URL without reload
+                const url = new URL(window.location.href);
+                url.searchParams.delete('insight');
+                router.replace(url.pathname + url.search, { scroll: false });
+            }
+        }
+    }, [searchParams, insights, activeInsight, router]);
 
     const totalInsights = insights.insights.prioritized.length;
 

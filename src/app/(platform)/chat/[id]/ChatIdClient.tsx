@@ -47,7 +47,13 @@ export default function ChatIdClient({ id, empresas, companyId, userId }: Props)
             return;
         }
         const interval = setInterval(() => {
-            setPonderingIndex(i => (i + 1) % PONDERING_PHRASES.length);
+            setPonderingIndex(prev => {
+                let next;
+                do {
+                    next = Math.floor(Math.random() * PONDERING_PHRASES.length);
+                } while (next === prev && PONDERING_PHRASES.length > 1);
+                return next;
+            });
         }, 2500);
         return () => clearInterval(interval);
     }, [isStreaming]);

@@ -80,14 +80,14 @@ export default function BuscaToolFinish({ toolName, msg }: GenericToolFinishProp
                                     <h4 className="text-[0.7rem] font-bold text-gray-400 mb-3 uppercase tracking-widest">Top Insights</h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         {companyData.insights.prioritized.slice(0, 4).map((insight: any, idx: number) => (
-                                            <div key={idx} onClick={() => handleAdicionarInsight(insight.title, insight.description, "Sparkles")}className="bg-blue-50/30 p-4 rounded-2xl cursor-pointer border border-blue-100/50 flex flex-col gap-2 shadow-sm shadow-blue-100/10 hover:shadow-md transition-shadow">
+                                            <div key={idx} onClick={() => handleAdicionarInsight(insight.title, insight.description, "Sparkles")}className="bg-blue-50/30 p-4 rounded-2xl cursor-pointer border border-blue-100/50 flex flex-col  shadow-sm shadow-blue-100/10 hover:shadow-md transition-shadow">
                                                 <div className="flex justify-between items-start gap-2">
                                                     <h5 className="font-bold text-[0.85rem] text-gray-800 leading-tight">{insight.title}</h5>
                                                     <div className="flex-shrink-0 scale-90 origin-top-right -mt-1 -mr-1">
                                                         {renderCriticality(insight.criticality)}
                                                     </div>
                                                 </div>
-                                                <p className="text-gray-500 text-[0.75rem] leading-relaxed mt-1">{insight.description}</p>
+                                                <p className="text-gray-500 text-[0.75rem]  ">{insight.description}</p>
                                             </div>
                                         ))}
                                     </div>

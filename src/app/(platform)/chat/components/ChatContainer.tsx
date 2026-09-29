@@ -5,6 +5,7 @@ import EmpresaSelector from "@/src/app/(platform)/chat/components/EmpresaSelecto
 import * as XLSX from 'xlsx';
 import { getFileIcon } from '../[id]/components/FileIcons';
 import { getMentionIconSvg } from "./mentionIcons";
+import { BorderBeam } from 'border-beam';
 
 interface Props {
     onEnviar: (input: string, companyId: string | null, role: "human" | "AI") => void;
@@ -389,23 +390,25 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
 
     return (
         <div className="relative w-full z-20">
-            <style>{`
-                @keyframes container-gradient-shadow {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
-                }
-                .animate-container-gradient-shadow {
-                    background: linear-gradient(90deg, #1565C0, #599be7, #9b59b6, #1565C0);
-                    background-size: 300% 300%;
-                    animation: container-gradient-shadow 4s ease infinite;
-                    filter: blur(8px);
-                }
-            `}</style>
-
-            <div className={`absolute -inset-[2px] animate-container-gradient-shadow rounded-3xl transition-opacity duration-500 pointer-events-none ${isStreaming || isProcessing ? 'opacity-20' : 'opacity-0'}`}></div>
-            
-            <div className={`w-full relative shadow-rainbow flex flex-col text-sm bg-white rounded-3xl p-3 border transition-colors duration-300 ${isStreaming || isProcessing ? 'border-transparent shadow-sm' : 'border-[#544a972b]'}`}>
+            <BorderBeam
+                size="pulse-outside"
+                colorVariant="colorful"
+                strength={2}
+                brightness={1.7}
+                saturation={0.5}
+                glowSize={1.5}
+                active={Boolean(isStreaming || isProcessing)}
+                theme="light"
+                borderRadius={24}
+                className="w-full rounded-3xl"
+                style={{
+                    overflow: 'visible',
+                    '--beam-stroke-opacity': 3.5,
+                    '--beam-bloom-opacity': 2.2,
+                    '--beam-inner-opacity': 2,
+                } as React.CSSProperties}
+            >
+                <div className={`w-full relative shadow-rainbow flex flex-col text-sm bg-white rounded-3xl p-3 border transition-colors duration-300 ${isStreaming || isProcessing ? 'border-transparent shadow-sm' : 'border-[#544a972b]'}`}>
                 
                 {attachments && attachments.length > 0 && (
                     <div className="flex flex-wrap gap-2 px-2 pt-2 pb-3 mb-2">
@@ -489,7 +492,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                         onClick={handleEnviar}
                         disabled={disableInput || isInputEmpty}
                     >
-                        {isProcessing ? <Loader2 size={15} className="animate-spin" /> : <SendHorizontal size={15} />}
+                            {isProcessing || isStreaming ? <Loader2 size={15} className="animate-spin" /> : <SendHorizontal size={15} />}
                     </button>
                 </div>
                 
@@ -503,7 +506,8 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                     defaultCompanyId={companyId}
                     />
 
-        </div>
+                </div>
+            </BorderBeam>
             {PopUp && (
                 <div className="fixed top-10 left-1/2 -translate-x-1/2 z-50 bg-[#ef4444] text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-4 animate-in fade-in slide-in-from-top-5 duration-300">
                     <span className="font-semibold text-sm">{PopUp}</span>

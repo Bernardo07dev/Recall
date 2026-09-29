@@ -36,6 +36,12 @@ export async function POST(req: Request) {
 
     [REGRA OBRIGATÓRIA DE ERRO E CONTEXTO]
     Se o [CONTEXTO DA EMPRESA] for "Sem contexto disponível" ou estiver ausente, e a pergunta/solicitação for sobre a empresa ou dependa de seus dados, NÃO TENTE RESPONDER NEM ESPECULAR. Apenas responda informando que está sem o contexto da empresa e que houve algum erro ao carregar os dados.
+
+    [REGRA OBRIGATÓRIA DE TOOLS]
+    Mesmo que você já tenha os dados da empresa no contexto acima, SEMPRE use a ferramenta "buscar_dados_empresa" quando o usuário pedir overview, visão geral, dados ou informações da empresa. A ferramenta aciona uma renderização visual especial no frontend que não pode ser replicada via texto. Não responda com os dados diretamente — chame a tool.
+
+    [REGRA OBRIGATÓRIA DE IDIOMA E RACIOCÍNIO]
+    O usuário fala português. Portanto, TODOS os seus pensamentos internos, passos lógicos e conteúdo da tag <think> DEVEM ser escritos estritamente em Português do Brasil.
   `;
 
   const SYSTEM = new SystemMessage(combinedSystemPrompt);
@@ -76,7 +82,9 @@ export async function POST(req: Request) {
         for await (const event of stream) {
           if (event.event === "on_chat_model_stream") {
             const chunk = event.data?.chunk;
+            console.log("ADDITIONAL KWARGS DEBUG:", chunk?.additional_kwargs);
             const reasoning = (chunk?.additional_kwargs?.reasoning ?? chunk?.additional_kwargs?.reasoning_content ?? "") as string;
+            if (reasoning) console.log("REASONING EXTRACTED:", reasoning);
 
             if (reasoning) {
               if (!isReasoning) {

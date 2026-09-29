@@ -17,7 +17,9 @@ export default function GenericToolLoading({ toolName, showTool }: GenericToolLo
                     {showTool ? `Iniciando ${displayName}...` : `${displayName}`}
                 </span>
             </span>
-            <span className={`w-[1.5px] -mb-1.5 h-3 bg-gradient-to-b from-gray-100 to-[#1565C0]/40 rounded-full ml-[7px] ${showTool ? "animate-pulse" : ""}`} />
+            {!showTool && (
+                <span className="w-[1.5px] -mb-1.5 h-3 bg-gradient-to-b from-gray-100 to-[#1565C0]/40 rounded-full ml-[7px]" />
+            )}
         </span>
     );
 }
