@@ -76,7 +76,7 @@ export default function ToolsHistorySidebar({ chatId }: { chatId: string }) {
 
   return (
     <aside 
-      className="hidden xl:flex flex-col w-72 max-h-[350px] bg-white/95 backdrop-blur-md border-2 border-gray-200/70 shadow-rainbow rounded-2xl p-4 fixed right-3 top-3 z-50 transition-all duration-300"
+      className="flex flex-col w-72 max-h-[350px] bg-white/95 backdrop-blur-md border-2 border-gray-200/70 shadow-rainbow rounded-2xl p-4 fixed right-3 top-3 z-50 transition-all duration-300"
     >
       <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100 shrink-0">
         <div className="flex items-center gap-2">
