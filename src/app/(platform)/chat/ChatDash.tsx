@@ -83,25 +83,25 @@ export default function Dashboard({ user, empresas }: Props) {
                     <h1 className="text-4xl font-semibold">Olá, {nome}!</h1>
                     <p className="text-gray-500 font-medium text-[0.9375rem] mb-4 -mt-1">Como posso te ajudar hoje?</p>
                     <section className="flex flex-row gap-4">
-                        <div onClick={() => recebeMensagem(oportunidades, selectedCompanyId, "human")} className="bg-white p-6 w-[33%] rounded-3xl flex flex-col shadow-rainbow cursor-pointer gap-1">
-                            <div className='flex items-center gap-2 mb-2'>
-                                <ChartBar size={28} className="bg-[#EFF6FF] text-[#2563EB] p-[6px] rounded-lg " />
+                        <div onClick={() => recebeMensagem(oportunidades, selectedCompanyId, "human")} className="bg-white p-5 px-6 w-[33%] rounded-3xl flex flex-col shadow-rainbow cursor-pointer gap-1">
+                            <div className='flex items-center gap-2 mb-1'>
+                                <ChartBar size={26} className="bg-[#EFF6FF] text-[#2563EB] p-[6px] rounded-lg " />
                                 <h1 className="text-[0.9rem] font-semibold">Oportunidades</h1>
                             </div>
                             <p className="text-xs text-gray-400 font-medium">Mapeie todas as possíveis oportunidades comerciais da empresa</p>
                         </div>
 
-                    <div onClick={() => recebeMensagem(retencao, selectedCompanyId, "human")} className="bg-white p-6 w-[33%] shadow-rainbow rounded-3xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
-                            <div className='flex items-center gap-2 mb-2'>
-                                <NotebookText size={28} className="bg-[#FFEEE6] text-[#813900] p-[6px] rounded-lg " />
+                    <div onClick={() => recebeMensagem(retencao, selectedCompanyId, "human")} className="bg-white p-5 px-6 w-[33%] shadow-rainbow rounded-3xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                            <div className='flex items-center gap-2 mb-1'>
+                                <NotebookText size={26} className="bg-[#FFEEE6] text-[#813900] p-[6px] rounded-lg " />
                                 <h1 className="text-[0.9rem] font-semibold">Retenção</h1>
                             </div>
                             <p className="text-xs text-gray-400 font-medium">Identifique insatisfação ou risco na contexto da empresa escolhida</p>
                         </div>
 
-                    <div onClick={() => recebeMensagem(map, selectedCompanyId, "human")} className="bg-white p-6 w-[33%] shadow-rainbow rounded-3xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
-                            <div className='flex items-center gap-2 mb-2'>
-                                <Map size={28} className="bg-[#D1FFE5] text-[#25751D] p-[6px] rounded-lg " />
+                        <div onClick={() => recebeMensagem(map, selectedCompanyId, "human")} className="bg-white p-5 px-6 w-[33%] shadow-rainbow rounded-3xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
+                            <div className='flex items-center gap-2 mb-1'>
+                                <Map size={26} className="bg-[#D1FFE5] text-[#25751D] p-[6px] rounded-lg " />
                                 <h1 className="text-[0.9rem] font-semibold">Mapeamento</h1>
                             </div>
                             <p className="text-xs text-gray-400 font-medium">Encontre os produtos que estão sendo comentados ou possíveis ofertas</p>
