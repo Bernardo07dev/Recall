@@ -46,54 +46,54 @@ export default function IndicatorsContainer({ indicators }: Props) {
     return (
         <div className="grid grid-cols-3 gap-4">
             {/* Churn Risk */}
-            <div onClick={() => handleAdicionarInsight("Churn", churn.text, "ShieldAlert")} className={`bg-white cursor-pointer shadow-rainbow ${churn.border}  rounded-2xl p-3 px-5 inter`}>
+            <div onClick={() => handleAdicionarInsight("Churn", churn.text, "ShieldAlert")} className={`bg-white cursor-pointer border border-gray-100 ${churn.border}  rounded-2xl p-3 px-5 inter`}>
                 <span className="text-[0.60rem] font-semibold uppercase text-gray-400">
                     Churn Risk
                 </span>
                 <div className='flex flex-row items-center mt-1 gap-2'>
-                    <div className="flex items-center gap-2 mb-1">
-                        <div className={`${churn.bg} p-1.5 rounded-lg`}>
-                            <ShieldAlert size={14} className={churn.text} />
+                    {/* <div className="flex items-center gap-2 mb-1">
+                        <div className={`${churn.bg} p-1.5 rounded-full`}>
+                            <ShieldAlert size={12} className={churn.text} />
                         </div>
-                    </div>
+                    </div> */}
                     <div className='flex flex-row gap-2 items-end'>
-                        <p className={`text-2xl font-bold ${churn.text} tracking-tight`}>{indicators.churn_risk}</p>
+                        <p className={`text-xl font-bold ${churn.text} tracking-tight`}>{indicators.churn_risk}</p>
                         <p className={`text-[11px] font-medium mb-1 ${churn.text} opacity-60`}>{churn.label}</p>
                     </div>
                 </div>
             </div>
 
             {/* Upsell Score */}
-            <div onClick={() => handleAdicionarInsight("Upsell", upsell.text, "TrendingUp")} className={`bg-white cursor-pointer shadow-rainbow ${upsell.border}  rounded-2xl p-3 px-5 inter`}>
-                <span className="text-[0.60rem] font-semibold uppercase text-gray-400">
+            <div onClick={() => handleAdicionarInsight("Upsell", upsell.text, "TrendingUp")} className={`bg-white cursor-pointer border border-gray-100 ${upsell.border}  rounded-2xl p-3 px-5 inter`}>
+                <span className="text-[0.60rem]  uppercase text-gray-400">
                     Upsell Score
                 </span>
                 <div className='flex flex-row items-center mt-1 gap-2'>
-                    <div className="flex items-center gap-2 mb-1">
-                        <div className={`${upsell.bg} p-1.5 rounded-lg`}>
-                            <TrendingUp size={14} className={upsell.text} />
+                    {/* <div className="flex items-center gap-2 mb-1">
+                        <div className={`${upsell.bg} p-1.5 rounded-full`}>
+                            <TrendingUp size={12} className={upsell.text} />
                         </div>
-                    </div>
+                    </div> */}
                     <div className='flex flex-row gap-2 items-end'>
-                        <p className={`text-2xl font-bold ${upsell.text} tracking-tight`}>{indicators.upsell_score}</p>
+                        <p className={`text-xl font-bold ${upsell.text} tracking-tight`}>{indicators.upsell_score}</p>
                         <p className={`text-[11px] font-medium mb-1 ${upsell.text} opacity-60`}>{upsell.label}</p>
                     </div>
                 </div>
             </div>
 
             {/* Competitor Threat */}
-            <div onClick={() => handleAdicionarInsight("Competidores", threat.text, "Swords")} className={`bg-white cursor-pointer shadow-rainbow ${threat.border}  rounded-2xl p-3 px-5 inter`}>
-                <span className="text-[0.60rem] font-semibold uppercase text-gray-400">
+            <div onClick={() => handleAdicionarInsight("Competidores", threat.text, "Swords")} className={`bg-white cursor-pointer border border-gray-100 ${threat.border}  rounded-2xl p-3 px-5 inter`}>
+                <span className="text-[0.60rem]  uppercase text-gray-400">
                     Competidores
                 </span>
                 <div className='flex flex-row items-center mt-1 gap-2'>
-                    <div className="flex items-center gap-2 mb-1">
-                        <div className={`${threat.bg} p-1.5 rounded-lg`}>
-                            <Swords size={14} className={threat.text} />
+                    {/* <div className="flex items-center gap-2 mb-1">
+                        <div className={`${threat.bg} p-1.5 rounded-full`}>
+                            <Swords size={12} className={threat.text} />
                         </div>
-                    </div>
+                    </div> */}
                     <div className='flex flex-row gap-2 items-end'>
-                        <p className={`text-lg font-bold ${threat.text} tracking-tight`}>{indicators.competitor_threat}</p>
+                        <p className={`text-md font-bold ${threat.text} tracking-tight`}>{indicators.competitor_threat}</p>
                     </div>
                 </div>
             </div>
@@ -108,7 +108,7 @@ export default function IndicatorsContainer({ indicators }: Props) {
                         Sentimento Geral
                     </span>
                 </div>
-                <p className="font-semibold text-sm text-[#1565C0] leading-tight">{indicators.sentiment_overall}</p>
+                <p className=" text-sm text-[#1565C0] leading-tight">{indicators.sentiment_overall}</p>
             </div> */}
         </div>
     )

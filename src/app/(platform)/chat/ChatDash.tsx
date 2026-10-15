@@ -77,34 +77,49 @@ export default function Dashboard({ user, empresas }: Props) {
 
     return (
         <DropZoneWrapper onFilesDropped={(files) => setAttachments(prev => [...prev, ...files])}>
-        <main className={`py-8 px-[15%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen bg-[#fbfbff]`}>
+        <main className={`py-8 px-[15%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen bg-transparent`}>
             {!firstmsg &&
                 (<div className={`w-full py-18 flex flex-col items-start gap-2 ${hiding ? "animate-fade-out" : "animate-fade-in"}`}>
                     <h1 className="text-4xl font-semibold">Olá, {nome}!</h1>
                     <p className="text-gray-500 font-medium text-[0.9375rem] mb-4 -mt-1">Como posso te ajudar hoje?</p>
-                    <section className="flex flex-row gap-4">
-                        <div onClick={() => recebeMensagem(oportunidades, selectedCompanyId, "human")} className="bg-white p-5 px-6 w-[33%] rounded-3xl flex flex-col shadow-rainbow cursor-pointer gap-1">
-                            <div className='flex items-center gap-2 mb-1'>
-                                <ChartBar size={26} className="bg-[#EFF6FF] text-[#2563EB] p-[6px] rounded-lg " />
-                                <h1 className="text-[0.9rem] font-semibold">Oportunidades</h1>
+                    <section className="flex flex-row gap-3 w-full">
+                        <div 
+                            onClick={() => recebeMensagem(oportunidades, selectedCompanyId, "human")} 
+                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/[0.06] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
+                        >
+                            <div className='flex items-center gap-2'>
+                                <div className="p-1.5 rounded-lg bg-blue-50/80 text-blue-600 border border-blue-100/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                                    <ChartBar size={12} />
+                                </div>
+                                <h1 className="text-[0.85rem] font-semibold text-neutral-600">Oportunidades</h1>
                             </div>
-                            <p className="text-xs text-gray-400 font-medium">Mapeie todas as possíveis oportunidades comerciais da empresa</p>
+                            <p className="text-[0.7rem] leading-4 mt-0.5 text-neutral-400 font-medium">Mapeie todas as possíveis oportunidades comerciais da empresa</p>
                         </div>
 
-                    <div onClick={() => recebeMensagem(retencao, selectedCompanyId, "human")} className="bg-white p-5 px-6 w-[33%] shadow-rainbow rounded-3xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
-                            <div className='flex items-center gap-2 mb-1'>
-                                <NotebookText size={26} className="bg-[#FFEEE6] text-[#813900] p-[6px] rounded-lg " />
-                                <h1 className="text-[0.9rem] font-semibold">Retenção</h1>
+                        <div 
+                            onClick={() => recebeMensagem(retencao, selectedCompanyId, "human")} 
+                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/[0.06] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
+                        >
+                            <div className='flex items-center gap-2'>
+                                <div className="p-1.5 rounded-lg bg-amber-50/80 text-amber-600 border border-amber-100/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                                    <NotebookText size={12} />
+                                </div>
+                                <h1 className="text-[0.85rem] font-semibold text-neutral-600">Retenção</h1>
                             </div>
-                            <p className="text-xs text-gray-400 font-medium">Identifique insatisfação ou risco na contexto da empresa escolhida</p>
+                            <p className="text-[0.7rem] leading-4 mt-0.5 text-gray-400 font-medium">Identifique insatisfação ou risco no contexto da empresa escolhida</p>
                         </div>
 
-                        <div onClick={() => recebeMensagem(map, selectedCompanyId, "human")} className="bg-white p-5 px-6 w-[33%] shadow-rainbow rounded-3xl flex flex-col shadow-sm shadow-gray-100 cursor-pointer gap-1">
-                            <div className='flex items-center gap-2 mb-1'>
-                                <Map size={26} className="bg-[#D1FFE5] text-[#25751D] p-[6px] rounded-lg " />
-                                <h1 className="text-[0.9rem] font-semibold">Mapeamento</h1>
+                        <div 
+                            onClick={() => recebeMensagem(map, selectedCompanyId, "human")} 
+                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/[0.06] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
+                        >
+                            <div className='flex items-center gap-2'>
+                                <div className="p-1.5 rounded-lg bg-emerald-50/80 text-emerald-600 border border-emerald-100/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                                    <Map size={12} />
+                                </div>
+                                <h1 className="text-[0.85rem] font-semibold text-neutral-600">Mapeamento</h1>
                             </div>
-                            <p className="text-xs text-gray-400 font-medium">Encontre os produtos que estão sendo comentados ou possíveis ofertas</p>
+                            <p className="text-[0.7rem] leading-4 mt-0.5 text-gray-400 font-medium">Encontre os produtos que estão sendo comentados ou possíveis ofertas</p>
                         </div>
                     </section>
                 </div>)

@@ -408,7 +408,7 @@ export default function ChatContainer({ onEnviar, enableCompany, empresas, defau
                     '--beam-inner-opacity': 2,
                 } as React.CSSProperties}
             >
-                <div className={`w-full relative shadow-rainbow flex flex-col text-sm bg-white rounded-3xl p-3 border transition-colors duration-300 ${isStreaming || isProcessing ? 'border-transparent shadow-sm' : 'border-[#544a972b]'}`}>
+                <div className={`w-full relative flex flex-col text-sm bg-white rounded-3xl p-3 border transition-colors duration-300 ${isStreaming || isProcessing ? 'border-transparent' : 'border-[#544a972b]'}`}>
                 
                 {attachments && attachments.length > 0 && (
                     <div className="flex flex-wrap gap-2 px-2 pt-2 pb-3 mb-2">

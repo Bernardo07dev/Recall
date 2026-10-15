@@ -3,7 +3,7 @@ import { z } from "zod"
 import { tavily } from "@tavily/core"
 import { DynamicTool, DynamicStructuredTool } from "@langchain/core/tools";
 import { prisma } from "@/src/lib/prisma";
-import { openRouterModel } from "@/src/lib/langchain/llm";
+import { llmJson } from "@/src/lib/langchain/llm";
 
 async function saveToolHistory(chatId: string | null, title: string, type: string) {
     if (!chatId) return null;
@@ -94,7 +94,7 @@ export const createGerarOportunidadesTool = (id: string | null, chatId: string |
             })).describe("Lista de oportunidades comerciais identificadas para a empresa")
         });
 
-        const llmWithStructuredOutput = openRouterModel.withStructuredOutput(schema);
+        const llmWithStructuredOutput = llmJson.withStructuredOutput(schema);
 
         const prompt = `Analise os seguintes dados e contexto da empresa e gere uma lista de 3 a 5 oportunidades comerciais estratégicas.\n\nDados da Empresa:\n${JSON.stringify({
             nome: company.nome,
@@ -143,7 +143,7 @@ export const createGerarRetencaoTool = (id: string | null, chatId: string | null
             })).describe("Lista de sinais de insatisfação e alertas de risco de churn identificados para retenção do cliente")
         });
 
-        const llmWithStructuredOutput = openRouterModel.withStructuredOutput(schema);
+        const llmWithStructuredOutput = llmJson.withStructuredOutput(schema);
 
         const prompt = `Analise os seguintes dados e contexto da empresa e identifique de 3 a 5 sinais de insatisfação, alertas críticos ou riscos de churn, indicando o motivo e o que deve ser feito para reter o cliente.\n\nDados da Empresa:\n${JSON.stringify({
             nome: company.nome,
@@ -193,7 +193,7 @@ export const createGerarMapeamentoTool = (id: string | null, chatId: string | nu
             })).describe("Mapeamento de produtos TOTVS identificados nas conversas e contexto da empresa")
         });
 
-        const llmWithStructuredOutput = openRouterModel.withStructuredOutput(schema);
+        const llmWithStructuredOutput = llmJson.withStructuredOutput(schema);
 
         const prompt = `Analise os seguintes dados e contexto da empresa e identifique todos os produtos e soluções TOTVS mencionados, utilizados ou que representam oportunidades comerciais de oferta, indicando status, nível de satisfação e detalhes contextuais.\n\nDados da Empresa:\n${JSON.stringify({
             nome: company.nome,
@@ -245,7 +245,7 @@ export const createPlanExecutionTool = (id: string | null, chatId: string | null
             plano: z.array(StepSchema).describe("Lista ordenada de passos e ações do plano de execução para a empresa")
         });
 
-        const llmWithStructuredOutput = openRouterModel.withStructuredOutput(schema);
+        const llmWithStructuredOutput = llmJson.withStructuredOutput(schema);
 
         const prompt = `Analise os dados e o contexto da empresa a seguir e elabore um plano de ação estratégico e executável passo a passo (de 3 a 6 etapas prioritárias), indicando o número da etapa (stepnumber), título (tittle), a ação prática imediata (action) e a descrição detalhada (description).\n\nDados da Empresa:\n${JSON.stringify({
             nome: company.nome,

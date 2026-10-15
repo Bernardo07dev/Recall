@@ -33,15 +33,12 @@ export default function SideBar({ userId }: { userId: string }){
     return(
         <div 
             style={{ width: collapsed ? '4.5rem' : 'clamp(280px, 35%, 400px)', transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
-            className="sticky top-0 h-screen p-3 z-20 transition-all bg-[#FBFBFF]"
+            className="sticky top-0 h-screen p-3 z-40 transition-all bg-transparent"
         >
 
             <div className="relative h-full w-full">
-                {/* Sombra de gradiente animada */}
-                <div className={`absolute -inset-0.5 rainbow-shadow rounded-xl transition-opacity duration-300 ${collapsed ? 'opacity-40' : 'opacity-0'}`}></div>
-                
                 <aside
-                    className={`relative z-10 scroll-smooth h-full rounded-xl bg-white overflow-y-auto transition-opacity overflow-x-hidden [&::-webkit-scrollbar]:h-8 [&::-webkit-scrollbar]:w-[0.4rem] [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-[#E7EFF8] [&::-webkit-scrollbar-thumb]:rounded-full transition-all duration-300 ${!collapsed ? 'shadow-sm border border-gray-100 p-4' : 'p-2'}`}
+                    className={`relative z-10 scroll-smooth h-full rounded-2xl bg-white overflow-y-auto transition-opacity overflow-x-hidden [&::-webkit-scrollbar]:h-8 [&::-webkit-scrollbar]:w-[0.4rem] [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-[#E7EFF8] [&::-webkit-scrollbar-thumb]:rounded-full transition-all duration-300 border border-gray-100 ${!collapsed ? 'p-4' : 'p-2'}`}
                 >
             <div className={`flex flex-row items-center ${collapsed ? 'justify-center' : 'justify-between'}`}>
                 {!collapsed && <Image src={Logo} alt="Logo Recall" width={90} className="pt-2"></Image>}

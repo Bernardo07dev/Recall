@@ -1,5 +1,4 @@
 export const silentTools = [
-    "buscar_dados_empresa",
     "gerar_oportunidades",
     "gerar_retencao",
     "gerar_mapeamento",

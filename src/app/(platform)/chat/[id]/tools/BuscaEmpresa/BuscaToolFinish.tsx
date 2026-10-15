@@ -50,54 +50,72 @@ export default function BuscaToolFinish({ toolName, msg }: GenericToolFinishProp
             </span>
             
             {companyData ? (
-                <div className="relative w-full">
-                    <div className="absolute -inset-0.5 rainbow-shadow rounded-3xl opacity-10"></div>
-                    
-                    <div className="relative bg-white rounded-3xl w-full flex flex-col overflow-hidden ">
-                        <div className="flex justify-between items-center p-5 pb-4 border-b border-gray-100/80 bg-gray-50/40">
-                            <h3 className="font-semibold text-gray-800 text-[1.15rem] tracking-tight">
+                <div className="w-full flex flex-col gap-4.5 pt-0.5">
+                    {/* Header Flutuante */}
+                    <div className="flex justify-between items-center w-full">
+                        <div className="flex items-center gap-2.5">
+                            <h3 className="font-semibold text-gray-800 text-[1.05rem] tracking-tight">
                                 {companyData.nome || 'Relatório de Inteligência da Empresa'}
                             </h3>
-                            <button
-                                onClick={() => router.push(`/dashboard/${companyData.id}`)}
-                                className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-100 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 text-xs font-semibold shadow-rainbow hover:border-gray-200 transition-all duration-150 cursor-pointer"
-                            >
-                                <span>Ver Dashboard</span>
-                                <ArrowUpRight size={13} className="text-gray-400 group-hover:text-gray-700 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                            </button>
-                        </div>
-                        
-                        <div className="p-5 flex flex-col gap-6 bg-white">
-                            {companyData.indicators && (
-                                <div>
-                                    <h4 className="text-[0.7rem] font-bold text-gray-400 mb-3 uppercase tracking-widest">Indicadores Principais</h4>
-                                    <IndicatorsToolsContainer indicators={companyData.indicators} />
-                                </div>
-                            )}
-
-                            {companyData.insights?.prioritized && companyData.insights.prioritized.length > 0 && (
-                                <div>
-                                    <h4 className="text-[0.7rem] font-bold text-gray-400 mb-3 uppercase tracking-widest">Top Insights</h4>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        {companyData.insights.prioritized.slice(0, 4).map((insight: any, idx: number) => (
-                                            <div key={idx} onClick={() => handleAdicionarInsight(insight.title, insight.description, "Sparkles")}className="bg-blue-50/30 p-4 rounded-2xl cursor-pointer border border-blue-100/50 flex flex-col  shadow-sm shadow-blue-100/10 hover:shadow-md transition-shadow">
-                                                <div className="flex justify-between items-start gap-2">
-                                                    <h5 className="font-bold text-[0.85rem] text-gray-800 leading-tight">{insight.title}</h5>
-                                                    <div className="flex-shrink-0 scale-90 origin-top-right -mt-1 -mr-1">
-                                                        {renderCriticality(insight.criticality)}
-                                                    </div>
-                                                </div>
-                                                <p className="text-gray-500 text-[0.75rem]  ">{insight.description}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                            {companyData.industry && (
+                                <span className="text-[0.68rem] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium">
+                                    {companyData.industry}
+                                </span>
                             )}
                         </div>
+                        <a
+                            href={`/dashboard/${companyData.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group inline-flex items-center gap-1.5 p-2 px-4 rounded-xl border border-gray-200 bg-white/80 hover:bg-white text-gray-600 hover:text-gray-900 text-[0.7rem] font-semibold hover:shadow-sm hover:border-gray-300 transition-all duration-200 cursor-pointer"
+                        >
+                            <span>Ver Dashboard</span>
+                            <ArrowUpRight size={13} className="text-gray-400 group-hover:text-gray-700 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </a>
                     </div>
+
+                    {/* Indicadores Principais Flutuantes */}
+                    {companyData.indicators && (
+                        <div className="w-full">
+                            <h4 className="text-[0.64rem] font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                                Indicadores Principais
+                            </h4>
+                            <IndicatorsToolsContainer indicators={companyData.indicators} />
+                        </div>
+                    )}
+
+                    {/* Top Insights Flutuantes */}
+                    {companyData.insights?.prioritized && companyData.insights.prioritized.length > 0 && (
+                        <div className="w-full">
+                            <h4 className="text-[0.64rem] font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                                Top Insights
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                {companyData.insights.prioritized.slice(0, 4).map((insight: any, idx: number) => (
+                                    <div
+                                        key={idx}
+                                        onClick={() => handleAdicionarInsight(insight.title, insight.description, "Sparkles")}
+                                        className="group bg-gradient-to-br from-white via-white/95 to-blue-50/20 border border-gray-100 hover:border-blue-200/70 p-6 rounded-2xl cursor-pointer flex flex-col justify-start gap-1 shadow-[inset_0_1px_1px_rgba(255,255,255,1),0_1px_3px_rgba(0,0,0,0.02)] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,1),0_6px_18px_-4px_rgba(37,99,235,0.08)] hover:-translate-y-0.5 transition-all duration-200"
+                                    >
+                                        <div className="flex justify-between items-start gap-2">
+                                            <h5 className="font-semibold text-[0.83rem] text-neutral-700 group-hover:text-neutral-900 leading-tight transition-colors !m-0">
+                                                {insight.title}
+                                            </h5>
+                                            <div className="flex-shrink-0 scale-90 origin-top-right -mt-0.5 -mr-0.5 [&_p]:!m-0 [&_p]:!mb-0">
+                                                {renderCriticality(insight.criticality)}
+                                            </div>
+                                        </div>
+                                        <p className="text-neutral-400 group-hover:text-neutral-500 text-[0.73rem] leading-snug transition-colors !m-0 !mt-0.5">
+                                            {insight.description}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             ) : (
-                <div className="text-xs text-gray-400 bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-center gap-2">
+                    <div className="text-xs text-gray-400 bg-gray-50/80 p-3 rounded-xl border border-gray-100 flex items-center gap-2">
                     <BarChart3 size={14} className="opacity-50" />
                     Não foi possível carregar o relatório visual.
                 </div>
