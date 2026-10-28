@@ -77,15 +77,21 @@ export default function Dashboard({ user, empresas }: Props) {
 
     return (
         <DropZoneWrapper onFilesDropped={(files) => setAttachments(prev => [...prev, ...files])}>
-        <main className={`py-8 px-[15%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen bg-transparent`}>
+        <main
+            className={`py-8 px-[15%] w-full flex flex-col items-center ${!firstmsg ? "justify-between" : "justify-end"} min-h-screen`}
+            style={{
+                background: 'linear-gradient(to right, #F7F9FE 0px, rgba(247, 249, 254, 0) 220px), radial-gradient(at 0% 0%, rgba(21, 101, 192, 0.09) 0px, transparent 55%), radial-gradient(at 100% 0%, rgba(155, 89, 182, 0.09) 0px, transparent 55%), radial-gradient(at 10% 50%, rgba(16, 185, 129, 0.065) 0px, transparent 50%), radial-gradient(at 90% 55%, rgba(245, 158, 11, 0.065) 0px, transparent 50%), radial-gradient(at 50% 95%, rgba(236, 72, 153, 0.075) 0px, transparent 55%), #ffffff',
+                backgroundAttachment: 'scroll, fixed, fixed, fixed, fixed, fixed',
+            }}
+        >
             {!firstmsg &&
-                (<div className={`w-full py-18 flex flex-col items-start gap-2 ${hiding ? "animate-fade-out" : "animate-fade-in"}`}>
+                (<div className={`w-full max-w-[960px] py-18 flex flex-col items-start gap-2 ${hiding ? "animate-fade-out" : "animate-fade-in"}`}>
                     <h1 className="text-4xl font-semibold">Olá, {nome}!</h1>
                     <p className="text-gray-500 font-medium text-[0.9375rem] mb-4 -mt-1">Como posso te ajudar hoje?</p>
                     <section className="flex flex-row gap-3 w-full">
                         <div 
                             onClick={() => recebeMensagem(oportunidades, selectedCompanyId, "human")} 
-                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/[0.06] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
+                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/6 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
                         >
                             <div className='flex items-center gap-2'>
                                 <div className="p-1.5 rounded-lg bg-blue-50/80 text-blue-600 border border-blue-100/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
@@ -98,7 +104,7 @@ export default function Dashboard({ user, empresas }: Props) {
 
                         <div 
                             onClick={() => recebeMensagem(retencao, selectedCompanyId, "human")} 
-                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/[0.06] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
+                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/6 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
                         >
                             <div className='flex items-center gap-2'>
                                 <div className="p-1.5 rounded-lg bg-amber-50/80 text-amber-600 border border-amber-100/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
@@ -111,7 +117,7 @@ export default function Dashboard({ user, empresas }: Props) {
 
                         <div 
                             onClick={() => recebeMensagem(map, selectedCompanyId, "human")} 
-                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/[0.06] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
+                            className="group flex-1 bg-white p-4 px-5.5 rounded-3xl flex flex-col justify-between hover:border-black/6 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer gap-1.5"
                         >
                             <div className='flex items-center gap-2'>
                                 <div className="p-1.5 rounded-lg bg-emerald-50/80 text-emerald-600 border border-emerald-100/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
@@ -125,7 +131,7 @@ export default function Dashboard({ user, empresas }: Props) {
                 </div>)
             }
 
-            {firstmsg && <section className='mb-32 fade-in my-4 w-[80%] inter text-[0.75rem]'>
+            {firstmsg && <section className='mb-32 fade-in my-4 w-[80%] max-w-[830px] inter text-[0.75rem]'>
                 {message?.map((message, index) => (
                     <div 
                         key={index} className={`flex items-center mt-2 text-sm ${
@@ -139,7 +145,7 @@ export default function Dashboard({ user, empresas }: Props) {
                 ))}
             </section>}
 
-            <section className='w-[55%] fixed bottom-0 z-10'>
+            <section className='w-[55%] max-w-[830px] fixed bottom-0 z-10'>
                 <ChatContainer 
                     onEnviar={recebeMensagem} 
                     enableCompany={firstmsg} 
